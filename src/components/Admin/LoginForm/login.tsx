@@ -2,7 +2,6 @@
 import React from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from 'yup';
 import { LoginSchema } from './login.schema';
 
 interface FormData {
@@ -13,6 +12,10 @@ interface FormData {
 const LoginForm: React.FC = () => {
   const { control, handleSubmit, formState: { errors } } = useForm<FormData>({
     resolver: yupResolver(LoginSchema),
+    defaultValues: {
+      email: '',
+      password: '',
+    },
   });
 
   const onSubmit = (data: FormData) => {
@@ -24,6 +27,7 @@ const LoginForm: React.FC = () => {
       <div className="mb-4">
         <label htmlFor="email" className="block text-gray-700 text-sm font-bold mb-2">E-mail:</label>
         <Controller
+          defaultValue=""
           control={control}
           name="email"
           render={({ field }) => (
@@ -41,6 +45,7 @@ const LoginForm: React.FC = () => {
       <div className="mb-6">
         <label htmlFor="password" className="block text-gray-700 text-sm font-bold mb-2">Senha:</label>
         <Controller
+          defaultValue=""
           control={control}
           name="password"
           render={({ field }) => (
