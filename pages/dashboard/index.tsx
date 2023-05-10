@@ -1,13 +1,13 @@
 import React from 'react';
 import withAuth from '../../utils/withAuth';
 import DashboardComponent from '@/src/components/Admin/Dashboard/dashboard';
-import Layout from '@/app/layout';
+import RootLayout from '@/app/layout';
 
 const Dashboard: React.FC = () => {
   return (
-    <Layout>
+    <RootLayout>
         <DashboardComponent/>
-    </Layout>
+    </RootLayout>
 
   );
 };

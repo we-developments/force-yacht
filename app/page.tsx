@@ -1,22 +1,16 @@
 'use client';
-import React from 'react';
+import React, { useState } from 'react';
 import mainBanner from '../src/images/pngs/banner.png';
 import Image from 'next/image';
+import { Dialog } from '@headlessui/react';
+import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 
-const HomePage = () => {
 
+export default function HomePage() {
 
   return (
-    <>
-    <div>
-      <Image src={mainBanner} alt="main banner" fill/>
-    </div>
+    <div className="container">
 
-    <div className="section">
-        AQUI
     </div>
-    </>
-  );
-};
-
-export default HomePage;
+    )}
+                

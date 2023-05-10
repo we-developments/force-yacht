@@ -1,6 +1,6 @@
 import LoginForm from '@/src/components/Admin/LoginForm/login';
 import React from 'react';
-import "../../app/globals.css"
+import "../../styles/globals.css"
 
 const AdminPage: React.FC = () => {
   return (
