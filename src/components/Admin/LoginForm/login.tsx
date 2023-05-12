@@ -41,6 +41,7 @@ const LoginForm: React.FC = () => {
   };
 
   const onSubmit = async (data: FormData) => {
+    console.log(data)
     const { email, password } = data;
     const result = await authenticateUser(email, password);
 
