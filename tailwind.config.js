@@ -11,9 +11,6 @@ module.exports = {
   ],
   purge: ['./src/**/*.{js,ts,jsx,tsx}'],
   theme: {
-    fontFamily: {
-      'sans': ['Bell MT', 'sans-serif'],
-    },
     extend: {
      
     },
