@@ -5,6 +5,7 @@ import * as yup from "yup";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import force from "../../../images/pngs/force.png"
+import Link from "next/link";
 
 
 const ForgotPasswordSchema = yup.object().shape({
@@ -114,12 +115,12 @@ const ForgotPasswordForm: React.FC = () => {
           </div>
           <p className="mt-10 text-center text-sm text-gray-400">
             Recuperou sua senha?{" "}
-            <a
+            <Link
               href="/admin"
               className="font-semibold leading-6 text-indigo-400 hover:text-indigo-300"
             >
               Entre aqui
-            </a>
+            </Link>
           </p>
         </div>
       </form>

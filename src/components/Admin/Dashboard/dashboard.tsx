@@ -125,6 +125,7 @@ export default function Dashboard(children: any) {
                         alt="Your Company"
                         width={250}
                         height={150}
+                        priority
                       />
                     </div>
                     <nav className="flex flex-1 flex-col">

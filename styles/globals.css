@@ -1,4 +1,8 @@
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
-@import url('https://www.dafontfree.net/embed/YmVsbC1tdC1yZWd1bGFyJmRhdGEvMTMvYi82NDQ3My9CRUxMLlRURg');
+@import url('https://fonts.cdnfonts.com/css/marcellus');
+
+body {
+    background-color: #f7fafc;
+}

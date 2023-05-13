@@ -7,7 +7,7 @@ const Dashboard: React.FC = () => {
 
   return (
     <RootLayout>
-        <DashboardComponent children='painel'/>
+        <DashboardComponent panelName='painel'/>
     </RootLayout>
 
   );
