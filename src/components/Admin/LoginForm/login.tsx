@@ -5,6 +5,7 @@ import { LoginSchema } from './login.schema';
 import { useRouter } from 'next/router';
 import force from "../../../images/pngs/force.png"
 import Image from 'next/image';
+import Link from 'next/link';
 
 interface FormData {
   email: string;
@@ -93,9 +94,9 @@ const LoginForm: React.FC = () => {
                   Senha
                 </label>
                 <div className="text-sm">
-                  <a href="/forgot-password" className="font-semibold text-indigo-400 hover:text-indigo-300">
+                  <Link href="/forgot-pLinkssword" className="font-semibold text-indigo-400 hover:text-indigo-300">
                     Esqueceu sua senha?
-                  </a>
+                  </Link>
                 </div>
               </div>
               <div className="mt-2">
@@ -121,7 +122,7 @@ const LoginForm: React.FC = () => {
             type="submit"
             className="flex w-full justify-center rounded-md bg-indigo-500 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
           >
-            Sign in
+            Entrar
           </button>
         </div>
       </form>

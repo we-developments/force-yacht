@@ -7,7 +7,7 @@ const PainelAdmin: React.FC = () => {
 
   return (
     <RootLayout>
-        <DashboardComponent children='formulario'/>
+        <DashboardComponent panelName='formulario'/>
     </RootLayout>
 
   );
