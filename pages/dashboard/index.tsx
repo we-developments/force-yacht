@@ -4,9 +4,10 @@ import DashboardComponent from '@/src/components/Admin/Dashboard/dashboard';
 import RootLayout from '@/app/layout';
 
 const Dashboard: React.FC = () => {
+
   return (
     <RootLayout>
-        <DashboardComponent/>
+        <DashboardComponent children='painel'/>
     </RootLayout>
 
   );
