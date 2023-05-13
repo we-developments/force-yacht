@@ -38,19 +38,14 @@ export default function HomePage() {
     "flex",
     "justify-start",
     "transition-all",
-    "duration-500",
+    "duration-800",
     "flex",
     "justify-center",
   ];
   let logoHeight: number = 350;
 
   if (scrolled) {
-    navbarClasses.push(
-      "backdrop-blur-md",
-      "bg-gray-200",
-      "bg-opacity-5",
-      "h-16"
-    );
+    navbarClasses.push("bg-secondary", "h-16");
     logoHeight = 100;
   }
 
@@ -67,12 +62,14 @@ export default function HomePage() {
               </li>
               <li className="text-sm sm:text-base text-center">
                 <Link href="/">
-                  <Image
-                    src={Logo}
-                    alt="logo"
-                    width={logoHeight}
-                    className="sm:width-250 sm:height-150"
-                  />
+                  <div className="relative overflow-hidden sm:width-250 sm:height-150">
+                    <Image
+                      src={Logo}
+                      alt="logo"
+                      width={logoHeight}
+                      className="object-cover"
+                    />
+                  </div>
                 </Link>
               </li>
               <li className="text-sm sm:text-base text-center flex items-center">
@@ -91,7 +88,7 @@ export default function HomePage() {
       >
         <animated.h1
           style={fade}
-          className="text-white text-5xl sm:text-5xl font-bold"
+          className="text-white text-8xl sm:text-5xl font-bold"
         >
           Force Yacht
         </animated.h1>
@@ -99,7 +96,7 @@ export default function HomePage() {
           style={fade}
           className="text-slate-400 text-5xl sm:text-5xl font-bold"
         >
-          Navegue com 
+          Navegue com
         </animated.h1>
         <animated.h1
           style={fade}
@@ -108,10 +105,10 @@ export default function HomePage() {
           Luxo
         </animated.h1>
         <animated.p style={fade} className="text-lg sm:text-8xl text-white">
-        "Alugueis premium de yachts e lanchas, "
+          Alugueis premium de yachts e lanchas,
         </animated.p>
         <animated.p style={fade} className="text-lg sm:text-8xl text-white ">
-        Explore os mares com estilo e conforto inigualáveis."
+          Explore os mares com estilo e conforto inigualáveis.
         </animated.p>
       </div>
     </div>
