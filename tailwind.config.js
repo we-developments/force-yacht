@@ -29,9 +29,11 @@ module.exports = {
       },
       colors: {
         'primary': '#006aa1',
-        'secondary': '#384D54',
+        'secondary': '#567C8F',
         'tertiary': '#002162',
         'accent': '#02100E',
+        'off': '#F1F4FA',
+        'footer': '#466D7E',
       },     
       fontFamily: {
         'Marcellus': ['Marcellus', 'sans-serif'],
@@ -42,7 +44,7 @@ module.exports = {
         'Roboto Mono Slab': ['Roboto Mono Slab', 'monospace'],
       },
       fontSize: {
-        'large': '6.5rem',
+        'large': '5.5rem',
       }
 
     },
