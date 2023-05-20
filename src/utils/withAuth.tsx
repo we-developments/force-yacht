@@ -1,27 +1,38 @@
+import { onAuthStateChanged } from "firebase/auth";
 import { useRouter } from "next/router";
+import { auth } from "../../api/index";
 import React, { useEffect, useState } from "react";
+import LoginForm from "../components/Admin/LoginForm/login";
+import Loading from "../components/Loading/loading";
+
 
 const withAuth = <P extends object>(WrappedComponent: React.ComponentType<P>) => {
   const WithAuthComponent: React.FC<P> = (props: P) => {
     const router = useRouter();
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [user, setUser] = useState(null)
+    const [loading, setLoading] = useState(true)
+    const [isAuth, setIsAuh] = useState(false)
 
-    useEffect(() => {
-      const checkAuthentication = () => {
-        // Verifica se tem um token no local storage
-        return !!localStorage.getItem("token");
-      };
 
-      const isAuth = checkAuthentication();
-
-      setIsAuthenticated(isAuth);
-
-      if (!isAuth) {
-        router.replace("/login");
+    onAuthStateChanged(auth, (user: any) => {
+      if (user) {
+        setUser(user);
+        setLoading(false);
+        setIsAuh(true)
+      } else {
+        setUser(null);
+        setLoading(false);
+        setIsAuh(false)
       }
-    }, []);
+    });
 
-    return isAuthenticated ? <WrappedComponent {...props} /> : null;
+    if (loading) {
+      return (
+        <Loading />
+      )
+    }
+
+    return isAuth ? <WrappedComponent {...props} /> : <LoginForm />;
   };
 
   return WithAuthComponent;
