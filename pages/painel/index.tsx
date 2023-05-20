@@ -1,5 +1,5 @@
 import React from 'react';
-import withAuth from '../../utils/withAuth';
+import withAuth from '../../src/utils/withAuth';
 import DashboardComponent from '@/src/components/Admin/Dashboard/dashboard';
 import RootLayout from '@/app/layout';
 

@@ -25,13 +25,21 @@ module.exports = {
         '5vw': '5vw',
       },
       gridTemplateRows: {
-        '6': 'repeat(2, 5vw)',
+        '8': 'repeat(8, 5vw)',
+      },
+      gridTemplateColumns: {
+        '8': 'repeat(8, 1fr)',
+      },
+      gridGap: {
+        '15': '15px',
       },
       colors: {
         'primary': '#006aa1',
-        'secondary': '#384D54',
+        'secondary': '#567C8F',
         'tertiary': '#002162',
         'accent': '#02100E',
+        'off': '#F1F4FA',
+        'footer': '#122442',
       },     
       fontFamily: {
         'Marcellus': ['Marcellus', 'sans-serif'],
@@ -42,7 +50,7 @@ module.exports = {
         'Roboto Mono Slab': ['Roboto Mono Slab', 'monospace'],
       },
       fontSize: {
-        'large': '6.5rem',
+        'large': '5.5rem',
       }
 
     },
