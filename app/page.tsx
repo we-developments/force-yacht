@@ -1,7 +1,16 @@
 "use client";
+
+// React Libs
 import React, { useState, useEffect } from "react";
-import mainBanner from "../src/images/pngs/banner3.jpg";
-import banner5 from "../src/images/pngs/banner5.jpg";
+import { useInView } from "react-intersection-observer";
+import { motion, useAnimation } from "framer-motion";
+import Image from "next/image";
+import { useSpring, animated } from "react-spring";
+import Link from "next/link";
+import Carousel from "react-multi-carousel";
+import "react-multi-carousel/lib/styles.css";
+
+// Assets
 import yt1 from "../src/images/pngs/y1.jpg";
 import yt2 from "../src/images/pngs/y2.jpg";
 import yt3 from "../src/images/pngs/y3.jpg";
@@ -16,17 +25,24 @@ import Ocean from "../src/images/pngs/bg-6.webp";
 import jumpGirls from "../src/images/pngs/jump-girls.png";
 import Brinde from "../src/images/pngs/brinde.jpg";
 import ForceInstagram from "../src/images/pngs/force-instagram_cropped.png";
-import Image from "next/image";
-import { useSpring, animated } from "react-spring";
-import Link from "next/link";
-import Carousel from "react-multi-carousel";
-import "react-multi-carousel/lib/styles.css";
+import mainBanner from "../src/images/pngs/banner3.jpg";
+import banner5 from "../src/images/pngs/banner5.jpg";
+
+// Hooks & Utils
 import { useIconGetter } from "../src/hooks/useIconGetter/useIconGetter";
 import Footer from "@/src/components/Footer/footer";
-import { useInView } from "react-intersection-observer";
-import { motion, useAnimation } from "framer-motion";
 
 export default function HomePage() {
+  const [scrolled, setScrolled] = useState(false);
+  const [selectedVideo, setSelectedVideo] = useState(null);
+  const [isHovered, setIsHovered] = useState(false);
+
+  const openVideo = (videoUrl: any) => {
+    setSelectedVideo(videoUrl);
+  };
+
+  const { Icon } = useIconGetter();
+
   const fade = useSpring({
     from: { opacity: 0 },
     to: { opacity: 1 },
@@ -78,12 +94,6 @@ export default function HomePage() {
     },
   ];
 
-  const { Icon } = useIconGetter();
-
-  const [scrolled, setScrolled] = useState(false);
-  const [selectedVideo, setSelectedVideo] = useState(null);
-  const [isHovered, setIsHovered] = useState(false);
-
   const handleScroll = () => {
     const offset = window.scrollY;
 
@@ -124,6 +134,7 @@ export default function HomePage() {
     "duration-800",
     "flex",
   ];
+
   let logoHeight: number = 150;
 
   if (scrolled) {
@@ -152,10 +163,6 @@ export default function HomePage() {
     }
   }, [controls, inView]);
 
-  const openVideo = (videoUrl: any) => {
-    setSelectedVideo(videoUrl);
-  };
-
   return (
     <div className="z-10" style={{ height: "200vh" }}>
       <motion.header
@@ -180,13 +187,18 @@ export default function HomePage() {
                 </a>
               </li>
               <li className="text-sm sm:text-base text-center flex items-center">
-                <a href="#" className="text-white">
+                <a href="#sobre-nos" className="text-white">
                   Sobre nós
                 </a>
               </li>
               <li className="text-sm sm:text-base text-center flex items-center">
                 <a href="#" className="text-white">
                   Nossas embarcações
+                </a>
+              </li>
+              <li className="text-sm sm:text-base text-center flex items-center">
+                <a href="#servicos" className="text-white">
+                  Serviços
                 </a>
               </li>
               <li className="text-sm sm:text-base text-center flex items-center">
@@ -236,7 +248,7 @@ export default function HomePage() {
         </animated.h1>
       </div>
 
-      <section className="h-96">
+      <section className="h-96" id="sobre-nos">
         <div className="flex justify-center items-center bg-white h-full">
           <div className="flex flex-col justify-center items-center relative">
             <motion.div
@@ -253,56 +265,58 @@ export default function HomePage() {
               <Image src={Barco} alt="barco" />
             </motion.div>
             <div className="flex justify-center">
-              <div className="w-2/3 z-20">
-                <div className="flex justify-center">
+              <div className="w-2/4 z-20">
+                <div className="flex justify-left mb-2">
                   <Icon icon="anchor" />
                 </div>
-                <h1 className="sm:text-5xl lg:text-4xl text-center font-Marcellus font-bold text-primary">
+                <h1 className="sm:text-5xl lg:text-4xl text-left font-Marcellus font-bold text-primary">
                   Sobre nós
                 </h1>
                 <div className="w-8 h-1 mt-2 ml-1 mx-auto bg-primary"></div>
 
                 <p className="lg:text-base sm:text-2xl text-left font-Marcellus pt-4">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  Quisquam voluptatum, quibusdam, quia, quod voluptates quos
-                  voluptate voluptatibus quas doloribus quidem fugiat. Quisquam
-                  voluptatum, quibusdam, quia, quod voluptates quos voluptate
-                  voluptatibus quas doloribus quidem fugiat.
+                  Desde 2015, a Force Yacht tem sido sinônimo de aventura, luxo
+                  e momentos memoráveis em alto-mar em Porto Belo e região.
+                  Oferecemos aluguel de iates e lanchas de alta qualidade,
+                  proporcionando uma experiência única, seja para celebrações
+                  festivas, passeios tranquilos em família, reuniões
+                  corporativas inovadoras ou simplesmente um dia de lazer ao
+                  sol.
                 </p>
-              </div>
-            </div>
-            <div className="grid grid-cols-4">
-              {/* A grid of items and icons */}
-
-              <div className="col-span-1 flex justify-center items-center">
-                <p className="text-center">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                <p className="lg:text-base sm:text-2xl text-left font-Marcellus pt-4">
+                  Cada uma das nossas embarcações é cuidadosamente selecionada e
+                  mantida, assegurando um alto padrão de conforto e segurança.
+                  Nossa dedicada equipe de profissionais está sempre pronta para
+                  ajudar no planejamento da sua viagem, garantindo que cada
+                  detalhe esteja à altura das suas expectativas. Na Force Yacht,
+                  proporcionamos a verdadeira liberdade do mar, aliada ao luxo e
+                  conforto, para fazer de cada viagem uma experiência
+                  inesquecível. Embarque conosco nessa aventura!
                 </p>
-                <Icon icon="anchor" />
-              </div>
-              <div className="col-span-1 flex justify-center items-center">
-                <p className="text-center">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                </p>
-                <Icon icon="anchor" />
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      <section className="w-full bg-off py-10">
+      <section className="w-full bg-off py-10" id="servicos">
         <div className="grid grid-cols-2 w-4/5 mx-auto pt-20 min-">
           <div className="col-span-1 flex justify-center relative z-10 bg-white">
             <div className="p-8">
               <h1 className="text-4xl font-bold text-primary">Serviços</h1>
               <div className="w-8 h-1 mt-2 ml-1 flex justify-start bg-primary"></div>
               <p className="text-lg pt-4">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Quisquam voluptatum, quibusdam, quia, quod voluptates quos
-                voluptate voluptatibus quas doloribus quidem fugiat. Quisquam
-                voluptatum, quibusdam, quia, quod voluptates quos voluptate
-                voluptatibus quas doloribus quidem fugiat.
+                Na Force Yacht, oferecemos aluguel de iates e lanchas luxuosas e
+                bem mantidas, adequadas para todas as suas necessidades. Nossos
+                serviços incluem um marinheiro experiente para garantir uma
+                navegação tranquila e segura.
+                <br />
+                Além disso, para enriquecer sua experiência, oferecemos uma
+                variedade de itens de consumo adicionais, como seleções gourmet
+                de alimentos e bebidas, equipamentos para esportes aquáticos,
+                entre outros. Na Force Yacht, acreditamos que cada viagem deve
+                ser única e memorável. Entre em contato conosco e comece a
+                planejar sua próxima aventura!
               </p>
             </div>
           </div>
@@ -366,9 +380,9 @@ export default function HomePage() {
       </section>
 
       <section className="h-[30rem] bg-off">
-        <div className="grid grid-cols-2 w-4/5 mx-auto">
+        <div className="sm:block lg:grid lg:grid-cols-2 w-4/5 mx-auto">
           <div
-            className="grid grid-rows-5 grid-columns-6 gap-2 h-full relative cursor-pointer"
+            className="grid grid-rows-5 grid-columns-6 gap-2 h-full relative cursor-pointer col-span-1"
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
             onClick={() => openVideo("url do seu vídeo")}
@@ -420,7 +434,7 @@ export default function HomePage() {
           </div>
 
           <div>
-            <div className="text-left mb-8 lg:p-4">
+            <div className="text-left mb-8 lg:p-4 order-first col-span-1">
               <h2 className="text-4xl font-bold text-primary">
                 Por onde estamos?
               </h2>
@@ -431,13 +445,12 @@ export default function HomePage() {
         {selectedVideo && (
           <div className="fixed z-50 top-0 left-0 w-screen h-screen flex items-center justify-center bg-black bg-opacity-50">
             <iframe
-              src={selectedVideo}
-              title="video"
-              frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              title="vimeo-player"
+              src="https://player.vimeo.com/video/828589406?h=22114885e6&byline=0&portrait=0&title=0"
+              width="840"
+              height="360"
               allowFullScreen
-              style={{ width: "80%", height: "80%" }}
-            />
+            ></iframe>
             <button
               onClick={() => setSelectedVideo(null)}
               className="absolute top-4 right-4 text-white text-2xl"
@@ -471,10 +484,6 @@ export default function HomePage() {
 
       {/* A footer section */}
       <div className="bg-footer">
-        <div className="relative">
-          <Image src={bgFooter} alt="bg-footer" />
-          <div className="absolute">Conheça mais sobre nós</div>
-        </div>
         <Footer />
       </div>
     </div>
