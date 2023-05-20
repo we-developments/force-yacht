@@ -284,7 +284,7 @@ export default function HomePage() {
                 </h1>
                 <div className="w-8 h-1 mt-2 ml-1 mx-auto bg-primary"></div>
 
-                <p className="lg:text-base sm:text-2xl text-left font-Marcellus pt-4">
+                <p className="lg:text-base sm:text-2xl text-left font-Marcellus pt-4 ">
                   Desde 2015, a Force Yacht tem sido sinônimo de aventura, luxo
                   e momentos memoráveis em alto-mar em Porto Belo e região.
                   Oferecemos aluguel de iates e lanchas de alta qualidade,
@@ -310,7 +310,7 @@ export default function HomePage() {
       </section>
 
       <section className="w-full bg-off py-10" id="servicos">
-        <div className="grid grid-cols-2 w-4/5 mx-auto pt-20 min-">
+        <div className="grid grid-cols-2 w-4/5 mx-auto pt-20 ">
           <div className="col-span-1 flex justify-center relative z-10 bg-white">
             <div className="p-8">
               <h1 className="text-4xl font-bold text-primary">Serviços</h1>
@@ -336,7 +336,7 @@ export default function HomePage() {
         </div>
       </section>
               
-      <section className="px-4 h-screen bg-off" >
+      <section className="px-4 pb-12 bg-off" >
         <div id="nossas-embarcacoes">
           <div className="text-left mb-8 lg:p-4">
             <h2 className="text-4xl font-bold text-primary">
@@ -365,12 +365,12 @@ export default function HomePage() {
               {images.map((image, index) => (
                 <div
                   key={index}
-                  className="bg-transparent shadow my-10 h-full hover:bg-white transition-all ease-out delay-200"
+                  className="bg-transparent shadow my-10 rounded-md hover:bg-white transition-all ease-out delay-200"
                 >
                   <Image
                     src={image.image}
                     alt={image.title}
-                    className="object-cover h-64 w-full "
+                    className="object-cover h-64 w-full rounded-t-md"
                   />
                   <div className="mt-2 p-8 relative ">
                     <span className="flex gap-2 text-sm text-gray-400">
@@ -389,7 +389,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="h-[30rem] bg-off">
+      <section className="h-[30rem] bg-off flex items-center">
         <div className="sm:block lg:grid lg:grid-cols-2 w-4/5 mx-auto">
           <div
             className="grid grid-rows-5 grid-columns-6 gap-2 h-full relative cursor-pointer col-span-1"
@@ -471,7 +471,7 @@ export default function HomePage() {
         )}
       </section>
 
-      <section className="h-3/5 w-full bg-off">
+      <section className=" w-full pb-12 bg-off flex items-center">
         <div className="grid grid-cols-2 w-4/5 mx-auto pt-20">
           <div className="col-span-1 flex justify-center relative z-10 bg-white">
             <Image src={jumpGirls} alt="boat" className="w-full" />
