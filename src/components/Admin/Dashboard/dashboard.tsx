@@ -22,6 +22,7 @@ import Formulario from "../Form/form";
 import Painel from "../Painel/painel";
 import { useRouter } from "next/router";
 import { Router } from "react-router-dom";
+import { auth } from "@/api";
 
 const navigation = [
   { name: "Dashboard", href: "/dashboard", icon: HomeIcon, current: false },
@@ -50,6 +51,7 @@ function classNames(...classes: any) {
 export default function Dashboard(children: any) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
+  const currentUser = auth.currentUser
   const router = useRouter();
 
   navigation.forEach((item) => {
@@ -272,7 +274,7 @@ export default function Dashboard(children: any) {
                         className="ml-4 text-sm font-semibold leading-6 text-gray-900"
                         aria-hidden="true"
                       >
-                        Bruno Din
+                        {currentUser?.displayName}
                       </span>
                       <ChevronDownIcon
                         className="ml-2 h-5 w-5 text-gray-400"
