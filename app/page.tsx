@@ -18,7 +18,7 @@ import yt4 from "../src/images/pngs/y4.jpg";
 import yt5 from "../src/images/pngs/y5.jpg";
 import yt6 from "../src/images/pngs/y6.jpg";
 import Logo from "../src/images/pngs/force.png";
-import Barco from "../src/images/pngs/barco.png";
+// import Barco from "../src/images/pngs/barco.png";
 import manBoat from "../src/images/pngs/manboat.png";
 import bgFooter from "../src/images/pngs/bg-footer.jpg";
 import Ocean from "../src/images/pngs/bg-6.webp";
@@ -262,7 +262,7 @@ export default function HomePage() {
               }}
               className="absolute z-0 left-0"
             >
-              <Image src={Barco} alt="barco" />
+              {/* <Image src={Barco} alt="barco" /> */}
             </motion.div>
             <div className="flex justify-center">
               <div className="w-2/4 z-20">
