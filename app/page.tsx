@@ -150,6 +150,16 @@ export default function HomePage() {
     logoHeight = 50;
   }
 
+  const scrollTo = (el: string) => {
+    const Element = document.getElementById(el)
+
+    Element?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'center',
+      inline: 'center'
+    })
+  }
+
   const controls = useAnimation();
   const [ref, inView] = useInView();
 
@@ -187,19 +197,19 @@ export default function HomePage() {
                 </a>
               </li>
               <li className="text-sm sm:text-base text-center flex items-center">
-                <a href="#sobre-nos" className="text-white">
+                <span onClick={() => scrollTo('sobre-nos')} className="text-white cursor-pointer">
                   Sobre nós
-                </a>
+                </span>
               </li>
               <li className="text-sm sm:text-base text-center flex items-center">
-                <a href="#" className="text-white">
+                <span onClick={() => scrollTo('nossas-embarcacoes')} className="text-white">
                   Nossas embarcações
-                </a>
+                </span>
               </li>
               <li className="text-sm sm:text-base text-center flex items-center">
-                <a href="#servicos" className="text-white">
+                <span  onClick={() => scrollTo('servicos')} className="text-white">
                   Serviços
-                </a>
+                </span>
               </li>
               <li className="text-sm sm:text-base text-center flex items-center">
                 <a href="#" className="text-white">
@@ -217,7 +227,7 @@ export default function HomePage() {
       />
       <div
         className="absolute left-4 sm:left-8 text-left z-0"
-        style={{ top: "25%", left: "10%" }}
+        style={{ top: "25%", left: "6%"}}
       >
         <animated.h1
           style={fade}
@@ -231,14 +241,6 @@ export default function HomePage() {
         >
           <Icon icon="wheel" />
           <span className="items-center flex">Navegue</span>
-          <animated.p
-            style={fade}
-            className="text-lg sm:text-sm text-white font-Marcellus flex items-center"
-          >
-            Alugueis premium de yachts e lanchas,
-            <br />
-            Explore os mares com estilo e conforto inigualáveis.
-          </animated.p>
         </animated.h1>
         <animated.h1
           style={fade}
@@ -246,6 +248,14 @@ export default function HomePage() {
         >
           com Luxo
         </animated.h1>
+        <animated.p
+          style={fade}
+          className="text-lg sm:text-sm text-white font-Marcellus flex items-center"
+        >
+          Alugueis premium de yachts e lanchas,
+          <br />
+          Explore os mares com estilo e conforto inigualáveis.
+        </animated.p>
       </div>
 
       <section className="h-96" id="sobre-nos">
@@ -325,9 +335,9 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-
-      <section className="px-4 h-screen bg-off">
-        <div>
+              
+      <section className="px-4 h-screen bg-off" >
+        <div id="nossas-embarcacoes">
           <div className="text-left mb-8 lg:p-4">
             <h2 className="text-4xl font-bold text-primary">
               Conheça nossas Embarcações
