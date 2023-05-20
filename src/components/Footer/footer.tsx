@@ -1,110 +1,44 @@
+import { navigation } from "./navigation";
+import Image from "next/image";
+import logo from "../../images/pngs/force.png";
+
 export default function Footer() {
   return (
-    <footer>
-      <div className="container mx-auto px-6 pt-10 pb-6">
-        <div className="flex flex-wrap">
-          <div className="w-full md:w-1/4 text-center md:text-left">
-            <h5 className="uppercase mb-6 font-bold">Links</h5>
-            <ul className="mb-4">
-              <li className="mt-2">
-                <a
-                  href="#"
-                  className="hover:underline text-gray-600 hover:text-orange-500"
-                >
-                  FAQ
-                </a>
-              </li>
-              <li className="mt-2">
-                <a
-                  href="#"
-                  className="hover:underline text-gray-600 hover:text-orange-500"
-                >
-                  Ajuda
-                </a>
-              </li>
-              <li className="mt-2">
-                <a
-                  href="#"
-                  className="hover:underline text-gray-600 hover:text-orange-500"
-                >
-                  Suporte
-                </a>
-              </li>
-            </ul>
-          </div>
-          <div className="w-full md:w-1/4 text-center md:text-left">
-            <h5 className="uppercase mb-6 font-bold">Legal</h5>
-            <ul className="mb-4">
-              <li className="mt-2">
-                <a
-                  href="#"
-                  className="hover:underline text-gray-600 hover:text-orange-500"
-                >
-                  Termos
-                </a>
-              </li>
-              <li className="mt-2">
-                <a
-                  href="#"
-                  className="hover:underline text-gray-600 hover:text-orange-500"
-                >
-                  Privacidade
-                </a>
-              </li>
-            </ul>
-          </div>
-          <div className="w-full md:w-1/4 text-center md:text-left">
-            <h5 className="uppercase mb-6 font-bold">Redes Sociais</h5>
-            <ul className="mb-4">
-              <li className="mt-2">
-                <a
-                  href="#"
-                  className="hover:underline text-gray-600 hover:text-orange-500"
-                >
-                  Facebook
-                </a>
-              </li>
-              <li className="mt-2">
-                <a
-                  href="#"
-                  className="hover:underline text-gray-600 hover:text-orange-500"
-                >
-                  Instagram
-                </a>
-              </li>
-            </ul>
-          </div>
-          <div className="w-full md:w-1/4 text-center md:text-left">
-            <h5 className="uppercase mb-6 font-bold">Empresa</h5>
-            <ul className="mb-4">
-              <li className="mt-2">
-                <a
-                  href="#"
-                  className="hover:underline text-gray-600 hover:text-orange-500"
-                >
-                  Sobre
-                </a>
-              </li>
-              <li className="mt-2">
-                <a
-                  href="#"
-                  className="hover:underline text-gray-600 hover:text-orange-500"
-                >
-                  Contato
-                </a>
-              </li>
-            </ul>
-          </div>
+    <footer className="relative  bg-footer">
+      <div className="mx-auto max-w-7xl overflow-hidden px-6 sm:py-12">
+        <div className="flex mb-10 justify-center space-x-10">
+          <Image src={logo} alt="Logo" width={120} height={120} />
         </div>
-      </div>
-      <div className="container mx-auto px-6">
-        <div className="mt-16 border-t-2 border-gray-300 flex flex-col items-center">
-          <div className="sm:w-2/3 text-center py-6">
-            <p className="text-sm text-gray-600 font-bold mb-2">
-              © 2021 by João
-            </p>
-          </div>
+        <nav
+          className="-mb-6 columns-2 sm:flex sm:justify-center sm:space-x-12"
+          aria-label="Footer"
+        >
+          {navigation.main.map((item) => (
+            <div key={item.name} className="pb-6">
+              <a
+                href={item.href}
+                className="text-sm leading-6 text-gray-600 hover:text-white"
+              >
+                {item.name}
+              </a>
+            </div>
+          ))}
+        </nav>
+        <div className="mt-10 flex justify-center space-x-10">
+          {navigation.social.map((item) => (
+            <a
+              key={item.name}
+              href={item.href}
+              className="text-gray-400 hover:text-gray-500"
+            >
+              <span className="sr-only">{item.name}</span>
+              <item.icon className="h-6 w-6" aria-hidden="true" />
+            </a>
+          ))}
         </div>
+        <p className="mt-10 text-center text-xs leading-5 text-gray-500">
+          &copy; 2020 Your Company, Inc. All rights reserved.
+        </p>
       </div>
     </footer>
   );
