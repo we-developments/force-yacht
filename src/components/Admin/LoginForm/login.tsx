@@ -6,6 +6,8 @@ import { useRouter } from 'next/router';
 import force from "../../../images/pngs/force.png"
 import Image from 'next/image';
 import Link from 'next/link';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '@/api';
 
 interface FormData {
   email: string;
@@ -42,12 +44,17 @@ const LoginForm: React.FC = () => {
   };
 
   const onSubmit = async (data: FormData) => {
-    console.log(data)
+  
     const { email, password } = data;
-    const result = await authenticateUser(email, password);
 
-    localStorage.setItem("token", '123123123123');
-    router.push("/dashboard");
+    signInWithEmailAndPassword(auth, email, password)
+      .then((credentialUser) => {
+        if(credentialUser){
+          router.push("/dashboard");
+        }
+      }).catch((error) => {
+        if(error.code == 'auth/user-not-found') alert('usuario n existe')
+      })
   };
 
   return (
