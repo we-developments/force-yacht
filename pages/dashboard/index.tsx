@@ -8,7 +8,7 @@ const Dashboard: React.FC = () => {
 
   return (
     <Layout>
-        <DashboardComponent panelName='painel'/>
+        <DashboardComponent panelName='boats'/>
     </Layout>
 
   );
