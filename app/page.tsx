@@ -1,7 +1,7 @@
 "use client";
 
 // React Libs
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import { useInView } from "react-intersection-observer";
 import { motion, useAnimation } from "framer-motion";
 import Image from "next/image";
@@ -20,22 +20,21 @@ import yt6 from "../src/images/pngs/y6.jpg";
 import Logo from "../src/images/pngs/force.png";
 // import Barco from "../src/images/pngs/barco.png";
 import manBoat from "../src/images/pngs/manboat.png";
-import bgFooter from "../src/images/pngs/bg-footer.jpg";
-import Ocean from "../src/images/pngs/bg-6.webp";
 import jumpGirls from "../src/images/pngs/jump-girls.png";
-import Brinde from "../src/images/pngs/brinde.jpg";
-import ForceInstagram from "../src/images/pngs/force-instagram_cropped.png";
-import mainBanner from "../src/images/pngs/banner3.jpg";
 import banner5 from "../src/images/pngs/banner5.jpg";
 
 // Hooks & Utils
 import { useIconGetter } from "../src/hooks/useIconGetter/useIconGetter";
 import Footer from "@/src/components/Footer/footer";
+import { Dialog, Transition } from "@headlessui/react";
+import { XMarkIcon } from "@heroicons/react/24/outline";
 
 export default function HomePage() {
   const [scrolled, setScrolled] = useState(false);
   const [selectedVideo, setSelectedVideo] = useState(null);
   const [isHovered, setIsHovered] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   const openVideo = (videoUrl: any) => {
     setSelectedVideo(videoUrl);
@@ -129,10 +128,10 @@ export default function HomePage() {
     "w-full",
     "z-30",
     "flex",
-    "justify-start",
     "transition-all",
     "duration-800",
     "flex",
+    "justify-between",
   ];
 
   let logoHeight: number = 150;
@@ -147,29 +146,37 @@ export default function HomePage() {
       "backdrop-blur-md",
       "bg-opacity-50"
     );
-    logoHeight = 50;
+    logoHeight = 80;
   }
 
   const scrollTo = (el: string) => {
-    const Element = document.getElementById(el)
+    const Element = document.getElementById(el);
 
     Element?.scrollIntoView({
-      behavior: 'smooth',
-      block: 'center',
-      inline: 'center'
-    })
-  }
+      behavior: "smooth",
+      block: "center",
+      inline: "center",
+    });
+  };
 
   const controls = useAnimation();
   const [ref, inView] = useInView();
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
-  });
+
+    if (window.innerWidth < 768) {
+      console.log("true");
+      setIsMobile(true);
+    } else {
+      setIsMobile(false);
+    }
+  }, []);
 
   useEffect(() => {
     if (inView) {
       controls.start("visible");
+      console.log("true");
     }
   }, [controls, inView]);
 
@@ -181,33 +188,65 @@ export default function HomePage() {
         animate={{ opacity: 1 }}
         transition={{ duration: 1 }}
       >
-        <nav className="flex">
+        <div className="pl-4 pt-2">
+          <Link href="/">
+            <div className="relative overflow-hidden sm:width-250 sm:height-150">
+              <Image src={Logo} alt="logo" width={logoHeight} />
+            </div>
+          </Link>
+        </div>
+
+        <button
+          className="text-white sm:hidden"
+          onClick={() => setSidebarOpen(true)}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            className="w-8 h-8"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M4 6h16M4 12h16m-7 6h7"
+            />
+          </svg>
+          <span className="sr-only">Open sidebar</span>
+        </button>
+        <nav
+          className={`${!isMobile ? "" : "hidden"} w-full flex items-center`}
+        >
           <div className="px-4 py-2 flex justify-left round">
             <ul className="flex space-x-2 sm:space-x-4 gap-8">
-              <li className="text-sm sm:text-base text-center pl-4 pt-2">
-                <Link href="/">
-                  <div className="relative overflow-hidden sm:width-250 sm:height-150">
-                    <Image src={Logo} alt="logo" width={logoHeight} />
-                  </div>
-                </Link>
-              </li>
-              <li className="text-sm sm:text-base text-center flex items-center">
+              <li className="text-sm sm:text-base text-center flex items-center pl-5">
                 <a href="#" className="text-white">
                   Home
                 </a>
               </li>
               <li className="text-sm sm:text-base text-center flex items-center">
-                <span onClick={() => scrollTo('sobre-nos')} className="text-white cursor-pointer">
+                <span
+                  onClick={() => scrollTo("sobre-nos")}
+                  className="text-white cursor-pointer"
+                >
                   Sobre nós
                 </span>
               </li>
               <li className="text-sm sm:text-base text-center flex items-center">
-                <span onClick={() => scrollTo('nossas-embarcacoes')} className="text-white">
+                <span
+                  onClick={() => scrollTo("nossas-embarcacoes")}
+                  className="text-white"
+                >
                   Nossas embarcações
                 </span>
               </li>
               <li className="text-sm sm:text-base text-center flex items-center">
-                <span  onClick={() => scrollTo('servicos')} className="text-white">
+                <span
+                  onClick={() => scrollTo("servicos")}
+                  className="text-white"
+                >
                   Serviços
                 </span>
               </li>
@@ -220,37 +259,150 @@ export default function HomePage() {
           </div>
         </nav>
       </motion.header>
+      <Transition.Root show={sidebarOpen} as={Fragment}>
+        <Dialog
+          as="div"
+          className="relative z-50 lg:hidden"
+          onClose={setSidebarOpen}
+        >
+          <Transition.Child
+            as={Fragment}
+            enter="transition-opacity ease-linear duration-300"
+            enterFrom="opacity-0"
+            enterTo="opacity-100"
+            leave="transition-opacity ease-linear duration-300"
+            leaveFrom="opacity-100"
+            leaveTo="opacity-0"
+          >
+            <div className="fixed inset-0 bg-gray-900/80" />
+          </Transition.Child>
+
+          <div className="fixed inset-0 flex">
+            <Transition.Child
+              as={Fragment}
+              enter="transition ease-in-out duration-300 transform"
+              enterFrom="-translate-x-full"
+              enterTo="translate-x-0"
+              leave="transition ease-in-out duration-300 transform"
+              leaveFrom="translate-x-0"
+              leaveTo="-translate-x-full"
+            >
+              <Dialog.Panel className="relative mr-16 flex w-full max-w-xs flex-1">
+                <Transition.Child
+                  as={Fragment}
+                  enter="ease-in-out duration-300"
+                  enterFrom="opacity-0"
+                  enterTo="opacity-100"
+                  leave="ease-in-out duration-300"
+                  leaveFrom="opacity-100"
+                  leaveTo="opacity-0"
+                >
+                  <div className="absolute left-full top-0 flex w-16 justify-center pt-5">
+                    <button
+                      type="button"
+                      className="-m-2.5 p-2.5"
+                      onClick={() => setSidebarOpen(false)}
+                    >
+                      <span className="sr-only">Close sidebar</span>
+                      <XMarkIcon
+                        className="h-6 w-6 text-white"
+                        aria-hidden="true"
+                      />
+                    </button>
+                  </div>
+                </Transition.Child>
+                {/* Sidebar component, swap this element with another sidebar if you like */}
+                <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-primary px-6 pb-4">
+                  <div className="flex shrink-0 items-center">
+                    <Image
+                      className="w-auto p-8"
+                      src={Logo}
+                      alt="Your Company"
+                      width={200}
+                      height={150}
+                      priority
+                    />
+                  </div>
+                  <nav className="flex flex-1 flex-col">
+                    <ul role="list" className="flex flex-1 flex-col gap-y-7">
+                      <li>
+                        <ul role="list" className="-mx-2 space-y-1">
+                          <li className="text-sm sm:text-base text-center flex items-center border-b-2">
+                            <a href="#" className="text-white">
+                              Home
+                            </a>
+                          </li>
+                          <li className="text-sm sm:text-base text-center flex items-center border-b-2">
+                            <span
+                              onClick={() => scrollTo("sobre-nos")}
+                              className="text-white cursor-pointer"
+                            >
+                              Sobre nós
+                            </span>
+                          </li>
+                          <li className="text-sm sm:text-base text-center flex items-center border-b-2">
+                            <span
+                              onClick={() => scrollTo("nossas-embarcacoes")}
+                              className="text-white"
+                            >
+                              Nossas embarcações
+                            </span>
+                          </li>
+                          <li className="text-sm sm:text-base text-center flex items-center border-b-2">
+                            <span
+                              onClick={() => scrollTo("servicos")}
+                              className="text-white"
+                            >
+                              Serviços
+                            </span>
+                          </li>
+                          <li className="text-sm sm:text-base text-center flex items-center border-b-2">
+                            <a href="#" className="text-white">
+                              Clientes
+                            </a>
+                          </li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </nav>
+                </div>
+              </Dialog.Panel>
+            </Transition.Child>
+          </div>
+        </Dialog>
+      </Transition.Root>
       <Image
         src={banner5}
         alt="banner"
-        className="h-screen w-screen object-cover"
+        className="h-2/6 sm:h-screen sm:w-screen object-cover"
       />
       <div
-        className="absolute left-4 sm:left-8 text-left z-0"
-        style={{ top: "25%", left: "6%"}}
+        className="absolute left-4 sm:left-8 text-left z-0 "
+        style={{ top: "25%", left: "6%" }}
       >
         <animated.h1
           style={fade}
-          className="text-white lg:text-large sm:text-5xl font-Marcellus"
+          className="text-white lg:text-large sm:text-5xl text-5xl font-Marcellus"
         >
           Force Yacht
         </animated.h1>
+        <animated.div style={fade} className="flex gap-2 ">
+          <div className="block h-20">
+            <span className="text-primary text-4xl lg:text-6xl sm:text-5xl font-Marcellus items-center flex gap-4">
+              <Icon icon="wave" svgProps={{ fill: "white" }} />
+              Navegue
+            </span>
+          </div>
+        </animated.div>
         <animated.h1
           style={fade}
-          className="text-primary lg:text-6xl sm:text-5xl font-Marcellus flex gap-2 "
-        >
-          <Icon icon="wheel" />
-          <span className="items-center flex">Navegue</span>
-        </animated.h1>
-        <animated.h1
-          style={fade}
-          className="text-white lg:text-large sm:text-5xl font-Marcellus"
+          className="text-4xl text-white lg:text-large sm:text-5xl font-Marcellus"
         >
           com Luxo
         </animated.h1>
         <animated.p
           style={fade}
-          className="text-lg sm:text-sm text-white font-Marcellus flex items-center"
+          className="text-lg sm:text-sm text-white font-Marcellus flex items-center mt-5"
         >
           Alugueis premium de yachts e lanchas,
           <br />
@@ -258,7 +410,7 @@ export default function HomePage() {
         </animated.p>
       </div>
 
-      <section className="h-96" id="sobre-nos">
+      <section className="lg:h-fit" id="sobre-nos">
         <div className="flex justify-center items-center bg-white h-full">
           <div className="flex flex-col justify-center items-center relative">
             <motion.div
@@ -275,16 +427,16 @@ export default function HomePage() {
               {/* <Image src={Barco} alt="barco" /> */}
             </motion.div>
             <div className="flex justify-center">
-              <div className="w-2/4 z-20">
-                <div className="flex justify-left mb-2">
-                  <Icon icon="anchor" />
+              <div className="pt-2 w-full px-4 lg:w-4/5 sm:p-4 z-20">
+                <div className="flex justify-center mb-2">
+                  <Icon icon="wheel" svgProps={{ fill: "black" }} />
                 </div>
-                <h1 className="sm:text-5xl lg:text-4xl text-left font-Marcellus font-bold text-primary">
+                <h1 className="text-4xl sm:text-5xl lg:text-4xl text-center font-Marcellus font-bold text-primary">
                   Sobre nós
                 </h1>
-                <div className="w-8 h-1 mt-2 ml-1 mx-auto bg-primary"></div>
+                <div className="w-8 h-1 mt-2 ml-1 flex justify-start bg-primary"></div>
 
-                <p className="lg:text-base sm:text-2xl text-left font-Marcellus pt-4 ">
+                <p className="text-base lg:text-lg text-left font-Marcellus pt-4 ">
                   Desde 2015, a Force Yacht tem sido sinônimo de aventura, luxo
                   e momentos memoráveis em alto-mar em Porto Belo e região.
                   Oferecemos aluguel de iates e lanchas de alta qualidade,
@@ -293,7 +445,7 @@ export default function HomePage() {
                   corporativas inovadoras ou simplesmente um dia de lazer ao
                   sol.
                 </p>
-                <p className="lg:text-base sm:text-2xl text-left font-Marcellus pt-4">
+                <p className="text-base lg:text-lg text-left font-Marcellus pt-4">
                   Cada uma das nossas embarcações é cuidadosamente selecionada e
                   mantida, assegurando um alto padrão de conforto e segurança.
                   Nossa dedicada equipe de profissionais está sempre pronta para
@@ -310,7 +462,7 @@ export default function HomePage() {
       </section>
 
       <section className="w-full bg-off py-10" id="servicos">
-        <div className="grid grid-cols-2 w-4/5 mx-auto pt-20 ">
+        <div className="block sm:grid grid-cols-2 md:w-4/5 mx-auto md:pt-20 ">
           <div className="col-span-1 flex justify-center relative z-10 bg-white">
             <div className="p-8">
               <h1 className="text-4xl font-bold text-primary">Serviços</h1>
@@ -335,8 +487,8 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-              
-      <section className="px-4 pb-12 bg-off" >
+
+      <section className="px-4 pb-12 bg-off">
         <div id="nossas-embarcacoes">
           <div className="text-left mb-8 lg:p-4">
             <h2 className="text-4xl font-bold text-primary">
@@ -347,6 +499,7 @@ export default function HomePage() {
 
           <div>
             <Carousel
+              removeArrowOnDeviceType={["tablet", "mobile"]}
               swipeable={true}
               draggable={true}
               showDots={true}
@@ -382,6 +535,11 @@ export default function HomePage() {
                     </h2>
                     <p>{image.description}</p>
                   </div>
+                  <div className="flex justify-end p-4">
+                    <button className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
+                      Ver detalhes
+                    </button>
+                  </div>
                 </div>
               ))}
             </Carousel>
@@ -389,8 +547,11 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="h-[30rem] bg-off flex items-center">
-        <div className="sm:block lg:grid lg:grid-cols-2 w-4/5 mx-auto">
+      <section className="lg:h-[50rem] bg-off flex items-center">
+        <div className="md:h-4/5 w-4/5 mx-auto">
+          <h1 className="text-4xl font-bold text-primary text-center w-full">
+            Confira um pouco do nosso trabalho
+          </h1>
           <div
             className="grid grid-rows-5 grid-columns-6 gap-2 h-full relative cursor-pointer col-span-1"
             onMouseEnter={() => setIsHovered(true)}
@@ -442,14 +603,6 @@ export default function HomePage() {
               </div>
             )}
           </div>
-
-          <div>
-            <div className="text-left mb-8 lg:p-4 order-first col-span-1">
-              <h2 className="text-4xl font-bold text-primary">
-                Por onde estamos?
-              </h2>
-            </div>
-          </div>
         </div>
 
         {selectedVideo && (
@@ -471,14 +624,73 @@ export default function HomePage() {
         )}
       </section>
 
-      <section className=" w-full pb-12 bg-off flex items-center">
-        <div className="grid grid-cols-2 w-4/5 mx-auto pt-20">
+      <section className="h-96 bg-off">
+        <div className="p-4 bg-white">
+          {/* <div className="">
+          <Image src={Ocean} alt="Logo" className="relative object-fill h-48" />
+        </div> */}
+          <h1 className="text-4xl font-bold text-primary text-center">
+            Essencial para quem procura
+          </h1>
+          <div className="w-8 h-1 mt-2 ml-1 flex m-auto bg-primary"></div>
+
+          <p></p>
+          <div className="grid lg:grid-cols-3 lg:grid-rows-2 grid-cols-2 grid-rows-3 gap-5 w-full px-4 md:w-2/3 mx-auto py-4">
+            <div className="col-span-1 flex justify-center items-center">
+              <div>
+                <span className="text-primary font-bold">Comemorações</span>
+                <div className="flex justify-center py-2">
+                  <Icon icon="party" svgProps={{ fill: "black" }} />
+                </div>
+              </div>
+            </div>
+            <div className="col-span-1 flex justify-center items-center">
+              <div>
+                <span className="text-primary font-bold">Visitações</span>
+                <div className="flex justify-center py-2">
+                  <Icon icon="lake" svgProps={{ fill: "black" }} />
+                </div>
+              </div>
+            </div>
+            <div className="col-span-1 flex justify-center items-center">
+              <div>
+                <span className="text-primary font-bold">Churrasco </span>
+                <div className="flex justify-center py-2">
+                  <Icon icon="barbecue" svgProps={{ fill: "black" }} />
+                </div>
+              </div>
+            </div>
+            <div className="col-span-1 flex justify-center items-center">
+              <div>
+                <span className="text-primary font-bold">Encontro em familia</span>
+                <div className="flex justify-center py-2">
+                  <Icon icon="family" svgProps={{ fill: "black" }} />
+                </div>
+              </div>
+            </div>
+            <div className="col-span-1 flex justify-center items-center">
+              <div>
+                <span className="text-primary font-bold">Festas</span>
+                <div className="flex justify-center py-2">
+                  <Icon icon="dj" svgProps={{ fill: "black" }} />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="w-full pb-12 sm:bg-white md:bg-off flex items-center">
+        <div className="md:grid grid-cols-2 sm:w-4/5 mx-auto pt-20">
           <div className="col-span-1 flex justify-center relative z-10 bg-white">
             <Image src={jumpGirls} alt="boat" className="w-full" />
           </div>
           <div className="col-span-1 z-20 relative bg-white">
             <div className="p-8">
-              <h1 className="text-4xl font-bold text-primary">Experiência</h1>
+              <h1 className="text-4xl font-bold text-primary">
+                {" "}
+                Por onde estamos?
+              </h1>
               <div className="w-8 h-1 mt-2 ml-1 flex justify-start bg-primary"></div>
               <p className="text-lg pt-4">
                 Lorem ipsum dolor sit amet consectetur adipisicing elit.
