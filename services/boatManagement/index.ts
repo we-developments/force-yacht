@@ -9,59 +9,63 @@ import {
     updateDoc,
     deleteDoc,
 } from "firebase/firestore";
-import { getStorage, ref, uploadBytes } from "firebase/storage";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 const db = getFirestore();
 const storage = getStorage();
 
-export const useUserManagement = () => {
+export const useBoatManagement = () => {
+    const imagesToSave = [] as any;
+
+    async function salvarImagens(Images: any) {
+        return new Promise(async (resolve, reject) => {
+
+            try {
+                if (Images) {
+                    for (const file in Images) {
+                        const storageRef = ref(storage, `boats/${Images[file]?.name}`);
+                        const snapshot = await uploadBytes(storageRef, Images[file]);
+                        const downloadURL = await getDownloadURL(snapshot.ref);
+                        imagesToSave.push(downloadURL);
+                        console.log('link:', downloadURL);
+                    }
+                }
+            } catch (error) {
+                reject(error)
+            }
+
+            resolve(imagesToSave)
+        })
+
+    }
 
     const createBoatsDoc = async (data: any) => {
         return new Promise(async (resolve, reject) => {
-            if (data.files) {
-                let imagesToSave = [] as any
-                data.files.map(async (file: any) => {
-                    const storageRef = ref(storage, `boats/${file?.name}`);
-                    uploadBytes(storageRef, file).then((downloadUrl) => {
-                        imagesToSave.push(downloadUrl)
-                    });
-                })
 
-                await addDoc(collection(db, "boatsRegistred"), {
-                    id: data.id,
-                    name: data.name,
-                    email: data.email,
-                    images: imagesToSave,
-                    isAdmin: data.isAdmin || false,
-                    createdAt: Date.now(),
-                })
-                    .then((res) => {
-                        console.log(res.id, "Imagem registrada com sucesso!");
-                        resolve("success");
+            if (data.Images) {
+                salvarImagens(data.Images).then(async (imagesToSave) => {
+                    await addDoc(collection(db, "boatsRegistred"), {
+                        YatchName: data.YatchName,
+                        SizeBoat: data.SizeBoat,
+                        Included: data.Included,
+                        Capacity: data.Capacity,
+                        EndIn: data.EndIn,
+                        StartIn: data.StartIn,
+                        ExitLocation: data.ExitLocation,
+                        CreatedAt: Date.now(),
+                        Images: imagesToSave || []
                     })
-                    .catch((erro) => {
-                        reject(erro);
-                    });
+                        .then((res) => {
+                            resolve("success");
+                        })
+                        .catch((erro) => {
+                            reject(erro);
+                        });
 
-                return;
+                    return;
+                })
             }
 
-            await addDoc(collection(db, "boatsRegistred"), {
-                id: data.id,
-                name: data.name,
-                email: data.email,
-                images: [],
-                isAdmin: data.isAdmin || false,
-                createdAt: Date.now(),
-            })
-                .then((res) => {
-                    console.log(res.id, "Usuario registrado sem imagem!");
-                    resolve("success");
-                })
-                .catch((erro) => {
-                    console.log(erro);
-                    reject(erro);
-                });
         });
     };
 
@@ -118,10 +122,10 @@ export const useUserManagement = () => {
         return new Promise(async (resolve, reject) => {
             try {
 
-                if(indexsToDelet){
+                if (indexsToDelet) {
                     let newImagesToSave = data.images.filter((_: any, index: any) => !indexsToDelet.includes(index))
                     const refDoc = doc(db, "boatsRegistred", data.id);
-                    await updateDoc(refDoc, {...data, images: newImagesToSave});
+                    await updateDoc(refDoc, { ...data, images: newImagesToSave });
                 }
 
                 if (files) {
@@ -134,7 +138,7 @@ export const useUserManagement = () => {
                     })
 
                     const refDoc = doc(db, "boatsRegistred", data.id);
-                    await updateDoc(refDoc, {...data, images: imagesToSave});
+                    await updateDoc(refDoc, { ...data, images: imagesToSave });
 
                 } else {
                     const refDoc = doc(db, "boatsRegistred", data.id);
