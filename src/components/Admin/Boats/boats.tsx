@@ -27,32 +27,65 @@ export default function Boats() {
   const [isOpenModalImages, setIsOpenModalImages] = useState(false)
   const [selectedBoat, setSelectedBoat] = useState({} as BoatProps)
   const [isOpenModalEdit, setIsOpenModalEdit] = useState(false)
+  const [isEdit, setIsEdit] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
 
-  const { getBoatsDoc, createBoatsDoc } = useBoatManagement();
+  const { getBoatsDoc, createBoatsDoc, updateBoatDoc } = useBoatManagement();
 
   const handleModalImages = () => {
     setIsOpenModalImages(!isOpenModalImages)
   }
 
   const handleSaveNewBoat = (values: any) => {
+    setIsLoading(true)
     createBoatsDoc(values).then(() => {
       getBoatsDoc().then((boats) => {
         if (boats.length) setBoats(boats)
-      }).catch(err => console.log('erro: ', err))
+        setIsLoading(false)
+      }).catch(err => {
+        console.log('erro: ', err)
+        setIsLoading(false)
+      })
     })
   }
 
   const handleModalEdit = () => {
-    if (isOpenModalEdit){ 
+    if (isOpenModalEdit) {
       setSelectedBoat({} as BoatProps)
+      setIsEdit(false)
     }
     setIsOpenModalEdit(!isOpenModalEdit)
   }
 
+  const handleUpdate = (files: any, data: any, imagesToDelet?: any) => {
+    setIsLoading(true)
+    return new Promise((resolve, reject) => {
+      if (files && data) {
+        updateBoatDoc(files, data, imagesToDelet).then(() => {
+          getBoatsDoc().then((boats) => {
+            if (boats.length) setBoats(boats)
+            setIsLoading(false)
+            let newSelectedBoat = boats.filter((boat: any) => data.Id == boat.Id)
+            setSelectedBoat(newSelectedBoat)
+            resolve(newSelectedBoat)
+          }).catch(err => {
+            reject(err)
+            setIsLoading(false)
+          })
+        }).catch(err => console.log(err))
+      }
+    })
+  }
+
   useEffect(() => {
+    setIsLoading(true)
     getBoatsDoc().then((boats) => {
       if (boats.length) setBoats(boats)
-    }).catch(err => console.log('erro: ', err))
+      setIsLoading(false)
+    }).catch(err => {
+      console.log('erro: ', err)
+      setIsLoading(false)
+    })
   }, [])
 
   return (
@@ -168,7 +201,7 @@ export default function Boats() {
                       'px-3 py-3.5 text-sm text-gray-500'
                     )}
                   >
-                    <PhotoIcon width={32} className="hover:text-primary cursor-pointer hover:animate-bounce" onClick={() => {
+                    <PhotoIcon width={32} className="hover:text-primary cursor-pointer " onClick={() => {
                       handleModalImages()
                       setSelectedBoat(boat)
                     }} />
@@ -185,6 +218,7 @@ export default function Boats() {
                       onClick={() => {
                         setSelectedBoat(boat)
                         handleModalEdit()
+                        setIsEdit(true)
                       }}
                     >
                       Edit<span className="sr-only"></span>
@@ -222,7 +256,7 @@ export default function Boats() {
       </Modal>
 
       <Modal isOpen={isOpenModalEdit} handleModal={handleModalEdit} >
-        <Formulario selectedBoat={selectedBoat} handleSaveNewBoat={handleSaveNewBoat} />
+        <Formulario selectedBoat={selectedBoat} handleSaveNewBoat={handleSaveNewBoat} handleUpdate={handleUpdate} isEdit={isEdit} isLoading={isLoading} />
       </Modal>
     </div>
   )

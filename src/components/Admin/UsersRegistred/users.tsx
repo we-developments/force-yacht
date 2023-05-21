@@ -1,6 +1,24 @@
-import React from 'react'
+import { useUserManagement } from '@/services/userManagement'
+import React, { useEffect, useState } from 'react'
+import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
+
+type UserProps = {
+    name: string,
+    email: string,
+    phone: string
+}
 
 const Users = () => {
+    const [users, setUsers] = useState([] as UserProps[])
+
+    const { getUsersDoc } = useUserManagement()
+
+    useEffect(() => {
+        getUsersDoc().then((usersResponse) => {
+            if (usersResponse) setUsers(usersResponse)
+        }).catch(err => console.log('err: ', err))
+    }, [])
+
     return (
         <div>
             <div className='flex justify-center mt-5 text-primary'>
@@ -12,78 +30,42 @@ const Users = () => {
                         <div className="sm:-mx-6 lg:-mx-8">
                             <div className="inline-block min-w-full py-2 sm:px-6 lg:px-8 ">
                                 <div className="overflow-hidden">
-                                    <table className="min-w-full text-left text-sm font-light">
-                                        <thead className="border-b font-medium dark:border-sky-800">
-                                            <tr>
-                                                <th scope="col" className="px-6 py-4">Nome</th>
-                                                <th scope="col" className="px-6 py-4">Telefone</th>
-                                                <th scope="col" className="px-6 py-4">Email</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr className="border-b dark:border-sky-800">
-                                                <td className="whitespace-nowrap px-6 py-4 text-base font-normal">Exemplo1</td>
-                                                <td className="whitespace-nowrap px-6 py-4 text-base font-normal">(47) 9 9999-9999</td>
-                                                <td className="whitespace-nowrap px-6 py-4 text-base font-normal">teste@teste.com.br</td>
-                                                <td className='items-center w-1/4 justify-center'>
-                                                    <button type='button' className='bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded'>
-                                                        Enviar mensagem
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                            <tr className="border-b dark:border-sky-800">
-                                                <td className="whitespace-nowrap px-6 py-4 text-base font-normal">Exemplo1</td>
-                                                <td className="whitespace-nowrap px-6 py-4 text-base font-normal">(47) 9 9999-9999</td>
-                                                <td className="whitespace-nowrap px-6 py-4 text-base font-normal">teste@teste.com.br</td>
-                                                <td className='items-center w-1/4 justify-center'>
-                                                    <button type='button' className='bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded'>
-                                                        Enviar mensagem
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                            <tr className="border-b dark:border-sky-800">
-                                                <td className="whitespace-nowrap px-6 py-4 text-base font-normal">Exemplo1</td>
-                                                <td className="whitespace-nowrap px-6 py-4 text-base font-normal">(47) 9 9999-9999</td>
-                                                <td className="whitespace-nowrap px-6 py-4 text-base font-normal">teste@teste.com.br</td>
-                                                <td className='items-center w-1/4 justify-center'>
-                                                    <button type='button' className='bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded'>
-                                                        Enviar mensagem
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                            <tr className="border-b dark:border-sky-800">
-                                                <td className="whitespace-nowrap px-6 py-4 text-base font-normal">Exemplo1</td>
-                                                <td className="whitespace-nowrap px-6 py-4 text-base font-normal">(47) 9 9999-9999</td>
-                                                <td className="whitespace-nowrap px-6 py-4 text-base font-normal">teste@teste.com.br</td>
-                                                <td className='items-center w-1/4 justify-center'>
-                                                    <button type='button' className='bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded'>
-                                                        Enviar mensagem
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                            <tr className="border-b dark:border-sky-800">
-                                                <td className="whitespace-nowrap px-6 py-4 text-base font-normal">Exemplo1</td>
-                                                <td className="whitespace-nowrap px-6 py-4 text-base font-normal">(47) 9 9999-9999</td>
-                                                <td className="whitespace-nowrap px-6 py-4 text-base font-normal">teste@teste.com.br</td>
-                                                <td className='items-center w-1/4 justify-center'>
-                                                    <button type='button' className='bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded'>
-                                                        Enviar mensagem
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                            <tr className="border-b dark:border-sky-800">
-                                                <td className="whitespace-nowrap px-6 py-4 text-base font-normal">Exemplo1</td>
-                                                <td className="whitespace-nowrap px-6 py-4 text-base font-normal">(47) 9 9999-9999</td>
-                                                <td className="whitespace-nowrap px-6 py-4 text-base font-normal">teste@teste.com.br</td>
-                                                <td className='items-center w-1/4 justify-center'>
-                                                    <button type='button' className='bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded'>
-                                                        Enviar mensagem
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                            
-                                        </tbody>
-                                    </table>
+                                    {users && users.length > 0 ? (
+                                        <table className="min-w-full text-left text-sm font-light">
+                                            <thead className="border-b font-medium dark:border-sky-800">
+                                                <tr>
+                                                    <th scope="col" className="px-6 py-4">Nome</th>
+                                                    <th scope="col" className="px-6 py-4">Telefone</th>
+                                                    <th scope="col" className="px-6 py-4">Email</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {
+                                                    users.map((user) => {
+                                                        return (
+                                                            <tr key={user.email} className="border-b dark:border-sky-800">
+                                                                <td className="whitespace-nowrap px-6 py-4 text-base font-normal">{user.name}</td>
+                                                                <td className="whitespace-nowrap px-6 py-4 text-base font-normal">{user.phone}</td>
+                                                                <td className="whitespace-nowrap px-6 py-4 text-base font-normal">{user.email}</td>
+                                                                <td className='items-center w-1/4 justify-center'>
+                                                                    <button type='button' className='bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded'>
+                                                                        Enviar mensagem
+                                                                    </button>
+                                                                </td>
+                                                            </tr>
+                                                        )
+                                                    })
+                                                }
+                                            </tbody>
+                                        </table>
+                                    ) : (
+                                        <div className="flex bg-blue-200 rounded-lg items-center text-center justify-center w-full mt-4 px-16 h-16">
+                                            <ExclamationTriangleIcon width={36} className='mr-2' />
+                                            <p>
+                                                Não existe <span className="font-medium"> Usuários!</span> cadastrados!
+                                            </p>
+                                        </div>
+                                    )}
                                 </div>
                             </div>
                         </div>
