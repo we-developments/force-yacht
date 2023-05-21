@@ -44,7 +44,7 @@ type ErrorsProps = {
 
 export default function Formulario({ selectedBoat, handleSaveNewBoat, handleUpdate, isEdit, isLoading }: FormValues) {
   const [newFiles, setNewFiles] = useState([] as any)
-  const [filesToDelet, setFilesToDelete] = useState(["https://firebasestorage.googleapis.com/v0/b/force-yatchs.appspot.com/o/boats%2FUntitled-2.jpg?alt=media&token=e796d556-263d-4207-95c2-f81b9c6d543c", "https://firebasestorage.googleapis.com/v0/b/force-yatchs.appspot.com/o/boats%2Ftop.png?alt=media&token=384c3dd5-63ab-4ff1-8421-1ca29f86d941", "https://firebasestorage.googleapis.com/v0/b/force-yatchs.appspot.com/o/boats%2Fimage.jpg?alt=media&token=8a7e94ac-22da-4b0e-a8f0-28eb679a28d0"])
+  const [filesToDelet, setFilesToDelete] = useState(["https://firebasestorage.googleapis.com/v0/b/force-yatchs.appspot.com/o/boats%2F346123735_210325811768231_7890052085532263438_n.jpg?alt=media&token=80e04d6c-fe85-4005-8f38-97dd8a99b877"])
   const [errors, setErrors] = useState({} as ErrorsProps)
   const [updated, setUpdated] = useState(false)
   const [values, setValues] = useState(selectedBoat || {
