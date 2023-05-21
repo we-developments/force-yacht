@@ -4,7 +4,7 @@ import logo from "../../images/pngs/force.png";
 
 export default function Footer() {
   return (
-    <footer className="relative  bg-footer">
+    <footer className="relative bg-footer py-2">
       <div className="mx-auto max-w-7xl overflow-hidden px-6 sm:py-12">
         <div className="flex mb-10 justify-center space-x-10">
           <Image src={logo} alt="Logo" width={120} height={120} />
@@ -37,7 +37,7 @@ export default function Footer() {
           ))}
         </div>
         <p className="mt-10 text-center text-xs leading-5 text-gray-500">
-          &copy; 2020 Your Company, Inc. All rights reserved.
+          &copy; 2023 Force Yachts, Inc. Todos direitos reservados.
         </p>
       </div>
     </footer>

@@ -1,8 +1,8 @@
 export const firebaseConfig = {
-  apiKey: process.env.REACT_APP_apiKey,
-  authDomain: process.env.REACT_APP_authDomain,
-  projectId: process.env.REACT_APP_projectId,
-  storageBucket: process.env.REACT_APP_storageBucket,
-  messagingSenderId: process.env.REACT_APP_messagingSenderId,
-  appId: process.env.REACT_APP_appId
+  apiKey: 'AIzaSyAxYihqOyosW24I5M5TuegNNjj5rKZlsEc',
+  authDomain: 'force-yatchs.firebaseapp.com',
+  projectId: 'force-yatchs',
+  storageBucket: 'force-yatchs.appspot.com',
+  messagingSenderId: '58383611747',
+  appId: '1:58383611747:web:d211d499a2232fa513c556'
 };

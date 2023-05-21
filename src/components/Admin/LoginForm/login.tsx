@@ -49,6 +49,7 @@ const LoginForm: React.FC = () => {
             width={300}
             height={300}
             src={force}
+            className='mt-4'
             alt="Your Company"
           />
         </div>
@@ -73,7 +74,7 @@ const LoginForm: React.FC = () => {
                       type="email"
                       autoComplete="email"
                       required
-                      className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
+                      className="p-2 block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
                     />
                   )}
                 />
@@ -85,7 +86,7 @@ const LoginForm: React.FC = () => {
                   Senha
                 </label>
                 <div className="text-sm">
-                  <Link href="/forgot-pLinkssword" className="font-semibold text-indigo-400 hover:text-indigo-300">
+                  <Link href="/forgot-password" className="font-semibold text-indigo-400 hover:text-indigo-300">
                     Esqueceu sua senha?
                   </Link>
                 </div>
@@ -101,7 +102,7 @@ const LoginForm: React.FC = () => {
                       type="password"
                       autoComplete="current-password"
                       required
-                      className="block w-full rounded-md border-0 bg-white/5 py-1
+                      className="p-2 block w-full rounded-md border-0 bg-white/5 py-1
                       1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
                       />
                       )}
