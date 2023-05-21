@@ -50,8 +50,6 @@ export default function Formulario({ selectedBoat, handleSaveNewBoat }: FormValu
     ExitLocation: '',
   })
 
-  const { createBoatsDoc } = useBoatManagement()
-
   const handleSave = (e: any) => {
     e.preventDefault()
 
