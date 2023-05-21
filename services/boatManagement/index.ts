@@ -15,19 +15,22 @@ const db = getFirestore();
 const storage = getStorage();
 
 export const useBoatManagement = () => {
-    const imagesToSave = [] as any;
 
     async function salvarImagens(Images: any) {
         return new Promise(async (resolve, reject) => {
+            const imagesToSave = [] as any;
 
             try {
                 if (Images) {
+                    console.log(Images, 'IMAGES')
                     for (const file in Images) {
-                        const storageRef = ref(storage, `boats/${Images[file]?.name}`);
-                        const snapshot = await uploadBytes(storageRef, Images[file]);
-                        const downloadURL = await getDownloadURL(snapshot.ref);
-                        imagesToSave.push(downloadURL);
-                        console.log('link:', downloadURL);
+                        let position = Number(file)
+                        if (position > Images.length || !Number.isNaN(position)) {
+                            const storageRef = ref(storage, `boats/${Images[file]?.name}`);
+                            const snapshot = await uploadBytes(storageRef, Images[file]);
+                            const downloadURL = await getDownloadURL(snapshot.ref);
+                            imagesToSave.push(downloadURL);
+                        }
                     }
                 }
             } catch (error) {
@@ -44,6 +47,7 @@ export const useBoatManagement = () => {
 
             if (data.Images) {
                 salvarImagens(data.Images).then(async (imagesToSave) => {
+
                     await addDoc(collection(db, "boatsRegistred"), {
                         YatchName: data.YatchName,
                         SizeBoat: data.SizeBoat,
