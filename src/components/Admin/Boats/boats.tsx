@@ -43,7 +43,9 @@ export default function Boats() {
   }
 
   const handleModalEdit = () => {
-    if (isOpenModalEdit) setSelectedBoat({} as BoatProps)
+    if (isOpenModalEdit){ 
+      setSelectedBoat({} as BoatProps)
+    }
     setIsOpenModalEdit(!isOpenModalEdit)
   }
 
@@ -204,13 +206,13 @@ export default function Boats() {
         </div>
       )}
 
-      <Modal isOpen={isOpenModalImages} handleModal={handleModalImages} >
+      <Modal isOpen={isOpenModalImages} handleModal={handleModalImages} stylesContent={`overflow-auto p-10`}>
         <div className="w-full flex justify-end"><XCircleIcon width={32} className="mx-8 my-4 cursor-pointer" onClick={handleModalImages} /></div>
         {
           selectedBoat?.Images?.length > 0 ? (
-            <div className="flex gap-6 p-8 justify-center" >
+            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 " >
               {selectedBoat.Images.map(img => {
-                return <img className="w-72 cursor-pointer rounded-xl " key={img} src={img} />
+                return <img className="w-72 max-h-64 cursor-pointer rounded-xl " key={img} src={img} />
               })}
             </div>
           ) : (
