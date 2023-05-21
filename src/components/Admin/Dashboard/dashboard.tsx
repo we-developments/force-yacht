@@ -12,6 +12,8 @@ import {
   HomeIcon,
   UsersIcon,
   XMarkIcon,
+  UserGroupIcon,
+  PlusCircleIcon
 } from "@heroicons/react/24/outline";
 import {
   ChevronDownIcon,
@@ -19,19 +21,17 @@ import {
 } from "@heroicons/react/20/solid";
 import Image from "next/image";
 import Formulario from "../Form/form";
-import Painel from "../Painel/painel";
+import Boats from "../Boats/boats";
 import { useRouter } from "next/router";
 import { Router } from "react-router-dom";
 import { auth } from "@/api";
+import { signOut } from "firebase/auth";
+import HomeAdmin from "../HomeAdmin/homeadmin";
+import Users from "../UsersRegistred/users";
 
 const navigation = [
-  { name: "Dashboard", href: "/dashboard", icon: HomeIcon, current: false },
-  {
-    name: "Painel",
-    href: "/painel",
-    icon: DocumentDuplicateIcon,
-    current: false,
-  },
+  { name: "Barcos", icon: PlusCircleIcon, current: false, component: <Boats /> },
+  { name: "Usuários", icon: UserGroupIcon, current: false, component: <Users /> },
 ];
 
 const teams = [
@@ -50,22 +50,28 @@ function classNames(...classes: any) {
 
 export default function Dashboard(children: any) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [selectedItem, setSelectedItem] = useState({ name: "Barcos", icon: PlusCircleIcon, current: false, component: <Boats /> })
 
   const currentUser = auth.currentUser
   const router = useRouter();
 
-  navigation.forEach((item) => {
-    // Verifique se a rota atual corresponde ao href do item
-    if (router.pathname === item.href) {
-      item.current = true;
-    } else {
-      item.current = false;
-    }
-  });
+  const handleLogout = () => {
+    signOut(auth).then(() => {
+      console.log('success')
+    }).catch((error) => {
+      console.log('Error')
+
+    });
+  }
+
+  const handleSelectItem = (item: any) => {
+    if (item) setSelectedItem(item)
+  }
+
 
   return (
     <>
-      <div>
+      <div style={{ background: '#f5f5f5', height: '100vh'} } >
         <Transition.Root show={sidebarOpen} as={Fragment}>
           <Dialog
             as="div"
@@ -136,10 +142,13 @@ export default function Dashboard(children: any) {
                           <ul role="list" className="-mx-2 space-y-1">
                             {navigation.map((item) => (
                               <li key={item.name}>
-                                <a
-                                  href={item.href}
+                                <span
+                                  onClick={() => {
+                                    handleSelectItem(item)
+                                    setSidebarOpen(false)
+                                  }}
                                   className={classNames(
-                                    item.current
+                                    selectedItem.name === item.name
                                       ? "bg-gray-50 text-primary"
                                       : "text-gray-700 hover:text-primary hover:bg-gray-50",
                                     "group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold"
@@ -147,7 +156,7 @@ export default function Dashboard(children: any) {
                                 >
                                   <item.icon
                                     className={classNames(
-                                      item.current
+                                      selectedItem.name === item.name
                                         ? "text-primary"
                                         : "text-gray-400 group-hover:text-primary",
                                       "h-6 w-6 shrink-0"
@@ -155,7 +164,7 @@ export default function Dashboard(children: any) {
                                     aria-hidden="true"
                                   />
                                   {item.name}
-                                </a>
+                                </span>
                               </li>
                             ))}
                           </ul>
@@ -186,7 +195,7 @@ export default function Dashboard(children: any) {
           {/* Sidebar component, swap this element with another sidebar if you like */}
           <div className="flex grow flex-col gap-y-5 overflow-y-auto border-r border-gray-200 bg-white px-6 pb-4">
             <div className="flex shrink-0 items-center">
-              <Image src={forceBlue} alt="Your Company"/>
+              <Image src={forceBlue} alt="Your Company" />
             </div>
             <nav className="flex flex-1 flex-col">
               <ul role="list" className="flex flex-1 flex-col gap-y-7">
@@ -194,18 +203,18 @@ export default function Dashboard(children: any) {
                   <ul role="list" className="-mx-2 space-y-1">
                     {navigation.map((item) => (
                       <li key={item.name}>
-                        <a
-                          href={item.href}
+                        <span
+                          onClick={() => handleSelectItem(item)}
                           className={classNames(
-                            item.current
+                            selectedItem.name === item.name
                               ? "bg-gray-50 text-primary"
                               : "text-gray-700 hover:text-primary hover:bg-gray-50",
-                            "group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold"
+                            "group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold cursor-pointer"
                           )}
                         >
                           <item.icon
                             className={classNames(
-                              item.current
+                              selectedItem.name === item.name
                                 ? "text-primary"
                                 : "text-gray-400 group-hover:text-primary",
                               "h-6 w-6 shrink-0"
@@ -213,7 +222,7 @@ export default function Dashboard(children: any) {
                             aria-hidden="true"
                           />
                           {item.name}
-                        </a>
+                        </span>
                       </li>
                     ))}
                   </ul>
@@ -235,8 +244,8 @@ export default function Dashboard(children: any) {
           </div>
         </div>
 
-        <div className="lg:pl-48">
-          <div className="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4 border-b border-gray-200 bg-white shadow-sm sm:gap-x-6 sm:px-6 lg:px-8 px-2">
+        <div className="lg:pl-48 lg:mr-7">
+          <div className="sticky lg:top-6 z-40 flex h-16 shrink-0 items-center gap-x-4 border-b border-gray-200 bg-white shadow-sm sm:gap-x-6 sm:px-6 lg:px-8 px-2 rounded-lg ">
             <button
               type="button"
               className="-m-2.5 p-2.5 text-gray-700 lg:hidden"
@@ -281,7 +290,7 @@ export default function Dashboard(children: any) {
                         aria-hidden="true"
                       />
                     </span>
-                    <span className="text-sm lg:px-4">
+                    <span className="text-sm lg:px-4 px-2">
                       Seja muito bem vindo ao painel administrativo do seu site!
                     </span>
                   </Menu.Button>
@@ -298,15 +307,24 @@ export default function Dashboard(children: any) {
                       {userNavigation.map((item) => (
                         <Menu.Item key={item.name}>
                           {({ active }) => (
-                            <a
-                              href={item.href}
-                              className={classNames(
-                                active ? "bg-gray-50" : "",
-                                "block px-3 py-1 text-sm leading-6 text-gray-900"
-                              )}
-                            >
-                              {item.name}
-                            </a>
+                            item.name === 'Sign out' ? (
+                              <p onClick={handleLogout}
+                                className={classNames(
+                                  active ? "bg-gray-50" : "",
+                                  "block px-3 py-1 text-sm leading-6 text-gray-900"
+                                )}
+                              > Sair</p>
+                            ) : (
+                              <a
+                                href={item.href}
+                                className={classNames(
+                                  active ? "bg-gray-50" : "",
+                                  "block px-3 py-1 text-sm leading-6 text-gray-900"
+                                )}
+                              >
+                                {item.name}
+                              </a>
+                            )
                           )}
                         </Menu.Item>
                       ))}
@@ -317,15 +335,11 @@ export default function Dashboard(children: any) {
             </div>
           </div>
 
-          <main className="py-10 sm:px-6 lg:px-8 px-2 h-auto">
-              {children && children.children === "formulario" ? (
-                <Formulario />
-                ) : (
-                <Painel />
-              )}
+          <main className="py-10 sm:px-6 lg:px-8 px-2 ">
+            {selectedItem && selectedItem.component}
           </main>
         </div>
-      </div>
+      </div >
     </>
   );
 }
