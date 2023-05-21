@@ -4,11 +4,17 @@ import { schema } from "./form.schema";
 import { Timestamp } from "firebase/firestore";
 import { useState } from "react";
 import { useBoatManagement } from "@/services/boatManagement";
+import Image from "next/image";
+import ClipLoader from "react-spinners/ClipLoader";
+import { XCircleIcon } from "@heroicons/react/24/outline";
 
 // Defina um tipo para os dados do formulário
 interface FormValues {
-  selectedBoat: BoatProps,
+  selectedBoat: BoatProps;
   handleSaveNewBoat: (values: any) => void;
+  handleUpdate: (files: any, data: any, imagesToDelet?: any) => Promise<any>;
+  isEdit: boolean;
+  isLoading: boolean
 }
 
 type BoatProps = {
@@ -36,9 +42,11 @@ type ErrorsProps = {
   ExitLocation: string,
 }
 
-export default function Formulario({ selectedBoat, handleSaveNewBoat }: FormValues) {
-
+export default function Formulario({ selectedBoat, handleSaveNewBoat, handleUpdate, isEdit, isLoading }: FormValues) {
+  const [newFiles, setNewFiles] = useState([] as any)
+  const [filesToDelet, setFilesToDelete] = useState(["https://firebasestorage.googleapis.com/v0/b/force-yatchs.appspot.com/o/boats%2FUntitled-2.jpg?alt=media&token=e796d556-263d-4207-95c2-f81b9c6d543c", "https://firebasestorage.googleapis.com/v0/b/force-yatchs.appspot.com/o/boats%2Ftop.png?alt=media&token=384c3dd5-63ab-4ff1-8421-1ca29f86d941", "https://firebasestorage.googleapis.com/v0/b/force-yatchs.appspot.com/o/boats%2Fimage.jpg?alt=media&token=8a7e94ac-22da-4b0e-a8f0-28eb679a28d0"])
   const [errors, setErrors] = useState({} as ErrorsProps)
+  const [updated, setUpdated] = useState(false)
   const [values, setValues] = useState(selectedBoat || {
     Capacity: 0,
     SizeBoat: '',
@@ -90,6 +98,16 @@ export default function Formulario({ selectedBoat, handleSaveNewBoat }: FormValu
 
   }
 
+  const handleUpdateEdit = () => {
+    handleUpdate(newFiles, values, filesToDelet).then((boat) => {
+      setValues(boat[0])
+      setUpdated(true)
+      setTimeout(() => {
+        setUpdated(false)
+      }, 2500);
+    })
+  }
+
   const handleValue = (key: string, value: any) => {
     setValues({ ...values, [key]: value })
 
@@ -98,6 +116,10 @@ export default function Formulario({ selectedBoat, handleSaveNewBoat }: FormValu
         setErrors({ ...errors, [key]: '' })
       }
     })
+  }
+
+  const handleNewFiles = (files: any) => {
+    if (files) setNewFiles(files)
   }
 
   return (
@@ -186,10 +208,16 @@ export default function Formulario({ selectedBoat, handleSaveNewBoat }: FormValu
             name="images"
             id="images"
             multiple
-            onChange={(e) => handleValue('Images', e.target.files)}
+            onChange={(e) => {
+              if (isEdit) {
+                handleNewFiles(e.target.files)
+              } else {
+                handleValue('Images', e.target.files)
+              }
+
+            }}
           />
           <p className="text-red-600 text-sm">{errors.Images}</p>
-
         </div>
 
         <div >
@@ -204,14 +232,55 @@ export default function Formulario({ selectedBoat, handleSaveNewBoat }: FormValu
         </div>
       </div>
 
+      {values?.Images?.length > 0 && (
+        <div className="grid gap-4 grid-cols-6 mt-3">
+          {values?.Images.map((img) => {
+            let hasToDele = filesToDelet.filter(file => img === file)
+            return (
+              <div key={img} className="cursor-pointer" >
+                {hasToDele.length > 0 && (<XCircleIcon width={55} className="absolute" color="red"/>)}
+                <Image  src={img} width={50} height={50} alt="imagem-mini" className="object-none max-h-14" />
+              </div>
+            )
+          })}
+        </div>
+      )}
 
-      <button
-        onClick={(e) => handleSave(e)}
-        className="w-1/3 py-2 mt-4 text-white bg-tertiary rounded-md"
+      <div className="flex flex-row items-center justify-start gap-6">
+        <button
+          onClick={(e) => {
+            if (isEdit) {
+              e.preventDefault()
+              handleUpdateEdit()
+            } else {
+              handleSave(e)
+            }
 
-      >
-        Enviar
-      </button>
+          }}
+          className="w-1/3 py-2 mt-4 text-white bg-tertiary rounded-md"
+        >
+          {isLoading ? (
+            <ClipLoader
+              loading={isLoading}
+              color="white"
+              size={20}
+              aria-label="Loading Spinner"
+              data-testid="loader"
+            />
+          ) : 'Enviar'}
+        </button>
+        {
+          updated && (
+            <div className="flex bg-green-100 rounded-lg items-center text-center justify-center w-2/3 mt-4  h-12">
+              <p>
+                A embarcação foi <span className="font-medium"> Atualizada com sucesso!</span> Obrigado.
+              </p>
+            </div>
+          )
+        }
+      </div>
+
+
     </form>
   );
 }
