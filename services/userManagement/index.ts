@@ -17,38 +17,14 @@ import {
   export const useUserManagement = () => {
     const createUserDoc = async (data: any) => {
       return new Promise(async (resolve, reject) => {
-        if (data.file) {
-          const storageRef = ref(storage, `profilepic/${data.file?.name}`);
-          uploadBytes(storageRef, data.file).then(async (downloadUrl) => {
-            await addDoc(collection(db, "usersRegistred"), {
-              id: data.id,
-              name: data.name,
-              email: data.email,
-              userImg: downloadUrl,
-              isAdmin: data.isAdmin || false,
-              createdAt: Date.now(),
-            })
-              .then((res) => {
-                console.log(res.id, "Imagem registrada com sucesso!");
-                resolve("success");
-              })
-              .catch((erro) => {
-                reject(erro);
-              });
-          });
-          return;
-        }
   
         await addDoc(collection(db, "usersRegistred"), {
-          id: data.id,
           name: data.name,
           email: data.email,
-          userImg: null,
-          isAdmin: data.isAdmin || false,
+          phone: data.phone,
           createdAt: Date.now(),
         })
           .then((res) => {
-            console.log(res.id, "Usuario registrado sem imagem!");
             resolve("success");
           })
           .catch((erro) => {
@@ -79,6 +55,28 @@ import {
         return error;
       }
     };
+
+    const getUsersDoc = async () => {
+      try {
+        const q = query(collection(db, "usersRegistred"));
+        const querySnap = await getDocs(q);
+        const dataRes = [] as any;
+        querySnap.forEach((doc) => {
+          const dataReturn = {
+            id: doc.id,
+            name: doc.data().name,
+            email: doc.data().email,
+            phone: doc.data().phone,
+            createdAt: doc.data().createdAt,
+          };
+          dataRes.push(dataReturn);
+        });
+        return dataRes;
+      } catch (error) {
+        return error;
+      }
+    };
+  
   
     const updateUserDoc = async (file: any, data: any) => {
       return new Promise(async (resolve, reject) => {
@@ -114,6 +112,7 @@ import {
     return {
       createUserDoc,
       getUserDoc,
+      getUsersDoc,
       updateUserDoc,
       deleteUserDoc,
     };
