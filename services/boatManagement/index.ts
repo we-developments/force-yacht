@@ -16,7 +16,7 @@ const storage = getStorage();
 
 export const useUserManagement = () => {
 
-    const createUserDoc = async (data: any) => {
+    const createBoatsDoc = async (data: any) => {
         return new Promise(async (resolve, reject) => {
             if (data.files) {
                 let imagesToSave = [] as any
@@ -65,7 +65,7 @@ export const useUserManagement = () => {
         });
     };
 
-    const getUserDoc = async (id: any) => {
+    const getBoatDoc = async (id: any) => {
         try {
             const q = query(collection(db, "boatsRegistred"), where("id", "==", id));
             const querySnap = await getDocs(q);
@@ -87,7 +87,34 @@ export const useUserManagement = () => {
         }
     };
 
-    const updateUserDoc = async (files: any, data: any, indexsToDelet: any) => {
+    const getBoatsDoc = async () => {
+        try {
+            const q = query(collection(db, "boatsRegistred"));
+            const querySnap = await getDocs(q);
+            const dataRes = [] as any;
+            querySnap.forEach((doc) => {
+                console.log(doc, 'doc')
+                const dataReturn = {
+                    Id: doc.id,
+                    YatchName: doc.data().YatchName,
+                    SizeBoat: doc.data().SizeBoat,
+                    Included: doc.data().Included,
+                    Capacity: doc.data().Capacity,
+                    EndIn: doc.data().EndIn,
+                    StartIn: doc.data().StartIn,
+                    ExitLocation: doc.data().ExitLocation,
+                    CreatedAt: doc.data().createdAt,
+                    Images: doc.data().Images || []
+                };
+                dataRes.push(dataReturn);
+            });
+            return dataRes;
+        } catch (error) {
+            return error;
+        }
+    };
+
+    const updateBoatDoc = async (files: any, data: any, indexsToDelet: any) => {
         return new Promise(async (resolve, reject) => {
             try {
 
@@ -119,7 +146,7 @@ export const useUserManagement = () => {
         });
     };
 
-    const deleteUserDoc = async (id: any) => {
+    const deleteBoatDoc = async (id: any) => {
         return new Promise((resolve, reject) => {
             deleteDoc(doc(db, "boatsRegistred", id))
                 .then(() => resolve("deleted"))
@@ -128,9 +155,10 @@ export const useUserManagement = () => {
     };
 
     return {
-        createUserDoc,
-        getUserDoc,
-        updateUserDoc,
-        deleteUserDoc,
+        getBoatDoc,
+        createBoatsDoc,
+        getBoatsDoc,
+        updateBoatDoc,
+        deleteBoatDoc,
     };
 };
