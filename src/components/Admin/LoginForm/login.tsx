@@ -25,24 +25,6 @@ const LoginForm: React.FC = () => {
 
   const router = useRouter();
 
-  const authenticateUser = async (email: string, password: string) => {
-    // Adicione sua lógica de autenticação aqui.
-
-    // Substitua a lógica abaixo pela sua própria implementação de autenticação.
-    const response = await fetch("your_api_endpoint", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
-    });
-
-    if (response.ok) {
-      const data = await response.json();
-      return { success: true, token: data.token };
-    } else {
-      return { success: false };
-    }
-  };
-
   const onSubmit = async (data: FormData) => {
   
     const { email, password } = data;
@@ -53,7 +35,9 @@ const LoginForm: React.FC = () => {
           router.push("/dashboard");
         }
       }).catch((error) => {
+        console.log(error.code)
         if(error.code == 'auth/user-not-found') alert('usuario n existe')
+        if(error.code == 'auth/wrong-password') alert('senha errada')
       })
   };
 
