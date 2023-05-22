@@ -41,11 +41,10 @@ import {
         const dataRes = [] as any;
         querySnap.forEach((doc) => {
           const dataReturn = {
-            id: doc.data().id,
+            id: doc.id,
             name: doc.data().name,
             email: doc.data().email,
-            userImg: doc.data().userImg || null,
-            isAdmin: doc.data().isAdmin,
+            phone: doc.data().phone,
             createdAt: doc.data().createdAt,
           };
           dataRes.push(dataReturn);
