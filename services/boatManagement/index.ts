@@ -8,10 +8,7 @@ import {
     doc,
     updateDoc,
     deleteDoc,
-    arrayRemove,
-    writeBatch,
-    getDoc,
-    deleteField
+    arrayRemove
 } from "firebase/firestore";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
