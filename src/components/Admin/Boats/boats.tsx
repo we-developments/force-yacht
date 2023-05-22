@@ -42,6 +42,7 @@ export default function Boats() {
       getBoatsDoc().then((boats) => {
         if (boats.length) setBoats(boats)
         setIsLoading(false)
+        handleModalEdit()
       }).catch(err => {
         console.log('erro: ', err)
         setIsLoading(false)
