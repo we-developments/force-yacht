@@ -9,7 +9,7 @@ function classNames(...classes: Array<Object>) {
 }
 
 type BoatProps = {
-  id: string,
+  Id: string,
   Capacity: number,
   SizeBoat: string,
   Included: string,
@@ -30,7 +30,7 @@ export default function Boats() {
   const [isEdit, setIsEdit] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
 
-  const { getBoatsDoc, createBoatsDoc, updateBoatDoc } = useBoatManagement();
+  const { getBoatsDoc, createBoatsDoc, updateBoatDoc, deleteBoatDoc } = useBoatManagement();
 
   const handleModalImages = () => {
     setIsOpenModalImages(!isOpenModalImages)
@@ -55,6 +55,18 @@ export default function Boats() {
       setIsEdit(false)
     }
     setIsOpenModalEdit(!isOpenModalEdit)
+  }
+
+  const handleDeleteBoat = (itemToDelet: string) => {
+    deleteBoatDoc(itemToDelet).then(() => {
+      getBoatsDoc().then((boats) => {
+        if (boats.length) setBoats(boats)
+        setIsLoading(false)
+      }).catch(err => {
+        console.log('erro: ', err)
+        setIsLoading(false)
+      })
+    }).catch(err => console.log(err))
   }
 
   const handleUpdate = (files: any, data: any, imagesToDelet?: any) => {
@@ -143,7 +155,7 @@ export default function Boats() {
             </thead>
             <tbody>
               {boats.map((boat: BoatProps, planIdx) => (
-                <tr key={boat?.id}>
+                <tr key={boat?.Id}>
                   <td
                     className={classNames(
                       planIdx === 0 ? '' : 'border-t border-transparent',
@@ -209,7 +221,7 @@ export default function Boats() {
                   <td
                     className={classNames(
                       planIdx === 0 ? '' : 'border-t border-transparent',
-                      'relative py-3.5 pl-3 pr-4 text-right text-sm font-medium sm:pr-6'
+                      'relative py-3.5 pl-3 pr-4 text-right text-sm font-medium sm:pr-6 gap-2 flex'
                     )}
                   >
                     <button
@@ -221,7 +233,16 @@ export default function Boats() {
                         setIsEdit(true)
                       }}
                     >
-                      Edit<span className="sr-only"></span>
+                      Editar<span className="sr-only"></span>
+                    </button>
+                    <button
+                      type="button"
+                      className="inline-flex items-center rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset bg-red-400 text-white hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:bg-white"
+                      onClick={() => {
+                        handleDeleteBoat(boat.Id)
+                      }}
+                    >
+                      Deletar<span className="sr-only"></span>
                     </button>
                     {planIdx !== 0 ? <div className="absolute -top-px left-0 right-6 h-px bg-gray-200" /> : null}
                   </td>
