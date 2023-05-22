@@ -18,7 +18,7 @@ interface FormValues {
 }
 
 type BoatProps = {
-  id: string,
+  Id: string,
   Capacity: number,
   SizeBoat: string,
   Included: string,
