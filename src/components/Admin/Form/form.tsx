@@ -14,7 +14,7 @@ interface FormValues {
   handleSaveNewBoat: (values: any) => void;
   handleUpdate: (files: any, data: any, imagesToDelet?: any) => Promise<any>;
   isEdit: boolean;
-  isLoading: boolean
+  isLoading: boolean;
 }
 
 type BoatProps = {
@@ -44,7 +44,7 @@ type ErrorsProps = {
 
 export default function Formulario({ selectedBoat, handleSaveNewBoat, handleUpdate, isEdit, isLoading }: FormValues) {
   const [newFiles, setNewFiles] = useState([] as any)
-  const [filesToDelet, setFilesToDelete] = useState(["https://firebasestorage.googleapis.com/v0/b/force-yatchs.appspot.com/o/boats%2F346123735_210325811768231_7890052085532263438_n.jpg?alt=media&token=80e04d6c-fe85-4005-8f38-97dd8a99b877"])
+  const [filesToDelet, setFilesToDelete] = useState(["https://firebasestorage.googleapis.com/v0/b/force-yatchs.appspot.com/o/boats%2F342216502_255111360309178_1165087340594851566_n.jpg?alt=media&token=d05107a6-be7a-49b7-bf4c-51d92e15d8e4", "https://firebasestorage.googleapis.com/v0/b/force-yatchs.appspot.com/o/boats%2F342301932_1201673620715063_8702479337429614700_n.jpg?alt=media&token=863852be-df86-4768-9a92-127104703091"])
   const [errors, setErrors] = useState({} as ErrorsProps)
   const [updated, setUpdated] = useState(false)
   const [values, setValues] = useState(selectedBoat || {
@@ -232,9 +232,9 @@ export default function Formulario({ selectedBoat, handleSaveNewBoat, handleUpda
         </div>
       </div>
 
-      {values?.Images?.length > 0 && (
+      {isEdit && values?.Images?.length > 0 && (
         <div className="grid gap-4 grid-cols-6 mt-3">
-          {values?.Images.map((img) => {
+          {values?.Images?.map((img) => {
             let hasToDele = filesToDelet.filter(file => img === file)
             return (
               <div key={img} className="cursor-pointer" >
