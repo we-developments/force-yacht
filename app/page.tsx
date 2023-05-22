@@ -28,6 +28,7 @@ import { useIconGetter } from "../src/hooks/useIconGetter/useIconGetter";
 import Footer from "@/src/components/Footer/footer";
 import { Dialog, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
+import Modal from "@/src/components/Modal/modal";
 
 export default function HomePage() {
   const [scrolled, setScrolled] = useState(false);
@@ -35,6 +36,7 @@ export default function HomePage() {
   const [isHovered, setIsHovered] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const openVideo = (videoUrl: any) => {
     setSelectedVideo(videoUrl);
@@ -161,6 +163,10 @@ export default function HomePage() {
 
   const controls = useAnimation();
   const [ref, inView] = useInView();
+
+  const handleModal = () => {
+    setIsModalOpen(!isModalOpen);
+  };
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
@@ -536,7 +542,11 @@ export default function HomePage() {
                     <p>{image.description}</p>
                   </div>
                   <div className="flex justify-end p-4">
-                    <button className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
+                    <button
+                      type="button"
+                      onClick={handleModal}
+                      className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+                    >
                       Ver detalhes
                     </button>
                   </div>
@@ -547,11 +557,37 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="lg:h-[50rem] bg-off flex items-center">
-        <div className="md:h-4/5 w-4/5 mx-auto">
-          <h1 className="text-4xl font-bold text-primary text-center w-full">
-            Confira um pouco do nosso trabalho
-          </h1>
+      <Modal isOpen={isModalOpen} handleModal={handleModal}>
+        {/* create a modal content cards using my yacht contents and all fields */}
+        {images.map((image, index) => (
+          <div className="flex flex-col items-center justify-center" key={index}>
+            <div className="flex flex-col items-center justify-center">
+              <h1 className="text-4xl font-bold text-primary">{image.title}</h1>
+              <div className="w-8 h-1 mt-2 ml-1 flex justify-start bg-primary"></div>
+            </div>
+            <div className="flex flex-col items-center justify-center">
+              <Image
+                src={image.image}
+                alt={image.title}
+                className="object-cover h-64 w-full rounded-t-md"
+              />
+            </div>
+            <div className="flex flex-col items-center justify-center">
+              <p className="text-lg pt-4">{image.description}</p>
+            </div>
+          </div>
+        ))}
+      </Modal>
+
+      <section className="h-[20rem] sm:h-[20rem] lg:h-[50rem] bg-off flex items-center">
+        <div className="lg:h-3/5 w-4/5 mx-auto">
+          <div className="pb-4">
+            <h1 className="text-4xl font-bold text-primary text-left w-full">
+              Confira um pouco do nosso trabalho
+            </h1>
+            <div className="w-8 h-1 mt-2 ml-1 flex justify-start bg-primary"></div>
+          </div>
+
           <div
             className="grid grid-rows-5 grid-columns-6 gap-2 h-full relative cursor-pointer col-span-1"
             onMouseEnter={() => setIsHovered(true)}
@@ -624,17 +660,16 @@ export default function HomePage() {
         )}
       </section>
 
-      <section className="h-96 bg-off">
+      <section className="h-[28rem] bg-off">
         <div className="p-4 bg-white">
           {/* <div className="">
           <Image src={Ocean} alt="Logo" className="relative object-fill h-48" />
         </div> */}
-          <h1 className="text-4xl font-bold text-primary text-center">
-            Essencial para quem procura
-          </h1>
-          <div className="w-8 h-1 mt-2 ml-1 flex m-auto bg-primary"></div>
+            <h1 className="text-4xl font-bold text-primary text-center">
+              Essencial para quem procura
+              <div className="w-8 h-1 mt-2 ml-1 flex m-auto bg-primary"></div>
+            </h1>
 
-          <p></p>
           <div className="grid lg:grid-cols-3 lg:grid-rows-2 grid-cols-2 grid-rows-3 gap-5 w-full px-4 md:w-2/3 mx-auto py-4">
             <div className="col-span-1 flex justify-center items-center">
               <div>
@@ -654,7 +689,7 @@ export default function HomePage() {
             </div>
             <div className="col-span-1 flex justify-center items-center">
               <div>
-                <span className="text-primary font-bold">Churrasco </span>
+                <span className="text-primary font-bold">Churrasco em alto mar</span>
                 <div className="flex justify-center py-2">
                   <Icon icon="barbecue" svgProps={{ fill: "black" }} />
                 </div>
@@ -662,7 +697,9 @@ export default function HomePage() {
             </div>
             <div className="col-span-1 flex justify-center items-center">
               <div>
-                <span className="text-primary font-bold">Encontro em familia</span>
+                <span className="text-primary font-bold">
+                  Diversão em Familia
+                </span>
                 <div className="flex justify-center py-2">
                   <Icon icon="family" svgProps={{ fill: "black" }} />
                 </div>
