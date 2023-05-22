@@ -81,6 +81,7 @@ export default function Boats() {
             let newSelectedBoat = boats.filter((boat: any) => data.Id == boat.Id)
             setSelectedBoat(newSelectedBoat)
             resolve(newSelectedBoat)
+            handleModalEdit()
           }).catch(err => {
             reject(err)
             setIsLoading(false)
