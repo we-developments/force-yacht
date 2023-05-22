@@ -1,3 +1,4 @@
+import { firebaseApp } from "@/api";
 import {
     getFirestore,
     addDoc,
@@ -8,9 +9,13 @@ import {
     doc,
     updateDoc,
     deleteDoc,
-    arrayRemove
+    arrayRemove,
+    FieldValue,
+    writeBatch,
+    arrayUnion
 } from "firebase/firestore";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { update } from "react-spring";
 
 const db = getFirestore();
 const storage = getStorage();
@@ -130,10 +135,8 @@ export const useBoatManagement = () => {
                 const refDoc = doc(db, "boatsRegistred", data.Id);
 
                 if (ImagesToDelete && ImagesToDelete.length > 0) {
-                    await updateDoc(refDoc, {
-                        Images:  arrayRemove(...ImagesToDelete)
-                    })
-                }   
+                    updateDoc(refDoc, {Images: '' })
+                }
 
                 if (files) {
                     let imagesToSave = [...data.Images] as any
