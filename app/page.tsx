@@ -667,7 +667,7 @@ export default function HomePage() {
         </div> */}
             <h1 className="text-4xl font-bold text-primary text-center">
               Essencial para quem procura
-              <div className="w-8 h-1 mt-2 ml-1 flex m-auto bg-primary"></div>
+              {/* <div className="w-8 h-1 mt-2 ml-1 flex m-auto bg-primary"></div> */}
             </h1>
 
           <div className="grid lg:grid-cols-3 lg:grid-rows-2 grid-cols-2 grid-rows-3 gap-5 w-full px-4 md:w-2/3 mx-auto py-4">
