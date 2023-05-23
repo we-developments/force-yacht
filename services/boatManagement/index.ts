@@ -1,3 +1,4 @@
+import { firebaseApp } from "@/api";
 import {
     getFirestore,
     addDoc,
@@ -8,8 +9,13 @@ import {
     doc,
     updateDoc,
     deleteDoc,
+    arrayRemove,
+    FieldValue,
+    writeBatch,
+    arrayUnion
 } from "firebase/firestore";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { update } from "react-spring";
 
 const db = getFirestore();
 const storage = getStorage();
@@ -22,7 +28,6 @@ export const useBoatManagement = () => {
 
             try {
                 if (Images) {
-                    console.log(Images, 'IMAGES')
                     for (const file in Images) {
                         let position = Number(file)
                         if (position > Images.length || !Number.isNaN(position)) {
@@ -39,7 +44,6 @@ export const useBoatManagement = () => {
 
             resolve(imagesToSave)
         })
-
     }
 
     const createBoatsDoc = async (data: any) => {
@@ -80,12 +84,16 @@ export const useBoatManagement = () => {
             const dataRes = [] as any;
             querySnap.forEach((doc) => {
                 const dataReturn = {
-                    id: doc.data().id,
-                    name: doc.data().name,
-                    email: doc.data().email,
-                    images: doc.data().userImg || [],
-                    isAdmin: doc.data().isAdmin,
-                    createdAt: doc.data().createdAt,
+                    Id: doc.id,
+                    YatchName: doc.data().YatchName,
+                    SizeBoat: doc.data().SizeBoat,
+                    Included: doc.data().Included,
+                    Capacity: doc.data().Capacity,
+                    EndIn: doc.data().EndIn,
+                    StartIn: doc.data().StartIn,
+                    ExitLocation: doc.data().ExitLocation,
+                    CreatedAt: doc.data().CreatedAt,
+                    Images: doc.data().Images || []
                 };
                 dataRes.push(dataReturn);
             });
@@ -101,7 +109,6 @@ export const useBoatManagement = () => {
             const querySnap = await getDocs(q);
             const dataRes = [] as any;
             querySnap.forEach((doc) => {
-                console.log(doc, 'doc')
                 const dataReturn = {
                     Id: doc.id,
                     YatchName: doc.data().YatchName,
@@ -111,7 +118,7 @@ export const useBoatManagement = () => {
                     EndIn: doc.data().EndIn,
                     StartIn: doc.data().StartIn,
                     ExitLocation: doc.data().ExitLocation,
-                    CreatedAt: doc.data().createdAt,
+                    CreatedAt: doc.data().CreatedAt,
                     Images: doc.data().Images || []
                 };
                 dataRes.push(dataReturn);
@@ -122,27 +129,24 @@ export const useBoatManagement = () => {
         }
     };
 
-    const updateBoatDoc = async (files: any, data: any, indexsToDelet: any) => {
+    const updateBoatDoc = async (files: any, data: any, ImagesToDelete?: any) => {
         return new Promise(async (resolve, reject) => {
             try {
+                const refDoc = doc(db, "boatsRegistred", data.Id);
 
-                if (indexsToDelet) {
-                    let newImagesToSave = data.images.filter((_: any, index: any) => !indexsToDelet.includes(index))
-                    const refDoc = doc(db, "boatsRegistred", data.id);
-                    await updateDoc(refDoc, { ...data, images: newImagesToSave });
+                if (ImagesToDelete && ImagesToDelete.length > 0) {
+                    updateDoc(refDoc, {Images: '' })
                 }
 
                 if (files) {
-                    let imagesToSave = [...data.images] as any
-                    files.map(async (file: any) => {
-                        const storageRef = ref(storage, `boats/${file?.name}`);
-                        uploadBytes(storageRef, file).then((downloadUrl) => {
-                            imagesToSave.push(downloadUrl)
-                        });
-                    })
+                    let imagesToSave = [...data.Images] as any
+                    salvarImagens(files).then(async (newImagesToSave: any) => {
+                        imagesToSave.push(...newImagesToSave)
+                        await updateDoc(refDoc, { ...data, Images: imagesToSave });
+                        resolve('success')
+                    }).catch(error => reject(error))
 
-                    const refDoc = doc(db, "boatsRegistred", data.id);
-                    await updateDoc(refDoc, { ...data, images: imagesToSave });
+
 
                 } else {
                     const refDoc = doc(db, "boatsRegistred", data.id);

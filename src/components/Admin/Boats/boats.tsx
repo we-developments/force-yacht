@@ -9,7 +9,7 @@ function classNames(...classes: Array<Object>) {
 }
 
 type BoatProps = {
-  id: string,
+  Id: string,
   Capacity: number,
   SizeBoat: string,
   Included: string,
@@ -27,32 +27,79 @@ export default function Boats() {
   const [isOpenModalImages, setIsOpenModalImages] = useState(false)
   const [selectedBoat, setSelectedBoat] = useState({} as BoatProps)
   const [isOpenModalEdit, setIsOpenModalEdit] = useState(false)
+  const [isEdit, setIsEdit] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
 
-  const { getBoatsDoc, createBoatsDoc } = useBoatManagement();
+  const { getBoatsDoc, createBoatsDoc, updateBoatDoc, deleteBoatDoc } = useBoatManagement();
 
   const handleModalImages = () => {
     setIsOpenModalImages(!isOpenModalImages)
   }
 
   const handleSaveNewBoat = (values: any) => {
+    setIsLoading(true)
     createBoatsDoc(values).then(() => {
       getBoatsDoc().then((boats) => {
         if (boats.length) setBoats(boats)
-      }).catch(err => console.log('erro: ', err))
+        setIsLoading(false)
+        handleModalEdit()
+      }).catch(err => {
+        console.log('erro: ', err)
+        setIsLoading(false)
+      })
     })
   }
 
   const handleModalEdit = () => {
-    if (isOpenModalEdit){ 
+    if (isOpenModalEdit) {
       setSelectedBoat({} as BoatProps)
+      setIsEdit(false)
     }
     setIsOpenModalEdit(!isOpenModalEdit)
   }
 
+  const handleDeleteBoat = (itemToDelet: string) => {
+    deleteBoatDoc(itemToDelet).then(() => {
+      getBoatsDoc().then((boats) => {
+        if (boats.length) setBoats(boats)
+        setIsLoading(false)
+      }).catch(err => {
+        console.log('erro: ', err)
+        setIsLoading(false)
+      })
+    }).catch(err => console.log(err))
+  }
+
+  const handleUpdate = (files: any, data: any, imagesToDelet?: any) => {
+    setIsLoading(true)
+    return new Promise((resolve, reject) => {
+      if (files && data) {
+        updateBoatDoc(files, data, imagesToDelet).then(() => {
+          getBoatsDoc().then((boats) => {
+            if (boats.length) setBoats(boats)
+            setIsLoading(false)
+            let newSelectedBoat = boats.filter((boat: any) => data.Id == boat.Id)
+            setSelectedBoat(newSelectedBoat)
+            resolve(newSelectedBoat)
+            handleModalEdit()
+          }).catch(err => {
+            reject(err)
+            setIsLoading(false)
+          })
+        }).catch(err => console.log(err))
+      }
+    })
+  }
+
   useEffect(() => {
+    setIsLoading(true)
     getBoatsDoc().then((boats) => {
       if (boats.length) setBoats(boats)
-    }).catch(err => console.log('erro: ', err))
+      setIsLoading(false)
+    }).catch(err => {
+      console.log('erro: ', err)
+      setIsLoading(false)
+    })
   }, [])
 
   return (
@@ -110,7 +157,7 @@ export default function Boats() {
             </thead>
             <tbody>
               {boats.map((boat: BoatProps, planIdx) => (
-                <tr key={boat?.id}>
+                <tr key={boat?.Id}>
                   <td
                     className={classNames(
                       planIdx === 0 ? '' : 'border-t border-transparent',
@@ -168,7 +215,7 @@ export default function Boats() {
                       'px-3 py-3.5 text-sm text-gray-500'
                     )}
                   >
-                    <PhotoIcon width={32} className="hover:text-primary cursor-pointer hover:animate-bounce" onClick={() => {
+                    <PhotoIcon width={32} className="hover:text-primary cursor-pointer " onClick={() => {
                       handleModalImages()
                       setSelectedBoat(boat)
                     }} />
@@ -176,7 +223,7 @@ export default function Boats() {
                   <td
                     className={classNames(
                       planIdx === 0 ? '' : 'border-t border-transparent',
-                      'relative py-3.5 pl-3 pr-4 text-right text-sm font-medium sm:pr-6'
+                      'relative py-3.5 pl-3 pr-4 text-right text-sm font-medium sm:pr-6 gap-2 flex'
                     )}
                   >
                     <button
@@ -185,9 +232,19 @@ export default function Boats() {
                       onClick={() => {
                         setSelectedBoat(boat)
                         handleModalEdit()
+                        setIsEdit(true)
                       }}
                     >
-                      Edit<span className="sr-only"></span>
+                      Editar<span className="sr-only"></span>
+                    </button>
+                    <button
+                      type="button"
+                      className="inline-flex items-center rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset bg-red-400 text-white hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:bg-white"
+                      onClick={() => {
+                        handleDeleteBoat(boat.Id)
+                      }}
+                    >
+                      Deletar<span className="sr-only"></span>
                     </button>
                     {planIdx !== 0 ? <div className="absolute -top-px left-0 right-6 h-px bg-gray-200" /> : null}
                   </td>
@@ -222,7 +279,7 @@ export default function Boats() {
       </Modal>
 
       <Modal isOpen={isOpenModalEdit} handleModal={handleModalEdit} >
-        <Formulario selectedBoat={selectedBoat} handleSaveNewBoat={handleSaveNewBoat} />
+        <Formulario selectedBoat={selectedBoat} handleSaveNewBoat={handleSaveNewBoat} handleUpdate={handleUpdate} isEdit={isEdit} isLoading={isLoading} />
       </Modal>
     </div>
   )
