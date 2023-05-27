@@ -597,7 +597,7 @@ export default function HomePage() {
       <Modal
         isOpen={isModalOpen}
         handleModal={handleModal}
-        stylesContent={"xl:w-11/12 h-full"}
+        stylesContent={"xl:w-3/4 h-full"}
       >
         <Carousel
           responsive={{
@@ -627,7 +627,7 @@ export default function HomePage() {
               <Image
                 src={image.image}
                 alt={image.title}
-                className="object-cover lg:h-80 w-full"
+                className="object-cover lg:h-80 w-full w-"
               />
               <div className="absolute inset-0 bg-black opacity-30 flex items-center justify-center">
                 <h1 className="text-white text-4xl font-bold">
@@ -650,7 +650,7 @@ export default function HomePage() {
           <div>
             <div className="border-b border-black/10 py-4">
               <h2 className="text-2xl font-extralight text-primary font-Marcellus">
-                Informações da Embarcação
+                Detalhes:
               </h2>
               <div className="w-8 h-0.5 ml-1 flex justify-start bg-primary"></div>
             </div>

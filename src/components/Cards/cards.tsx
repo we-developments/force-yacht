@@ -57,7 +57,7 @@ export default function Card() {
               Fornecemos um serviço essencial para quem procura
             </h2>
             <p className="mt-2 text-lg leading-8 text-gray-300 font-Marcellus">
-              Learn how to grow your business with our expert advice.
+              Diversão em família, eventos, comemorações...	
             </p>
           </div>
         </div>
