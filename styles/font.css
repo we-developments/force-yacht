@@ -1,0 +1,18 @@
+@font-face {
+    font-family: 'Adoha';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Adoha'), url('https://fonts.cdnfonts.com/s/75977/Adoha-axGVJ.woff') format('woff');
+}
+@font-face {
+    font-family: 'Adoha';
+    font-style: normal;
+    font-weight: 700;
+    src: local('Adoha Bold'), local('Adoha-Bold'), url('https://fonts.cdnfonts.com/s/75977/Adoha-Bold-axGVJ.woff') format('woff');
+}
+@font-face {
+    font-family: 'Marcellus';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Marcellus'), url('https://fonts.cdnfonts.com/s/15818/Marcellus-Regular.woff') format('woff');
+}
