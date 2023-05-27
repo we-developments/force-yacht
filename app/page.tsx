@@ -19,7 +19,7 @@ import yt4 from "../src/images/pngs/y4.jpg";
 import yt5 from "../src/images/pngs/y5.jpg";
 import yt6 from "../src/images/pngs/y6.jpg";
 import Logo from "../src/images/pngs/force.png";
-// import Barco from "../src/images/pngs/barco.png";
+import insta from "../src/images/pngs/insta.png";
 import manBoat from "../src/images/pngs/manboat.png";
 import jumpGirls from "../src/images/pngs/jump-girls.png";
 import banner5 from "../src/images/pngs/banner5.jpg";
@@ -35,6 +35,7 @@ import dynamic from "next/dynamic";
 import CardList from "@/src/components/Cards/cards";
 import { useBoatManagement } from "@/services/boatManagement";
 import { collection, getDocs, getFirestore, query } from "firebase/firestore";
+import { geoJsonData } from "@/src/utils/geo";
 
 interface Boat {
   Id?: string;
@@ -54,7 +55,6 @@ interface MyPageProps {
   boats: Boat[];
 }
 
-
 export default function HomePage() {
   const [scrolled, setScrolled] = useState(false);
   const [selectedVideo, setSelectedVideo] = useState(null);
@@ -66,7 +66,6 @@ export default function HomePage() {
   const [selectedBoat, setSelectedBoat] = useState<Boat>([] as any);
 
   const { getBoatsDoc } = useBoatManagement();
-
 
   const openVideo = (videoUrl: any) => {
     setSelectedVideo(videoUrl);
@@ -250,8 +249,7 @@ export default function HomePage() {
   useEffect(() => {
     getBoatsDoc().then((res) => {
       setBoats(res);
-      console.log(res);
-    })
+    });
   }, []);
 
   return (
@@ -311,7 +309,7 @@ export default function HomePage() {
               <li className="text-sm sm:text-base text-center flex items-center">
                 <span
                   onClick={() => scrollTo("nossas-embarcacoes")}
-                  className="text-white"
+                  className="text-white cursor-pointer"
                 >
                   Nossas embarcações
                 </span>
@@ -319,7 +317,7 @@ export default function HomePage() {
               <li className="text-sm sm:text-base text-center flex items-center">
                 <span
                   onClick={() => scrollTo("servicos")}
-                  className="text-white"
+                  className="text-white cursor-pointer"
                 >
                   Serviços
                 </span>
@@ -385,7 +383,6 @@ export default function HomePage() {
                     </button>
                   </div>
                 </Transition.Child>
-                {/* Sidebar component, swap this element with another sidebar if you like */}
                 <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-primary px-6 pb-4">
                   <div className="flex shrink-0 items-center">
                     <Image
@@ -416,14 +413,6 @@ export default function HomePage() {
                           </li>
                           <li className="text-sm sm:text-base text-center flex items-center border-b-2">
                             <span
-                              onClick={() => scrollTo("nossas-embarcacoes")}
-                              className="text-white"
-                            >
-                              Nossas embarcações
-                            </span>
-                          </li>
-                          <li className="text-sm sm:text-base text-center flex items-center border-b-2">
-                            <span
                               onClick={() => scrollTo("servicos")}
                               className="text-white"
                             >
@@ -431,9 +420,21 @@ export default function HomePage() {
                             </span>
                           </li>
                           <li className="text-sm sm:text-base text-center flex items-center border-b-2">
-                            <a href="#" className="text-white">
-                              Clientes
-                            </a>
+                            <span
+                              onClick={() => scrollTo("nossas-embarcacoes")}
+                              className="text-white"
+                            >
+                              Nossas embarcações
+                            </span>
+                          </li>
+
+                          <li className="text-sm sm:text-base text-center flex items-center border-b-2">
+                            <span
+                              onClick={() => scrollTo("onde-estamos")}
+                              className="text-white"
+                            >
+                              Onde nos encontrar
+                            </span>
                           </li>
                         </ul>
                       </li>
@@ -461,11 +462,11 @@ export default function HomePage() {
           Force Yachts
         </animated.h1>
         <animated.div style={fade} className="flex gap-2 ">
-          <div className="block h-20">
-            <span className="text-primary text-4xl lg:text-6xl sm:text-5xl font-Marcellus items-center flex gap-4">
-              <Icon icon="wave" svgProps={{ fill: "white" }} />
+          <div className="flex gap-4 h-20">
+            <span className="text-white text-4xl lg:text-6xl sm:text-5xl font-Marcellus items-center flex gap-4">
               Navegue
             </span>
+              <Icon icon="wave" svgProps={{ fill: "white" }} />
           </div>
         </animated.div>
         <animated.h1
@@ -476,7 +477,7 @@ export default function HomePage() {
         </animated.h1>
         <animated.p
           style={fade}
-          className="text-lg sm:text-sm text-white font-Marcellus flex items-center mt-5"
+          className="text-lg sm:text-xl text-white font-Marcellus flex items-center mt-5"
         >
           Alugueis premium de yachts e lanchas,
           <br />
@@ -503,7 +504,7 @@ export default function HomePage() {
             <div className="flex justify-center">
               <div className="pt-2 w-full px-4 lg:w-4/5 sm:p-4 z-20">
                 <div className="flex justify-center mb-2">
-                  <Icon icon="wheel" svgProps={{ fill: "black" }} />
+                  <Icon icon="wheel" svgProps={{ fill: "#006aa1" }} />
                 </div>
                 <h1 className="text-4xl sm:text-5xl lg:text-4xl text-center font-Marcellus font-bold text-primary">
                   Sobre nós
@@ -599,19 +600,26 @@ export default function HomePage() {
                   <Image
                     src={boat?.Images[0]}
                     alt={boat.YatchName}
-                    height={1500}   
-                    width={1500}                 
+                    height={1500}
+                    width={1500}
                     className="object-cover h-64 w-full rounded-t-2xl"
                   />
-                  <div className="mt-2 p-8 relative ">
-                    <span className="flex gap-2 text-sm text-gray-400">
-                      <Icon icon="location" svgProps={{ fill: "#DBDFE4" }} />
-                      {boat.ExitLocation}
-                    </span>
-                    <h2 className="text-xl font-normal py-4 text-primary">
-                      {boat.YatchName}
-                    </h2>
-                    <p className="font-extralight text-gray-600">{boat?.Description}</p>
+                  <div className="mt-2 px-8 py-4 relative">
+                    <div className="flex justify-between">
+                      <h2 className="text-xl font-bold text-primary">
+                        {boat.YatchName}
+                      </h2>
+                      <span className="flex gap-2 text-base text-gray-400">
+                        <Icon icon="location" svgProps={{ fill: "#DBDFE4" }} />
+                        {boat.ExitLocation}
+                      </span>
+                    </div>
+                    <div className="h-32 py-4">
+                      <p className="font-extralight text-gray-600">
+                        TESTE TESTE
+                        {boat?.Description}
+                      </p>
+                    </div>
                   </div>
                   <div className="flex justify-end p-4">
                     <button
@@ -649,54 +657,60 @@ export default function HomePage() {
             },
           }}
           removeArrowOnDeviceType={["tablet", "mobile"]}
-          arrows={true}
+          arrows={selectedBoat?.Images?.length > 1 ? true : false}
           renderDotsOutside={true}
-          showDots={selectedBoat?.Images?.length >= 1 ? false : true}
+          showDots={false}
+          swipeable={selectedBoat?.Images?.length > 1 ? true : false}
+          draggable={selectedBoat?.Images?.length > 1 ? true : false}
           infinite={true}
-          autoPlay={true}
+          autoPlay={selectedBoat?.Images?.length < 1 ? true : false}
           containerClass="carousel-container"
         >
-          {selectedBoat && selectedBoat?.Images?.map((image, index) => (
-            <div className="relative w-full" key={index}>
-              <Image
-                height={1500}
-                width={1500}
-                src={image}
-                alt={selectedBoat.YatchName}
-                className="object-cover lg:h-80 w-full w-"
-              />
-              <div className="absolute inset-0 bg-black opacity-30 flex items-center justify-center">
-                <h1 className="text-white text-4xl font-bold">
-                  {selectedBoat.YatchName}
-                </h1>
+          {selectedBoat &&
+            selectedBoat?.Images?.map((image, index) => (
+              <div className="relative w-full h-[44rem]" key={index}>
+                <Image
+                  height={1500}
+                  width={1500}
+                  src={image}
+                  alt={selectedBoat?.YatchName}
+                  className="object-cover lg:h-[44rem] w-full"
+                />
+                <div className="absolute inset-0 bg-black opacity-20 flex items-center justify-center">
+                  <h1 className="text-white text-5xl font-bold">
+                    {selectedBoat?.YatchName}
+                  </h1>
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
         </Carousel>
-        <div className="md:grid grid-cols-2 p-4">
-          <div className="flex justify-left">
-            <div className="border-b border-black/10 py-4">
+        <div className="md:grid grid-cols-2 p-4 gap-5 h-3/4">
+          <div className="flex justify-left border-2 rounded-2xl">
+            <div className="border-b border-black/10 p-4">
               <h2 className="text-2xl font-extralight text-primary font-Marcellus ">
                 Informações da Embarcação
               </h2>
               <div className="w-8 h-0.5 ml-1 flex justify-start bg-primary"></div>
-              aa
+              <div className="flex gap-2 py-4">
+                <Icon icon="boat" />
+                <h2 className="">{selectedBoat?.YatchName}</h2>
+              </div>
             </div>
           </div>
-          <div>
-            <div className="border-b border-black/10 py-4">
+          <div className=" border-2 rounded-2xl p-4">
+            <div className="">
               <h2 className="text-2xl font-extralight text-primary font-Marcellus">
                 Detalhes:
               </h2>
               <div className="w-8 h-0.5 ml-1 flex justify-start bg-primary"></div>
             </div>
-            <div className="grid grid-cols-2 py-4 gap-4">
+            <div className="grid grid-cols-1 py-4 gap-4">
               <div className="flex justify-start gap-2">
                 <div className="flex items-center">
                   <Icon icon="people" />
                 </div>
                 <span className="font-light flex items-center">
-                  Capacidade: {images[0].capacity} pessoas
+                  Capacidade: {selectedBoat?.Capacity} pessoas
                 </span>
               </div>
               <div className="flex justify-start gap-2">
@@ -704,7 +718,7 @@ export default function HomePage() {
                   <Icon icon="boatSize" />
                 </div>
                 <span className="font-light flex items-center">
-                  Tamanho {images[0].sizeBoat}
+                  Tamanho {selectedBoat?.SizeBoat}
                 </span>
               </div>
               <div className="flex justify-start gap-2">
@@ -712,7 +726,7 @@ export default function HomePage() {
                   <Icon icon="enter" />
                 </div>
                 <span className="font-light flex items-center">
-                  Horário Entrada {images[0].entranceTime}
+                  Entrada {selectedBoat?.StartIn}
                 </span>
               </div>
               <div className="flex justify-start gap-2">
@@ -720,23 +734,23 @@ export default function HomePage() {
                   <Icon icon="exit" />
                 </div>
                 <span className="font-light flex items-center">
-                  Horário Volta {images[0].exitTime}
+                  Volta {selectedBoat?.EndIn}
+                </span>
+              </div>
+              <div className="flex justify-start gap-2">
+                <div className="flex items-center">
+                  <Icon icon="included" />
+                </div>
+                <span className="font-light flex items-center">
+                  Incluso: {selectedBoat?.Included}
                 </span>
               </div>
             </div>
-            <div className="flex justify-start gap-2">
-              <div className="flex items-center">
-                <Icon icon="included" />
-              </div>
-              <span className="font-light flex items-center">
-                Incluso: {images[0].includes}
-              </span>
-            </div>
           </div>
+          <div>a</div>
         </div>
       </Modal>
 
-      
       <div className="bg-off">
         <CardList />
       </div>
@@ -822,76 +836,18 @@ export default function HomePage() {
         )}
       </section>
 
-
-      {/* <section className="h-[28rem] bg-off">
-        <div className="p-4 bg-white">
-          <div className="">
-          <Image src={Ocean} alt="Logo" className="relative object-fill h-48" />
-        </div>
-          <h1 className="text-4xl font-bold text-primary text-center font-Marcellus ">
-            Essencial para quem procura
-            <div className="w-8 h-1 mt-2 ml-1 flex m-auto bg-primary"></div>
-          </h1>
-          <div className="grid lg:grid-cols-3 lg:grid-rows-2 grid-cols-2 grid-rows-3 gap-5 w-full px-4 md:w-2/3 mx-auto py-4">
-            <div className="col-span-1 flex justify-center items-center">
-              <div>
-                <span className="text-primary font-bold">Comemorações</span>
-                <div className="flex justify-center py-2">
-                  <Icon icon="party" svgProps={{ fill: "black" }} />
-                </div>
-              </div>
-            </div>
-            <div className="col-span-1 flex justify-center items-center">
-              <div>
-                <span className="text-primary font-bold">Visitações</span>
-                <div className="flex justify-center py-2">
-                  <Icon icon="lake" svgProps={{ fill: "black" }} />
-                </div>
-              </div>
-            </div>
-            <div className="col-span-1 flex justify-center items-center">
-              <div>
-                <span className="text-primary font-bold">
-                  Churrasco em alto mar
-                </span>
-                <div className="flex justify-center py-2">
-                  <Icon icon="barbecue" svgProps={{ fill: "black" }} />
-                </div>
-              </div>
-            </div>
-            <div className="col-span-1 flex justify-center items-center">
-              <div>
-                <span className="text-primary font-bold">
-                  Diversão em Familia
-                </span>
-                <div className="flex justify-center py-2">
-                  <Icon icon="family" svgProps={{ fill: "black" }} />
-                </div>
-              </div>
-            </div>
-            <div className="col-span-1 flex justify-center items-center">
-              <div>
-                <span className="text-primary font-bold">Festas</span>
-                <div className="flex justify-center py-2">
-                  <Icon icon="dj" svgProps={{ fill: "black" }} />
-                </div>
-              </div>
-            </div>
-          </div>
-
-        </div>
-      </section> */}
-
-      <section className="w-full pb-12 sm:bg-white md:bg-off flex items-center">
+      <section
+        className="w-full pb-12 sm:bg-white md:bg-off flex items-center"
+        id="onde-estamos"
+      >
         <div className="md:grid grid-cols-2 sm:w-4/5 mx-auto pt-20">
           <div className="col-span-1 flex justify-center relative z-10 bg-white rounded-2xl">
             <Image src={jumpGirls} alt="boat" className="w-full rounded-2xl" />
           </div>
           <div className="col-span-1 z-20 relative bg-white rounded-2xl">
             <div className="p-8">
-              <h1 className="text-4xl font-bold text-primary font-Marcellus ">
-                {" "}
-                Por onde estamos?
+              <h1 className="text-4xl font-bold text-primary font-Marcellus">
+                Por onde nos encontrar?
               </h1>
               <div className="w-8 h-1 mt-2 ml-1 flex justify-start bg-primary"></div>
               <p className="text-lg pt-4 font-extralight text-gray-600">
@@ -901,6 +857,16 @@ export default function HomePage() {
                 voluptatum, quibusdam, quia, quod voluptates quos voluptate
                 voluptatibus quas doloribus quidem fugiat.
               </p>
+            </div>
+            <div className="flex px-8">
+              <Link href="https://www.instagram.com/forceyachts/" target="_blank">
+                <Image src={insta} alt="insta" height={300}/>
+              </Link>
+              <div className="p-4">
+                <h1 className="text-2xl font-bold text-primary font-Marcellus">
+                Nos encontre pelas redes sociais.
+                </h1>                  
+              </div>
             </div>
           </div>
         </div>
