@@ -4,7 +4,7 @@ export interface ModalProps {
     children?: React.ReactNode;
     stylesContainer?: any;
     stylesContent?: any;
-    handleModal: () => void;
+    handleModal: (item?: any) => void;
 }
 
 export default function Modal({ isOpen, children, stylesContainer, stylesContent, handleModal }: ModalProps) {

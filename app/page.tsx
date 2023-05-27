@@ -38,7 +38,7 @@ import { collection, getDocs, getFirestore, query } from "firebase/firestore";
 
 interface Boat {
   Id?: string;
-  YatchName?: string;
+  YatchName: string;
   SizeBoat?: string;
   Included?: string;
   Capacity?: number;
@@ -46,7 +46,8 @@ interface Boat {
   StartIn?: string;
   ExitLocation?: string;
   CreatedAt?: string;
-  Images?: string[];
+  Images: string[];
+  Description?: string;
 }
 
 interface MyPageProps {
@@ -62,6 +63,7 @@ export default function HomePage() {
   const [isMobile, setIsMobile] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [boats, setBoats] = useState<Boat[]>([]);
+  const [selectedBoat, setSelectedBoat] = useState<Boat>([] as any);
 
   const { getBoatsDoc } = useBoatManagement();
 
@@ -224,7 +226,8 @@ export default function HomePage() {
   const controls = useAnimation();
   const [ref, inView] = useInView();
 
-  const handleModal = () => {
+  const handleModal = (boat: Boat) => {
+    setSelectedBoat(boat);
     setIsModalOpen(!isModalOpen);
   };
 
@@ -596,8 +599,8 @@ export default function HomePage() {
                   <Image
                     src={boat?.Images[0]}
                     alt={boat.YatchName}
-                    width={100}
-                    height={100}
+                    height={1500}   
+                    width={1500}                 
                     className="object-cover h-64 w-full rounded-t-2xl"
                   />
                   <div className="mt-2 p-8 relative ">
@@ -608,12 +611,12 @@ export default function HomePage() {
                     <h2 className="text-xl font-normal py-4 text-primary">
                       {boat.YatchName}
                     </h2>
-                    <p className="font-extralight text-gray-600">{boat.description}</p>
+                    <p className="font-extralight text-gray-600">{boat?.Description}</p>
                   </div>
                   <div className="flex justify-end p-4">
                     <button
                       type="button"
-                      onClick={handleModal}
+                      onClick={() => handleModal(boat)}
                       className="bg-transparent hover:bg-blue-500 text-blue-700 font-extralight hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
                     >
                       Ver detalhes
@@ -648,21 +651,23 @@ export default function HomePage() {
           removeArrowOnDeviceType={["tablet", "mobile"]}
           arrows={true}
           renderDotsOutside={true}
-          showDots={false}
+          showDots={selectedBoat?.Images?.length >= 1 ? false : true}
           infinite={true}
           autoPlay={true}
           containerClass="carousel-container"
         >
-          {images.map((image, index) => (
+          {selectedBoat && selectedBoat?.Images?.map((image, index) => (
             <div className="relative w-full" key={index}>
               <Image
-                src={image.image}
-                alt={image.title}
+                height={1500}
+                width={1500}
+                src={image}
+                alt={selectedBoat.YatchName}
                 className="object-cover lg:h-80 w-full w-"
               />
               <div className="absolute inset-0 bg-black opacity-30 flex items-center justify-center">
                 <h1 className="text-white text-4xl font-bold">
-                  {images[0].title}
+                  {selectedBoat.YatchName}
                 </h1>
               </div>
             </div>
@@ -780,7 +785,7 @@ export default function HomePage() {
               />
             </div>
             {/* Insira os outros elementos de imagem aqui */}
-            {window.innerWidth < 800 ? false : isHovered && (
+            {isHovered && (
               <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
                 <div className="">
                   <span className="text-white text-3xl">
