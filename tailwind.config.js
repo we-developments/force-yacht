@@ -42,12 +42,8 @@ module.exports = {
         'footer': '#122442',
       },     
       fontFamily: {
+        'Adoha': ['Adoha', 'sans-serif'],
         'Marcellus': ['Marcellus', 'sans-serif'],
-        'Roboto': ['Roboto', 'sans-serif'],
-        'Roboto Slab': ['Roboto Slab', 'serif'],
-        'Roboto Condensed': ['Roboto Condensed', 'sans-serif'],
-        'Roboto Mono': ['Roboto Mono', 'monospace'],
-        'Roboto Mono Slab': ['Roboto Mono Slab', 'monospace'],
       },
       fontSize: {
         'large': '5.5rem',
@@ -55,5 +51,7 @@ module.exports = {
 
     },
   },
-  plugins: [],
+  plugins: [
+    require('@tailwindcss/aspect-ratio'),
+  ],
 }

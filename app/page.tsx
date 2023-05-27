@@ -1,7 +1,7 @@
 "use client";
 
 // React Libs
-import React, { useState, useEffect, Fragment } from "react";
+import React, { useState, useEffect, Fragment, useMemo } from "react";
 import { useInView } from "react-intersection-observer";
 import { motion, useAnimation } from "framer-motion";
 import Image from "next/image";
@@ -9,6 +9,7 @@ import { useSpring, animated } from "react-spring";
 import Link from "next/link";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
+import "../styles/font.css";
 
 // Assets
 import yt1 from "../src/images/pngs/y1.jpg";
@@ -27,7 +28,11 @@ import banner5 from "../src/images/pngs/banner5.jpg";
 import { useIconGetter } from "../src/hooks/useIconGetter/useIconGetter";
 import Footer from "@/src/components/Footer/footer";
 import { Dialog, Transition } from "@headlessui/react";
-import { XMarkIcon } from "@heroicons/react/24/outline";
+import { UserIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import Modal from "@/src/components/Modal/modal";
+import Faq from "@/src/components/Faq/faq";
+import dynamic from "next/dynamic";
+import CardList from "@/src/components/Cards/cards";
 
 export default function HomePage() {
   const [scrolled, setScrolled] = useState(false);
@@ -35,6 +40,7 @@ export default function HomePage() {
   const [isHovered, setIsHovered] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const openVideo = (videoUrl: any) => {
     setSelectedVideo(videoUrl);
@@ -53,6 +59,13 @@ export default function HomePage() {
       id: 1,
       image: yt1,
       title: "Yacht 1",
+      capacity: 10,
+      includes: "Churras e bebidas",
+      hasSeaman: true,
+      entranceTime: "10:00",
+      exitTime: "18:00",
+      sizeBoat: "40 pés",
+      local: "Angra dos Reis",
       description:
         "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam voluptatum, quibusdam, quia, quod voluptates quos voluptate voluptatibus quas doloribus quidem fugiat.",
     },
@@ -60,6 +73,11 @@ export default function HomePage() {
       id: 2,
       image: yt2,
       title: "Yacht 2",
+      hasSeaman: true,
+      entranceTime: "10:00",
+      exitTime: "18:00",
+      sizeBoat: "40 pés",
+      local: "Angra dos Reis",
       description:
         "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam voluptatum, quibusdam, quia, quod voluptates quos voluptate voluptatibus quas doloribus quidem fugiat.",
     },
@@ -67,6 +85,11 @@ export default function HomePage() {
       id: 3,
       image: yt3,
       title: "Yacht 3",
+      hasSeaman: true,
+      entranceTime: "10:00",
+      exitTime: "18:00",
+      sizeBoat: "40 pés",
+      local: "Angra dos Reis",
       description:
         "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam voluptatum, quibusdam, quia, quod voluptates quos voluptate voluptatibus quas doloribus quidem fugiat.",
     },
@@ -74,6 +97,11 @@ export default function HomePage() {
       id: 4,
       image: yt4,
       title: "Yacht 4",
+      hasSeaman: true,
+      entranceTime: "10:00",
+      exitTime: "18:00",
+      sizeBoat: "40 pés",
+      local: "Angra dos Reis",
       description:
         "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam voluptatum, quibusdam, quia, quod voluptates quos voluptate voluptatibus quas doloribus quidem fugiat.",
     },
@@ -81,6 +109,11 @@ export default function HomePage() {
       id: 5,
       image: yt5,
       title: "Yacht 5",
+      hasSeaman: true,
+      entranceTime: "10:00",
+      exitTime: "18:00",
+      sizeBoat: "40 pés",
+      local: "Angra dos Reis",
       description:
         "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam voluptatum, quibusdam, quia, quod voluptates quos voluptate voluptatibus quas doloribus quidem fugiat.",
     },
@@ -88,6 +121,11 @@ export default function HomePage() {
       id: 6,
       image: yt6,
       title: "Yacht 6",
+      hasSeaman: true,
+      entranceTime: "10:00",
+      exitTime: "18:00",
+      sizeBoat: "40 pés",
+      local: "Angra dos Reis",
       description:
         "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam voluptatum, quibusdam, quia, quod voluptates quos voluptate voluptatibus quas doloribus quidem fugiat.",
     },
@@ -162,6 +200,10 @@ export default function HomePage() {
   const controls = useAnimation();
   const [ref, inView] = useInView();
 
+  const handleModal = () => {
+    setIsModalOpen(!isModalOpen);
+  };
+
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
 
@@ -189,11 +231,11 @@ export default function HomePage() {
         transition={{ duration: 1 }}
       >
         <div className="pl-4 pt-2">
-          <Link href="/">
+          <a href="/">
             <div className="relative overflow-hidden sm:width-250 sm:height-150">
               <Image src={Logo} alt="logo" width={logoHeight} />
             </div>
-          </Link>
+          </a>
         </div>
 
         <button
@@ -384,7 +426,7 @@ export default function HomePage() {
           style={fade}
           className="text-white lg:text-large sm:text-5xl text-5xl font-Marcellus"
         >
-          Force Yacht
+          Force Yachts
         </animated.h1>
         <animated.div style={fade} className="flex gap-2 ">
           <div className="block h-20">
@@ -436,7 +478,7 @@ export default function HomePage() {
                 </h1>
                 <div className="w-8 h-1 mt-2 ml-1 flex justify-start bg-primary"></div>
 
-                <p className="text-base lg:text-lg text-left font-Marcellus pt-4 ">
+                <p className="font-extralight text-base lg:text-lg text-left pt-4 text-gray-600">
                   Desde 2015, a Force Yacht tem sido sinônimo de aventura, luxo
                   e momentos memoráveis em alto-mar em Porto Belo e região.
                   Oferecemos aluguel de iates e lanchas de alta qualidade,
@@ -445,7 +487,7 @@ export default function HomePage() {
                   corporativas inovadoras ou simplesmente um dia de lazer ao
                   sol.
                 </p>
-                <p className="text-base lg:text-lg text-left font-Marcellus pt-4">
+                <p className="font-extralight text-gray-600 text-base lg:text-lg text-left pt-4">
                   Cada uma das nossas embarcações é cuidadosamente selecionada e
                   mantida, assegurando um alto padrão de conforto e segurança.
                   Nossa dedicada equipe de profissionais está sempre pronta para
@@ -462,12 +504,14 @@ export default function HomePage() {
       </section>
 
       <section className="w-full bg-off py-10" id="servicos">
-        <div className="block sm:grid grid-cols-2 md:w-4/5 mx-auto md:pt-20 ">
-          <div className="col-span-1 flex justify-center relative z-10 bg-white">
+        <div className="block sm:grid grid-cols-2 md:w-4/5 mx-auto md:pt-20">
+          <div className="col-span-1 flex justify-center relative z-10 bg-white rounded-2xl">
             <div className="p-8">
-              <h1 className="text-4xl font-bold text-primary">Serviços</h1>
+              <h1 className="text-4xl font-bold text-primary font-Marcellus ">
+                Serviços
+              </h1>
               <div className="w-8 h-1 mt-2 ml-1 flex justify-start bg-primary"></div>
-              <p className="text-lg pt-4">
+              <p className="text-lg pt-4 font-extralight text-gray-600">
                 Na Force Yacht, oferecemos aluguel de iates e lanchas luxuosas e
                 bem mantidas, adequadas para todas as suas necessidades. Nossos
                 serviços incluem um marinheiro experiente para garantir uma
@@ -482,16 +526,16 @@ export default function HomePage() {
               </p>
             </div>
           </div>
-          <div className="col-span-1 z-20 relative bg-white">
-            <Image src={manBoat} alt="boat" className="w-full" />
+          <div className="col-span-1 z-20 relative bg-white rounded-2xl">
+            <Image src={manBoat} alt="boat" className="w-full rounded-2xl" />
           </div>
         </div>
       </section>
 
       <section className="px-4 pb-12 bg-off">
         <div id="nossas-embarcacoes">
-          <div className="text-left mb-8 lg:p-4">
-            <h2 className="text-4xl font-bold text-primary">
+          <div className="text-left lg:p-4">
+            <h2 className="text-4xl font-bold text-primary font-Marcellus ">
               Conheça nossas Embarcações
             </h2>
             <div className="w-8 h-1 mt-2 ml-1 flex justify-start bg-primary"></div>
@@ -518,25 +562,29 @@ export default function HomePage() {
               {images.map((image, index) => (
                 <div
                   key={index}
-                  className="bg-transparent shadow my-10 rounded-md hover:bg-white transition-all ease-out delay-200"
+                  className="bg-transparent shadow my-10 rounded-2xl hover:bg-white transition-all ease-out delay-200"
                 >
                   <Image
                     src={image.image}
                     alt={image.title}
-                    className="object-cover h-64 w-full rounded-t-md"
+                    className="object-cover h-64 w-full rounded-t-2xl"
                   />
                   <div className="mt-2 p-8 relative ">
                     <span className="flex gap-2 text-sm text-gray-400">
                       <Icon icon="location" svgProps={{ fill: "#DBDFE4" }} />
                       PORTO BELO
                     </span>
-                    <h2 className="text-xl font-bold py-4 text-primary">
+                    <h2 className="text-xl font-normal py-4 text-primary">
                       {image.title}
                     </h2>
-                    <p>{image.description}</p>
+                    <p className="font-extralight text-gray-600">{image.description}</p>
                   </div>
                   <div className="flex justify-end p-4">
-                    <button className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
+                    <button
+                      type="button"
+                      onClick={handleModal}
+                      className="bg-transparent hover:bg-blue-500 text-blue-700 font-extralight hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+                    >
                       Ver detalhes
                     </button>
                   </div>
@@ -546,12 +594,126 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+      <Modal
+        isOpen={isModalOpen}
+        handleModal={handleModal}
+        stylesContent={"xl:w-11/12 h-full"}
+      >
+        <Carousel
+          responsive={{
+            desktop: {
+              breakpoint: { max: 3000, min: 1024 },
+              items: 1,
+            },
+            tablet: {
+              breakpoint: { max: 1024, min: 464 },
+              items: 1,
+            },
+            mobile: {
+              breakpoint: { max: 464, min: 0 },
+              items: 1,
+            },
+          }}
+          removeArrowOnDeviceType={["tablet", "mobile"]}
+          arrows={true}
+          renderDotsOutside={true}
+          showDots={false}
+          infinite={true}
+          autoPlay={true}
+          containerClass="carousel-container"
+        >
+          {images.map((image, index) => (
+            <div className="relative w-full" key={index}>
+              <Image
+                src={image.image}
+                alt={image.title}
+                className="object-cover lg:h-80 w-full"
+              />
+              <div className="absolute inset-0 bg-black opacity-30 flex items-center justify-center">
+                <h1 className="text-white text-4xl font-bold">
+                  {images[0].title}
+                </h1>
+              </div>
+            </div>
+          ))}
+        </Carousel>
+        <div className="md:grid grid-cols-2 p-4">
+          <div className="flex justify-left">
+            <div className="border-b border-black/10 py-4">
+              <h2 className="text-2xl font-extralight text-primary font-Marcellus ">
+                Informações da Embarcação
+              </h2>
+              <div className="w-8 h-0.5 ml-1 flex justify-start bg-primary"></div>
+              aa
+            </div>
+          </div>
+          <div>
+            <div className="border-b border-black/10 py-4">
+              <h2 className="text-2xl font-extralight text-primary font-Marcellus">
+                Informações da Embarcação
+              </h2>
+              <div className="w-8 h-0.5 ml-1 flex justify-start bg-primary"></div>
+            </div>
+            <div className="grid grid-cols-2 py-4 gap-4">
+              <div className="flex justify-start gap-2">
+                <div className="flex items-center">
+                  <Icon icon="people" />
+                </div>
+                <span className="font-light flex items-center">
+                  Capacidade: {images[0].capacity} pessoas
+                </span>
+              </div>
+              <div className="flex justify-start gap-2">
+                <div className="flex items-center">
+                  <Icon icon="boatSize" />
+                </div>
+                <span className="font-light flex items-center">
+                  Tamanho {images[0].sizeBoat}
+                </span>
+              </div>
+              <div className="flex justify-start gap-2">
+                <div className="flex items-center">
+                  <Icon icon="enter" />
+                </div>
+                <span className="font-light flex items-center">
+                  Horário Entrada {images[0].entranceTime}
+                </span>
+              </div>
+              <div className="flex justify-start gap-2">
+                <div className="flex items-center">
+                  <Icon icon="exit" />
+                </div>
+                <span className="font-light flex items-center">
+                  Horário Volta {images[0].exitTime}
+                </span>
+              </div>
+            </div>
+            <div className="flex justify-start gap-2">
+              <div className="flex items-center">
+                <Icon icon="included" />
+              </div>
+              <span className="font-light flex items-center">
+                Incluso: {images[0].includes}
+              </span>
+            </div>
+          </div>
+        </div>
+      </Modal>
 
-      <section className="lg:h-[50rem] bg-off flex items-center">
-        <div className="md:h-4/5 w-4/5 mx-auto">
-          <h1 className="text-4xl font-bold text-primary text-center w-full">
-            Confira um pouco do nosso trabalho
-          </h1>
+      
+      <div className="bg-off">
+        <CardList />
+      </div>
+
+      <section className="h-[20rem] sm:h-[20rem] lg:h-[50rem] bg-off flex items-center">
+        <div className="lg:h-3/5 w-4/5 mx-auto">
+          <div className="pb-4">
+            <h1 className="text-4xl font-bold text-primary text-left w-full font-Marcellus ">
+              Confira um pouco do nosso trabalho
+            </h1>
+            <div className="w-8 h-1 mt-2 ml-1 flex justify-start bg-primary"></div>
+          </div>
+
           <div
             className="grid grid-rows-5 grid-columns-6 gap-2 h-full relative cursor-pointer col-span-1"
             onMouseEnter={() => setIsHovered(true)}
@@ -561,28 +723,28 @@ export default function HomePage() {
             <div className="col-start-1 col-end-3 row-start-1 row-end-3">
               <Image
                 src={yt1}
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover rounded-2xl"
                 alt="Image 1"
               />
             </div>
-            <div className="col-start-3 col-end-5 row-start-1 row-end-3">
+            <div className="col-start-3 col-end-5 row-start-1 row-end-3 ">
               <Image
                 src={yt2}
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover rounded-2xl"
                 alt="Image 2"
               />
             </div>
             <div className="col-start-5 col-end-9 row-start-1 row-end-6">
               <Image
                 src={yt3}
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover rounded-2xl"
                 alt="Image 3"
               />
             </div>
             <div className="col-start-1 col-end-5 row-start-3 row-end-6">
               <Image
                 src={yt4}
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover rounded-2xl"
                 alt="Image 4"
               />
             </div>
@@ -624,17 +786,16 @@ export default function HomePage() {
         )}
       </section>
 
-      <section className="h-96 bg-off">
-        <div className="p-4 bg-white">
-          {/* <div className="">
-          <Image src={Ocean} alt="Logo" className="relative object-fill h-48" />
-        </div> */}
-          <h1 className="text-4xl font-bold text-primary text-center">
-            Essencial para quem procura
-          </h1>
-          <div className="w-8 h-1 mt-2 ml-1 flex m-auto bg-primary"></div>
 
-          <p></p>
+      {/* <section className="h-[28rem] bg-off">
+        <div className="p-4 bg-white">
+          <div className="">
+          <Image src={Ocean} alt="Logo" className="relative object-fill h-48" />
+        </div>
+          <h1 className="text-4xl font-bold text-primary text-center font-Marcellus ">
+            Essencial para quem procura
+            <div className="w-8 h-1 mt-2 ml-1 flex m-auto bg-primary"></div>
+          </h1>
           <div className="grid lg:grid-cols-3 lg:grid-rows-2 grid-cols-2 grid-rows-3 gap-5 w-full px-4 md:w-2/3 mx-auto py-4">
             <div className="col-span-1 flex justify-center items-center">
               <div>
@@ -654,7 +815,9 @@ export default function HomePage() {
             </div>
             <div className="col-span-1 flex justify-center items-center">
               <div>
-                <span className="text-primary font-bold">Churrasco </span>
+                <span className="text-primary font-bold">
+                  Churrasco em alto mar
+                </span>
                 <div className="flex justify-center py-2">
                   <Icon icon="barbecue" svgProps={{ fill: "black" }} />
                 </div>
@@ -662,7 +825,9 @@ export default function HomePage() {
             </div>
             <div className="col-span-1 flex justify-center items-center">
               <div>
-                <span className="text-primary font-bold">Encontro em familia</span>
+                <span className="text-primary font-bold">
+                  Diversão em Familia
+                </span>
                 <div className="flex justify-center py-2">
                   <Icon icon="family" svgProps={{ fill: "black" }} />
                 </div>
@@ -677,22 +842,23 @@ export default function HomePage() {
               </div>
             </div>
           </div>
+
         </div>
-      </section>
+      </section> */}
 
       <section className="w-full pb-12 sm:bg-white md:bg-off flex items-center">
         <div className="md:grid grid-cols-2 sm:w-4/5 mx-auto pt-20">
-          <div className="col-span-1 flex justify-center relative z-10 bg-white">
-            <Image src={jumpGirls} alt="boat" className="w-full" />
+          <div className="col-span-1 flex justify-center relative z-10 bg-white rounded-2xl">
+            <Image src={jumpGirls} alt="boat" className="w-full rounded-2xl" />
           </div>
-          <div className="col-span-1 z-20 relative bg-white">
+          <div className="col-span-1 z-20 relative bg-white rounded-2xl">
             <div className="p-8">
-              <h1 className="text-4xl font-bold text-primary">
+              <h1 className="text-4xl font-bold text-primary font-Marcellus ">
                 {" "}
                 Por onde estamos?
               </h1>
               <div className="w-8 h-1 mt-2 ml-1 flex justify-start bg-primary"></div>
-              <p className="text-lg pt-4">
+              <p className="text-lg pt-4 font-extralight text-gray-600">
                 Lorem ipsum dolor sit amet consectetur adipisicing elit.
                 Quisquam voluptatum, quibusdam, quia, quod voluptates quos
                 voluptate voluptatibus quas doloribus quidem fugiat. Quisquam
@@ -704,8 +870,12 @@ export default function HomePage() {
         </div>
       </section>
 
+      <section>
+        <Faq />
+      </section>
+
       {/* A footer section */}
-      <div className="bg-footer">
+      <div className="bg-footer border-t border-white/10">
         <Footer />
       </div>
     </div>
