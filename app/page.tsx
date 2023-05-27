@@ -34,8 +34,6 @@ import Faq from "@/src/components/Faq/faq";
 import dynamic from "next/dynamic";
 import CardList from "@/src/components/Cards/cards";
 import { useBoatManagement } from "@/services/boatManagement";
-import { collection, getDocs, getFirestore, query } from "firebase/firestore";
-import { geoJsonData } from "@/src/utils/geo";
 
 interface Boat {
   Id?: string;
