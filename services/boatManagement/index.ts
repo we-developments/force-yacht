@@ -1,4 +1,4 @@
-import { firebaseApp } from "@/api";
+import { db } from "@/api";
 import {
     getFirestore,
     addDoc,
@@ -17,8 +17,9 @@ import {
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { update } from "react-spring";
 
-const db = getFirestore();
+
 const storage = getStorage();
+
 
 export const useBoatManagement = () => {
 
@@ -77,7 +78,7 @@ export const useBoatManagement = () => {
         });
     };
 
-    const getBoatDoc = async (id: any) => {
+     const getBoatDoc = async (id: any) => {
         try {
             const q = query(collection(db, "boatsRegistred"), where("id", "==", id));
             const querySnap = await getDocs(q);

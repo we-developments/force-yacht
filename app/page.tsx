@@ -1,7 +1,7 @@
 "use client";
 
 // React Libs
-import React, { useState, useEffect, Fragment, useMemo } from "react";
+import React, { useState, useEffect, Fragment, useMemo, use } from "react";
 import { useInView } from "react-intersection-observer";
 import { motion, useAnimation } from "framer-motion";
 import Image from "next/image";
@@ -33,6 +33,26 @@ import Modal from "@/src/components/Modal/modal";
 import Faq from "@/src/components/Faq/faq";
 import dynamic from "next/dynamic";
 import CardList from "@/src/components/Cards/cards";
+import { useBoatManagement } from "@/services/boatManagement";
+import { collection, getDocs, getFirestore, query } from "firebase/firestore";
+
+interface Boat {
+  Id?: string;
+  YatchName?: string;
+  SizeBoat?: string;
+  Included?: string;
+  Capacity?: number;
+  EndIn?: string;
+  StartIn?: string;
+  ExitLocation?: string;
+  CreatedAt?: string;
+  Images?: string[];
+}
+
+interface MyPageProps {
+  boats: Boat[];
+}
+
 
 export default function HomePage() {
   const [scrolled, setScrolled] = useState(false);
@@ -41,6 +61,10 @@ export default function HomePage() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [boats, setBoats] = useState<Boat[]>([]);
+
+  const { getBoatsDoc } = useBoatManagement();
+
 
   const openVideo = (videoUrl: any) => {
     setSelectedVideo(videoUrl);
@@ -208,7 +232,6 @@ export default function HomePage() {
     window.addEventListener("scroll", handleScroll);
 
     if (window.innerWidth < 768) {
-      console.log("true");
       setIsMobile(true);
     } else {
       setIsMobile(false);
@@ -218,9 +241,15 @@ export default function HomePage() {
   useEffect(() => {
     if (inView) {
       controls.start("visible");
-      console.log("true");
     }
   }, [controls, inView]);
+
+  useEffect(() => {
+    getBoatsDoc().then((res) => {
+      setBoats(res);
+      console.log(res);
+    })
+  }, []);
 
   return (
     <div className="z-10" style={{ height: "200vh" }}>
@@ -559,25 +588,27 @@ export default function HomePage() {
               dotListClass="custom-dot-list-style bg-transparent"
               itemClass="carousel-item-padding-40-px w-full px-4"
             >
-              {images.map((image, index) => (
+              {boats.map((boat, index) => (
                 <div
                   key={index}
                   className="bg-transparent shadow my-10 rounded-2xl hover:bg-white transition-all ease-out delay-200"
                 >
                   <Image
-                    src={image.image}
-                    alt={image.title}
+                    src={boat?.Images[0]}
+                    alt={boat.YatchName}
+                    width={100}
+                    height={100}
                     className="object-cover h-64 w-full rounded-t-2xl"
                   />
                   <div className="mt-2 p-8 relative ">
                     <span className="flex gap-2 text-sm text-gray-400">
                       <Icon icon="location" svgProps={{ fill: "#DBDFE4" }} />
-                      PORTO BELO
+                      {boat.ExitLocation}
                     </span>
                     <h2 className="text-xl font-normal py-4 text-primary">
-                      {image.title}
+                      {boat.YatchName}
                     </h2>
-                    <p className="font-extralight text-gray-600">{image.description}</p>
+                    <p className="font-extralight text-gray-600">{boat.description}</p>
                   </div>
                   <div className="flex justify-end p-4">
                     <button
@@ -705,8 +736,8 @@ export default function HomePage() {
         <CardList />
       </div>
 
-      <section className="h-[20rem] sm:h-[20rem] lg:h-[50rem] bg-off flex items-center">
-        <div className="lg:h-3/5 w-4/5 mx-auto">
+      <section className="h-[26rem] sm:h-[20rem] lg:h-[50rem] bg-off flex items-center">
+        <div className="lg:h-3/5 w-full px-4 md:w-4/5 mx-auto">
           <div className="pb-4">
             <h1 className="text-4xl font-bold text-primary text-left w-full font-Marcellus ">
               Confira um pouco do nosso trabalho
@@ -749,7 +780,7 @@ export default function HomePage() {
               />
             </div>
             {/* Insira os outros elementos de imagem aqui */}
-            {isHovered && (
+            {window.innerWidth < 800 ? false : isHovered && (
               <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
                 <div className="">
                   <span className="text-white text-3xl">
