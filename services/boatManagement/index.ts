@@ -61,6 +61,8 @@ export const useBoatManagement = () => {
                         EndIn: data.EndIn,
                         StartIn: data.StartIn,
                         ExitLocation: data.ExitLocation,
+                        DestinyLocation: data.DestinyLocation,
+                        Description: data.Description,
                         CreatedAt: Date.now(),
                         Images: imagesToSave || []
                     })
@@ -93,6 +95,8 @@ export const useBoatManagement = () => {
                     EndIn: doc.data().EndIn,
                     StartIn: doc.data().StartIn,
                     ExitLocation: doc.data().ExitLocation,
+                    DestinyLocation: doc.data().DestinyLocation,
+                    Description: doc.data().Description,
                     CreatedAt: doc.data().CreatedAt,
                     Images: doc.data().Images || []
                 };
@@ -119,6 +123,8 @@ export const useBoatManagement = () => {
                     EndIn: doc.data().EndIn,
                     StartIn: doc.data().StartIn,
                     ExitLocation: doc.data().ExitLocation,
+                    DestinyLocation: doc.data().DestinyLocation,
+                    Description: doc.data().Description,
                     CreatedAt: doc.data().CreatedAt,
                     Images: doc.data().Images || []
                 };
