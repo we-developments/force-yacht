@@ -169,7 +169,7 @@ export default function Card() {
                   <h3 className="mt-1 font-light text-white flex gap-10">
                     <a href="/">
                       <span className="absolute inset-0" />
-                      Aproveite o melhor da vida
+                      Aproveite os momentos ao lado de quem ama
                     </a>
                     <div className="absolute top-0 pt-2">
                       <Icon icon="family" svgProps={{ fill: "#006aa1" }} />

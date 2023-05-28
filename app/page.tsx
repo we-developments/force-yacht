@@ -1,7 +1,7 @@
 "use client";
 
 // React Libs
-import React, { useState, useEffect, Fragment, useMemo, use } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import { useInView } from "react-intersection-observer";
 import { motion, useAnimation } from "framer-motion";
 import Image from "next/image";
@@ -28,16 +28,12 @@ import banner5 from "../src/images/pngs/banner5.jpg";
 import { useIconGetter } from "../src/hooks/useIconGetter/useIconGetter";
 import Footer from "@/src/components/Footer/footer";
 import { Dialog, Transition } from "@headlessui/react";
-import { UserIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { XMarkIcon } from "@heroicons/react/24/outline";
 import Modal from "@/src/components/Modal/modal";
 import Faq from "@/src/components/Faq/faq";
-import dynamic from "next/dynamic";
 import CardList from "@/src/components/Cards/cards";
 import { useBoatManagement } from "@/services/boatManagement";
-
-//Map
-import MyMap from '../src/components/Map/MyMap'
-
+import MyMap from "@/src/components/Map/MyMap";
 
 interface Boat {
   Id?: string;
@@ -50,7 +46,7 @@ interface Boat {
   ExitLocation?: string;
   CreatedAt?: string;
   Images: string[];
-  Description?: string;
+  Description: string;
 }
 
 interface MyPageProps {
@@ -515,19 +511,6 @@ export default function HomePage() {
       <section className="lg:h-fit" id="sobre-nos">
         <div className="flex justify-center items-center bg-white h-full">
           <div className="flex flex-col justify-center items-center relative">
-            <motion.div
-              ref={ref}
-              initial={{ x: "-50vw" }}
-              animate={controls}
-              transition={{ type: "spring", stiffness: 60 }}
-              variants={{
-                visible: { x: 0 },
-                hidden: { x: "-50vw" },
-              }}
-              className="absolute z-0 left-0"
-            >
-              {/* <Image src={Barco} alt="barco" /> */}
-            </motion.div>
             <div className="flex justify-center">
               <div className="pt-2 w-full px-4 lg:w-4/5 sm:p-4 z-20">
                 <div className="flex justify-center mb-2">
@@ -641,21 +624,34 @@ export default function HomePage() {
                         {boat.ExitLocation}
                       </span>
                     </div>
-                    <div className="h-32 py-4">
-                      <p className="font-extralight text-gray-600">
-                        TESTE TESTE
-                        {boat?.Description}
+                    <div className="pt-2 h-32">
+                      <p className="h-full font-extralight text-gray-600 overflow-hidden text-ellipsis">
+                        {boat?.Description?.substring(0, 400) + "..."}
                       </p>
                     </div>
                   </div>
-                  <div className="flex justify-end p-4">
-                    <button
-                      type="button"
-                      onClick={() => handleModal(boat)}
-                      className="bg-transparent hover:bg-blue-500 text-blue-700 font-extralight hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
-                    >
-                      Ver detalhes
-                    </button>
+                  <div className="flex justify-between p-4">
+                    <div className="flex gap-4">
+                      <div className="flex gap-2">
+                        <Icon icon="people" svgProps={{ fill: "#bdbdbd" }} />
+                        <span className="text-gray-400">{boat.Capacity}</span>
+                      </div>
+                      <div className="flex gap-2">
+                        <Icon icon="boatSize" svgProps={{ fill: "#bdbdbd" }} />
+                        <span className="text-gray-400">
+                          {boat.SizeBoat} pés
+                        </span>
+                      </div>
+                    </div>
+                    <div>
+                      <button
+                        type="button"
+                        onClick={() => handleModal(boat)}
+                        className="bg-transparent hover:bg-blue-500 text-blue-700 font-extralight hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+                      >
+                        Ver detalhes
+                      </button>
+                    </div>
                   </div>
                 </div>
               ))}
@@ -666,7 +662,7 @@ export default function HomePage() {
       <Modal
         isOpen={isModalOpen}
         handleModal={handleModal}
-        stylesContent={"xl:w-3/4 h-full"}
+        stylesContent={"bg-white w-full xl:w-3/4 !h-[300vh]"}
       >
         <Carousel
           responsive={{
@@ -695,7 +691,7 @@ export default function HomePage() {
         >
           {selectedBoat &&
             selectedBoat?.Images?.map((image, index) => (
-              <div className="relative w-full h-[44rem]" key={index}>
+              <div className="relative w-full h-72 md:h-[44rem]" key={index}>
                 <Image
                   height={1500}
                   width={1500}
@@ -711,8 +707,8 @@ export default function HomePage() {
               </div>
             ))}
         </Carousel>
-        <div className="md:grid grid-cols-2 p-4 gap-5 h-3/4">
-          <div className="flex justify-left border-2 rounded-2xl">
+        <div className="md:grid grid-cols-2 p-4 gap-5 h-full sm:h-3/4">
+          <div className="flex justify-left border-2 rounded-2xl mb-4 sm:mb-0">
             <div className="border-b border-black/10 p-4">
               <h2 className="text-2xl font-extralight text-primary font-Marcellus ">
                 Informações da Embarcação
@@ -722,9 +718,12 @@ export default function HomePage() {
                 <Icon icon="boat" />
                 <h2 className="">{selectedBoat?.YatchName}</h2>
               </div>
+              <p className="text-gray-400 text-sm overflow-hidden">
+                {selectedBoat?.Description?.substring(0, 200) + "..."}
+              </p>
             </div>
           </div>
-          <div className=" border-2 rounded-2xl p-4">
+          <div className="border-2 rounded-2xl p-4">
             <div className="">
               <h2 className="text-2xl font-extralight text-primary font-Marcellus">
                 Detalhes:
@@ -745,7 +744,7 @@ export default function HomePage() {
                   <Icon icon="boatSize" />
                 </div>
                 <span className="font-light flex items-center">
-                  Tamanho {selectedBoat?.SizeBoat}
+                  Tamanho: {selectedBoat?.SizeBoat} pés
                 </span>
               </div>
               <div className="flex justify-start gap-2">
@@ -753,7 +752,7 @@ export default function HomePage() {
                   <Icon icon="enter" />
                 </div>
                 <span className="font-light flex items-center">
-                  Entrada {selectedBoat?.StartIn}
+                  Entrada às {selectedBoat?.StartIn}
                 </span>
               </div>
               <div className="flex justify-start gap-2">
@@ -761,7 +760,7 @@ export default function HomePage() {
                   <Icon icon="exit" />
                 </div>
                 <span className="font-light flex items-center">
-                  Volta {selectedBoat?.EndIn}
+                  Retorno às {selectedBoat?.EndIn}
                 </span>
               </div>
               <div className="flex justify-start gap-2">
@@ -776,7 +775,7 @@ export default function HomePage() {
           </div>
           <div>
             <button className="bg-primary text-white font-bold py-2 px-4 rounded">
-              Solicitar orçamento
+              Tenho Interesse
             </button>
           </div>
         </div>
@@ -901,21 +900,27 @@ export default function HomePage() {
               </Link>
               <div className="p-4">
                 <h1 className="text-2xl font-bold text-primary font-Marcellus">
-                  Nos encontre nas redes sociais.
+                  Nos siga pelas redes sociais.
                 </h1>
                 <div>
-                  <Icon
-                    icon="insta"
-                    svgProps={{ fill: "#006aa1", width: "30px" }}
-                  />
+                  <Link
+                    href="https://www.instagram.com/forceyachts/"
+                    target="_blank"
+                  >
+                    <Icon
+                      icon="insta"
+                      svgProps={{ fill: "#9c9c9c", width: "30px" }}
+                    />
+                  </Link>
                 </div>
               </div>
             </div>
 
-            <div className=" m-4">
-              <MyMap />
-            </div>
+              <h1 className="text-2xl text-right font-bold text-primary font-Marcellus px-8 pb-2">
+                Regiões de encontro
+              </h1>
 
+              <MyMap />
           </div>
         </div>
       </section>
@@ -924,7 +929,6 @@ export default function HomePage() {
         <Faq />
       </section>
 
-      {/* A footer section */}
       <div className="bg-footer border-t border-white/10">
         <Footer />
       </div>
