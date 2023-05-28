@@ -159,12 +159,14 @@ export default function HomePage() {
   ];
 
   const handleScroll = () => {
-    const offset = window.scrollY;
+    if (typeof window !== "undefined") {
+      const offset = window.scrollY;
 
-    if (offset > 100) {
-      setScrolled(true);
-    } else {
-      setScrolled(false);
+      if (offset > 100) {
+        setScrolled(true);
+      } else {
+        setScrolled(false);
+      }
     }
   };
 
@@ -233,12 +235,14 @@ export default function HomePage() {
   };
 
   useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
+    if (typeof window !== "undefined") {
+      window.addEventListener("scroll", handleScroll);
 
-    if (window.innerWidth < 768) {
-      setIsMobile(true);
-    } else {
-      setIsMobile(false);
+      if (window.innerWidth < 768) {
+        setIsMobile(true);
+      } else {
+        setIsMobile(false);
+      }
     }
   }, []);
 
