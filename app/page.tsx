@@ -35,6 +35,14 @@ import dynamic from "next/dynamic";
 import CardList from "@/src/components/Cards/cards";
 import { useBoatManagement } from "@/services/boatManagement";
 
+const MyMap = dynamic(
+  () => import('../src/components/Map/MyMap'), // replace '@components/map' with your component's location
+  { 
+    loading: () => <p>A map is loading</p>,
+    ssr: false // This line is important. It's what prevents server-side render
+  }
+)
+
 interface Boat {
   Id?: string;
   YatchName: string;
@@ -907,6 +915,11 @@ export default function HomePage() {
                 </div>
               </div>
             </div>
+
+            <div className=" m-4">
+              <MyMap />
+            </div>
+
           </div>
         </div>
       </section>
