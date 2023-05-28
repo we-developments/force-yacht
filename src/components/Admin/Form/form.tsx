@@ -28,6 +28,8 @@ type BoatProps = {
   EndIn: string,
   Images: string[],
   ExitLocation: string,
+  DestinyLocation: string,
+  Description: string,
   length: number
 }
 
@@ -40,6 +42,8 @@ type ErrorsProps = {
   EndIn: string,
   Images: string,
   ExitLocation: string,
+  DestinyLocation: string,
+  Description: string
 }
 
 export default function Formulario({ selectedBoat, handleSaveNewBoat, handleUpdate, isEdit, isLoading }: FormValues) {
@@ -56,6 +60,8 @@ export default function Formulario({ selectedBoat, handleSaveNewBoat, handleUpda
     EndIn: '',
     Images: [],
     ExitLocation: '',
+    DestinyLocation: '',
+    Description: ''
   })
 
   const handleSave = (e: any) => {
@@ -83,6 +89,12 @@ export default function Formulario({ selectedBoat, handleSaveNewBoat, handleUpda
     }
     if (!values.ExitLocation) {
       newErrors.ExitLocation = 'Este campo é obrigatório';
+    }
+    if (!values.DestinyLocation) {
+      newErrors.DestinyLocation = 'Este campo é obrigatório';
+    }
+    if (!values.Description) {
+      newErrors.Description = 'Este campo é obrigatório';
     }
 
 
@@ -131,7 +143,7 @@ export default function Formulario({ selectedBoat, handleSaveNewBoat, handleUpda
       </h1>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        <div className="md:col-span-2 lg:col-span-1">
+        <div className="md:col-span-1 lg:col-span-1">
           <label className="block text-sm pb-2">Nome da embarcação</label>
           <input
             value={values?.YatchName || ''}
@@ -230,6 +242,32 @@ export default function Formulario({ selectedBoat, handleSaveNewBoat, handleUpda
           />
           <p className="text-red-600 text-sm">{errors.ExitLocation}</p>
         </div>
+
+        <div >
+          <label className="block text-sm pb-2">Destino</label>
+          <input
+            value={values?.DestinyLocation || ''}
+            onChange={(e) => { handleValue("DestinyLocation", e.target.value) }}
+            className="block p-2 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:to-primary sm:text-sm sm:leading-6"
+            type="string"
+          />
+          <p className="text-red-600 text-sm">{errors.DestinyLocation}</p>
+        </div>
+
+      </div>
+
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 mt-3">
+
+        <div className="col-span-3">
+          <label className="block text-sm pb-2">Descrição</label>
+          <textarea
+            style={{height: 162}}
+            value={values?.Description || ''}
+            onChange={(e) => { handleValue("Description", e.target.value) }}
+            className="block p-2 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:to-primary sm:text-sm sm:leading-6"
+          />
+          <p className="text-red-600 text-sm">{errors.Description}</p>
+        </div>
       </div>
 
       {isEdit && values?.Images?.length > 0 && (
@@ -238,8 +276,8 @@ export default function Formulario({ selectedBoat, handleSaveNewBoat, handleUpda
             let hasToDele = filesToDelet.filter(file => img === file)
             return (
               <div key={img} className="cursor-pointer" >
-                {hasToDele.length > 0 && (<XCircleIcon width={55} className="absolute" color="red"/>)}
-                <Image  src={img} width={50} height={50} alt="imagem-mini" className="object-none max-h-14" />
+                {hasToDele.length > 0 && (<XCircleIcon width={55} className="absolute" color="red" />)}
+                <Image src={img} width={50} height={50} alt="imagem-mini" className="object-none max-h-14" />
               </div>
             )
           })}

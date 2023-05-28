@@ -19,6 +19,8 @@ type BoatProps = {
   EndIn: string,
   Images: string[],
   ExitLocation: string,
+  DestinyLocation: string,
+  Description: string,
   length: number
 }
 
