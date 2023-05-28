@@ -33,7 +33,11 @@ import Modal from "@/src/components/Modal/modal";
 import Faq from "@/src/components/Faq/faq";
 import CardList from "@/src/components/Cards/cards";
 import { useBoatManagement } from "@/services/boatManagement";
-import MyMap from "@/src/components/Map/MyMap";
+import dynamic from "next/dynamic";
+
+const MyMap = dynamic(() => import('@/src/components/Map/MyMap'), {
+  ssr: false
+});
 
 interface Boat {
   Id?: string;
