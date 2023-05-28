@@ -1,16 +1,17 @@
-import { Disclosure } from "@headlessui/react";
-import { MinusSmallIcon, PlusSmallIcon } from "@heroicons/react/24/outline";
+import { useState } from 'react';
+import { Disclosure } from '@headlessui/react';
+import { faqs } from './faq.mocks';
+import { MinusIcon, PlusIcon } from "@heroicons/react/24/outline";
 
-const faqs = [
-  {
-    question: "What's the best thing about Switzerland?",
-    answer:
-      "I don't know, but the flag is a big plus. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.",
-  },
-  // More questions...
-];
 
 export default function Faq() {
+  const [allfaqs, setFaqs] = useState(faqs);
+  const [showMore, setShowMore] = useState(false);
+
+  const toggleShowMore = () => {
+    setShowMore(!showMore);
+  };
+
   return (
     <div className="bg-white">
       <div className="mx-auto max-w-7xl px-6 py-24 sm:py-32 lg:px-8 lg:py-40">
@@ -20,7 +21,7 @@ export default function Faq() {
           </h2>
           <div className="w-8 h-1 mt-2 ml-1 flex justify-start bg-primary"></div>
           <dl className="mt-10 space-y-6 divide-y divide-gray-900/10">
-            {faqs.map((faq) => (
+            {(showMore ? allfaqs : allfaqs.slice(0, 5)).map((faq) => (
               <Disclosure as="div" key={faq.question} className="pt-6">
                 {({ open }) => (
                   <>
@@ -31,12 +32,12 @@ export default function Faq() {
                         </span>
                         <span className="ml-6 flex h-7 items-center">
                           {open ? (
-                            <MinusSmallIcon
+                            <MinusIcon
                               className="h-6 w-6"
                               aria-hidden="true"
                             />
                           ) : (
-                            <PlusSmallIcon
+                            <PlusIcon
                               className="h-6 w-6"
                               aria-hidden="true"
                             />
@@ -54,6 +55,16 @@ export default function Faq() {
               </Disclosure>
             ))}
           </dl>
+          {allfaqs.length > 5 && (
+            <div className="mt-6 text-right">
+              <button
+                className="text-primary font-medium underline"
+                onClick={toggleShowMore}
+              >
+                {showMore ? 'Mostrar menos' : 'Mostrar mais'}
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </div>

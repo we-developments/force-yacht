@@ -292,11 +292,6 @@ export default function HomePage() {
           <div className="px-4 py-2 flex justify-left round">
             <ul className="flex space-x-2 sm:space-x-4 gap-8">
               <li className="text-sm sm:text-base text-center flex items-center pl-5">
-                <a href="#" className="text-white">
-                  Home
-                </a>
-              </li>
-              <li className="text-sm sm:text-base text-center flex items-center">
                 <span
                   onClick={() => scrollTo("sobre-nos")}
                   className="text-white cursor-pointer"
@@ -321,9 +316,28 @@ export default function HomePage() {
                 </span>
               </li>
               <li className="text-sm sm:text-base text-center flex items-center">
-                <a href="#" className="text-white">
-                  Clientes
-                </a>
+                <span
+                  onClick={() => scrollTo("onde-estamos")}
+                  className="text-white cursor-pointer"
+                >
+                  Onde estamos
+                </span>
+              </li>
+              <li className="text-sm sm:text-base text-center flex items-center">
+              <span
+                  onClick={() => scrollTo("nosso-trabalho")}
+                  className="text-white cursor-pointer"
+                >
+                  Nosso trabalho
+                </span>
+              </li>
+              <li className="text-sm sm:text-base text-center flex items-center">
+              <span
+                  onClick={() => scrollTo("faq")}
+                  className="text-white cursor-pointer"
+                >
+                  FAQ
+                </span>
               </li>
             </ul>
           </div>
@@ -396,11 +410,6 @@ export default function HomePage() {
                     <ul role="list" className="flex flex-1 flex-col gap-y-7">
                       <li>
                         <ul role="list" className="-mx-2 space-y-1">
-                          <li className="text-sm sm:text-base text-center flex items-center border-b-2">
-                            <a href="#" className="text-white">
-                              Home
-                            </a>
-                          </li>
                           <li className="text-sm sm:text-base text-center flex items-center border-b-2">
                             <span
                               onClick={() => scrollTo("sobre-nos")}
@@ -477,7 +486,7 @@ export default function HomePage() {
           style={fade}
           className="text-lg sm:text-xl text-white font-Marcellus flex items-center mt-5"
         >
-          Alugueis premium de yachts e lanchas,
+          Aluguéis premium de yachts e lanchas,
           <br />
           Explore os mares com estilo e conforto inigualáveis.
         </animated.p>
@@ -753,7 +762,7 @@ export default function HomePage() {
         <CardList />
       </div>
 
-      <section className="h-[26rem] sm:h-[20rem] lg:h-[50rem] bg-off flex items-center">
+      <section className="h-[26rem] sm:h-[20rem] lg:h-[50rem] bg-off flex items-center" id="nosso-trabalho">
         <div className="lg:h-3/5 w-full px-4 md:w-4/5 mx-auto">
           <div className="pb-4">
             <h1 className="text-4xl font-bold text-primary text-left w-full font-Marcellus ">
@@ -870,7 +879,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section>
+      <section id="faq">
         <Faq />
       </section>
 
