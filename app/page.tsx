@@ -324,7 +324,7 @@ export default function HomePage() {
                 </span>
               </li>
               <li className="text-sm sm:text-base text-center flex items-center">
-              <span
+                <span
                   onClick={() => scrollTo("nosso-trabalho")}
                   className="text-white cursor-pointer"
                 >
@@ -332,7 +332,7 @@ export default function HomePage() {
                 </span>
               </li>
               <li className="text-sm sm:text-base text-center flex items-center">
-              <span
+                <span
                   onClick={() => scrollTo("faq")}
                   className="text-white cursor-pointer"
                 >
@@ -435,12 +435,28 @@ export default function HomePage() {
                             </span>
                           </li>
 
-                          <li className="text-sm sm:text-base text-center flex items-center border-b-2">
+                          <li className="text-sm sm:text-base text-center flex items-center  border-b-2">
                             <span
                               onClick={() => scrollTo("onde-estamos")}
-                              className="text-white"
+                              className="text-white cursor-pointer"
                             >
-                              Onde nos encontrar
+                              Onde estamos
+                            </span>
+                          </li>
+                          <li className="text-sm sm:text-base text-center flex items-center  border-b-2">
+                            <span
+                              onClick={() => scrollTo("nosso-trabalho")}
+                              className="text-white cursor-pointer"
+                            >
+                              Nosso trabalho
+                            </span>
+                          </li>
+                          <li className="text-sm sm:text-base text-center flex items-center  border-b-2">
+                            <span
+                              onClick={() => scrollTo("faq")}
+                              className="text-white cursor-pointer"
+                            >
+                              FAQ
                             </span>
                           </li>
                         </ul>
@@ -460,7 +476,7 @@ export default function HomePage() {
       />
       <div
         className="absolute left-4 sm:left-8 text-left z-0 "
-        style={{ top: "25%", left: "6%" }}
+        style={{ top: "18%", left: "6%" }}
       >
         <animated.h1
           style={fade}
@@ -473,7 +489,7 @@ export default function HomePage() {
             <span className="text-white text-4xl lg:text-6xl sm:text-5xl font-Marcellus items-center flex gap-4">
               Navegue
             </span>
-              <Icon icon="wave" svgProps={{ fill: "white" }} />
+            <Icon icon="wave" svgProps={{ fill: "white" }} />
           </div>
         </animated.div>
         <animated.h1
@@ -754,7 +770,11 @@ export default function HomePage() {
               </div>
             </div>
           </div>
-          <div>a</div>
+          <div>
+            <button className="bg-primary text-white font-bold py-2 px-4 rounded">
+              Solicitar orçamento
+            </button>
+          </div>
         </div>
       </Modal>
 
@@ -762,7 +782,10 @@ export default function HomePage() {
         <CardList />
       </div>
 
-      <section className="h-[26rem] sm:h-[20rem] lg:h-[50rem] bg-off flex items-center" id="nosso-trabalho">
+      <section
+        className="h-[26rem] sm:h-[20rem] lg:h-[50rem] bg-off flex items-center"
+        id="nosso-trabalho"
+      >
         <div className="lg:h-3/5 w-full px-4 md:w-4/5 mx-auto">
           <div className="pb-4">
             <h1 className="text-4xl font-bold text-primary text-left w-full font-Marcellus ">
@@ -866,13 +889,22 @@ export default function HomePage() {
               </p>
             </div>
             <div className="flex px-8">
-              <Link href="https://www.instagram.com/forceyachts/" target="_blank">
-                <Image src={insta} alt="insta" height={300}/>
+              <Link
+                href="https://www.instagram.com/forceyachts/"
+                target="_blank"
+              >
+                <Image src={insta} alt="insta" height={300} />
               </Link>
               <div className="p-4">
                 <h1 className="text-2xl font-bold text-primary font-Marcellus">
-                Nos encontre pelas redes sociais.
-                </h1>                  
+                  Nos encontre nas redes sociais.
+                </h1>
+                <div>
+                  <Icon
+                    icon="insta"
+                    svgProps={{ fill: "#006aa1", width: "30px" }}
+                  />
+                </div>
               </div>
             </div>
           </div>

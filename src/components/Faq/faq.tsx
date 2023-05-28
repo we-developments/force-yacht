@@ -21,7 +21,7 @@ export default function Faq() {
           </h2>
           <div className="w-8 h-1 mt-2 ml-1 flex justify-start bg-primary"></div>
           <dl className="mt-10 space-y-6 divide-y divide-gray-900/10">
-            {(showMore ? allfaqs : allfaqs.slice(0, 5)).map((faq) => (
+            {(showMore ? allfaqs : allfaqs.slice(0, 3)).map((faq) => (
               <Disclosure as="div" key={faq.question} className="pt-6">
                 {({ open }) => (
                   <>
@@ -55,7 +55,7 @@ export default function Faq() {
               </Disclosure>
             ))}
           </dl>
-          {allfaqs.length > 5 && (
+          {allfaqs.length > 3 && (
             <div className="mt-6 text-right">
               <button
                 className="text-primary font-medium underline"
