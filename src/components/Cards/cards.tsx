@@ -95,10 +95,10 @@ export default function Card() {
                     Faça sua festa, comemoração, evento...
                   </p>
                   <h3 className="mt-1 font-light text-white flex gap-10">
-                    <a href="/">
+                    <div>
                       <span className="absolute inset-0" />
                       Desfrute do melhor da vida
-                    </a>
+                    </div>
                     <div className="absolute top-0 pt-2">
                       <Icon icon="party" svgProps={{ fill: "#006aa1" }} />
                     </div>
@@ -131,10 +131,10 @@ export default function Card() {
                     Aprecie uma bela visão do mar...
                   </p>
                   <h3 className="mt-1 font-light text-white flex gap-10">
-                    <a href="/">
+                    <div>
                       <span className="absolute inset-0" />
                       Divirta-se como quiser
-                    </a>
+                    </div>
                     <div className="absolute top-0 pt-2">
                       <Icon icon="cheer" svgProps={{ fill: "#006aa1" }} />
                     </div>
@@ -167,10 +167,10 @@ export default function Card() {
                     Traga sua familia...
                   </p>
                   <h3 className="mt-1 font-light text-white flex gap-10">
-                    <a href="/">
+                    <div>
                       <span className="absolute inset-0" />
                       Aproveite os momentos ao lado de quem ama
-                    </a>
+                    </div>
                     <div className="absolute top-0 pt-2">
                       <Icon icon="family" svgProps={{ fill: "#006aa1" }} />
                     </div>

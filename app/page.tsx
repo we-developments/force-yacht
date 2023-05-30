@@ -34,12 +34,13 @@ import Faq from "@/src/components/Faq/faq";
 import CardList from "@/src/components/Cards/cards";
 import { useBoatManagement } from "@/services/boatManagement";
 import dynamic from "next/dynamic";
+import WhatsMessage from "@/src/components/WhatsMessage/whatsMessage";
 
-const MyMap = dynamic(() => import('@/src/components/Map/MyMap'), {
-  ssr: false
+const MyMap = dynamic(() => import("@/src/components/Map/MyMap"), {
+  ssr: false,
 });
 
-interface Boat {
+export interface Boat {
   Id?: string;
   YatchName: string;
   SizeBoat?: string;
@@ -53,10 +54,6 @@ interface Boat {
   Description: string;
 }
 
-interface MyPageProps {
-  boats: Boat[];
-}
-
 export default function HomePage() {
   const [scrolled, setScrolled] = useState(false);
   const [selectedVideo, setSelectedVideo] = useState(null);
@@ -66,12 +63,10 @@ export default function HomePage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [boats, setBoats] = useState<Boat[]>([]);
   const [selectedBoat, setSelectedBoat] = useState<Boat>([] as any);
+  const [step, setStep] = useState(0);
+  const [randomIndexes, setRandomIndexes] = useState<number[]>([]);
 
   const { getBoatsDoc } = useBoatManagement();
-
-  const openVideo = (videoUrl: any) => {
-    setSelectedVideo(videoUrl);
-  };
 
   const { Icon } = useIconGetter();
 
@@ -80,83 +75,6 @@ export default function HomePage() {
     to: { opacity: 1 },
     delay: 300,
   });
-
-  const images = [
-    {
-      id: 1,
-      image: yt1,
-      title: "Yacht 1",
-      capacity: 10,
-      includes: "Churras e bebidas",
-      hasSeaman: true,
-      entranceTime: "10:00",
-      exitTime: "18:00",
-      sizeBoat: "40 pés",
-      local: "Angra dos Reis",
-      description:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam voluptatum, quibusdam, quia, quod voluptates quos voluptate voluptatibus quas doloribus quidem fugiat.",
-    },
-    {
-      id: 2,
-      image: yt2,
-      title: "Yacht 2",
-      hasSeaman: true,
-      entranceTime: "10:00",
-      exitTime: "18:00",
-      sizeBoat: "40 pés",
-      local: "Angra dos Reis",
-      description:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam voluptatum, quibusdam, quia, quod voluptates quos voluptate voluptatibus quas doloribus quidem fugiat.",
-    },
-    {
-      id: 3,
-      image: yt3,
-      title: "Yacht 3",
-      hasSeaman: true,
-      entranceTime: "10:00",
-      exitTime: "18:00",
-      sizeBoat: "40 pés",
-      local: "Angra dos Reis",
-      description:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam voluptatum, quibusdam, quia, quod voluptates quos voluptate voluptatibus quas doloribus quidem fugiat.",
-    },
-    {
-      id: 4,
-      image: yt4,
-      title: "Yacht 4",
-      hasSeaman: true,
-      entranceTime: "10:00",
-      exitTime: "18:00",
-      sizeBoat: "40 pés",
-      local: "Angra dos Reis",
-      description:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam voluptatum, quibusdam, quia, quod voluptates quos voluptate voluptatibus quas doloribus quidem fugiat.",
-    },
-    {
-      id: 5,
-      image: yt5,
-      title: "Yacht 5",
-      hasSeaman: true,
-      entranceTime: "10:00",
-      exitTime: "18:00",
-      sizeBoat: "40 pés",
-      local: "Angra dos Reis",
-      description:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam voluptatum, quibusdam, quia, quod voluptates quos voluptate voluptatibus quas doloribus quidem fugiat.",
-    },
-    {
-      id: 6,
-      image: yt6,
-      title: "Yacht 6",
-      hasSeaman: true,
-      entranceTime: "10:00",
-      exitTime: "18:00",
-      sizeBoat: "40 pés",
-      local: "Angra dos Reis",
-      description:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam voluptatum, quibusdam, quia, quod voluptates quos voluptate voluptatibus quas doloribus quidem fugiat.",
-    },
-  ];
 
   const handleScroll = () => {
     if (typeof window !== "undefined") {
@@ -226,9 +144,6 @@ export default function HomePage() {
     });
   };
 
-  const controls = useAnimation();
-  const [ref, inView] = useInView();
-
   const handleModal = (boat: Boat) => {
     setSelectedBoat(boat);
     setIsModalOpen(!isModalOpen);
@@ -247,19 +162,54 @@ export default function HomePage() {
   }, []);
 
   useEffect(() => {
-    if (inView) {
-      controls.start("visible");
-    }
-  }, [controls, inView]);
-
-  useEffect(() => {
     getBoatsDoc().then((res) => {
       setBoats(res);
     });
   }, []);
 
+  useEffect(() => {
+    const newRandomIndexes = Array.from({ length: 2 }, () =>
+      Math.floor(Math.random() * boats.length)
+    );
+    console.log(newRandomIndexes);
+    setRandomIndexes(newRandomIndexes);
+  }, [boats]);
+
+  const [mostrarMensagem, setMostrarMensagem] = useState(false);
+
+  const handleHover = () => {
+    setMostrarMensagem(true);
+  };
+
+  const handleLeave = () => {
+    setMostrarMensagem(false);
+  };
+
   return (
     <div className="z-10" style={{ height: "200vh" }}>
+      <div className="relative">
+        <motion.button
+          className="fixed bottom-4 right-4 z-10 p-3 bg-green-500 rounded-full cursor-pointer shadow-lg"
+          onMouseEnter={handleHover}
+          onMouseLeave={handleLeave}
+          whileHover={{ scale: 1.1 }}
+        >
+          <Icon icon="whats" svgProps={{ fill: "white" }} />
+        </motion.button>
+
+        {mostrarMensagem && (
+          <motion.div
+            className="fixed bottom-4 right-10 z-10 p-3 bg-green-500 rounded-full cursor-pointer shadow-lg"
+            initial={{ opacity: 0, x: "100%" }}
+            animate={{ opacity: 1, x: "calc(100% - 160px)" }}
+            exit={{ opacity: 0, x: "100%" }}
+            transition={{ duration: 0.3 }}
+          >
+            <p className="text-white font-bold z-50">Fale conosco</p>
+          </motion.div>
+        )}
+      </div>
+
       <motion.header
         className={navbarClasses.join(" ")}
         initial={{ opacity: 0 }}
@@ -520,7 +470,7 @@ export default function HomePage() {
         <div className="flex justify-center items-center bg-white h-full">
           <div className="flex flex-col justify-center items-center relative">
             <div className="flex justify-center">
-              <div className="pt-2 w-full px-4 lg:w-4/5 sm:p-4 z-20">
+              <div className="pt-2 w-full px-4 lg:w-4/5 sm:p-4">
                 <div className="flex justify-center mb-2">
                   <Icon icon="wheel" svgProps={{ fill: "#006aa1" }} />
                 </div>
@@ -715,78 +665,98 @@ export default function HomePage() {
               </div>
             ))}
         </Carousel>
-        <div className="md:grid grid-cols-2 p-4 gap-5 h-full sm:h-3/4">
-          <div className="flex justify-left border-2 rounded-2xl mb-4 sm:mb-0">
-            <div className="border-b border-black/10 p-4">
-              <h2 className="text-2xl font-extralight text-primary font-Marcellus ">
-                Informações da Embarcação
-              </h2>
-              <div className="w-8 h-0.5 ml-1 flex justify-start bg-primary"></div>
-              <div className="flex gap-2 py-4">
-                <Icon icon="boat" />
-                <h2 className="">{selectedBoat?.YatchName}</h2>
-              </div>
-              <p className="text-gray-400 text-sm overflow-hidden">
-                {selectedBoat?.Description?.substring(0, 200) + "..."}
-              </p>
-            </div>
-          </div>
-          <div className="border-2 rounded-2xl p-4">
-            <div className="">
-              <h2 className="text-2xl font-extralight text-primary font-Marcellus">
-                Detalhes:
-              </h2>
-              <div className="w-8 h-0.5 ml-1 flex justify-start bg-primary"></div>
-            </div>
-            <div className="grid grid-cols-1 py-4 gap-4">
-              <div className="flex justify-start gap-2">
-                <div className="flex items-center">
-                  <Icon icon="people" />
+        {
+          {
+            0: (
+              <>
+                <div className="md:grid grid-cols-2 p-4 gap-5 h-full sm:h-3/4">
+                  <div className="flex justify-left border-2 rounded-2xl mb-4 sm:mb-0">
+                    <div className="border-b border-black/10 p-4">
+                      <h2 className="text-2xl font-extralight text-primary font-Marcellus ">
+                        Informações da Embarcação
+                      </h2>
+                      <div className="w-8 h-0.5 ml-1 flex justify-start bg-primary"></div>
+                      <div className="flex gap-2 py-4">
+                        <Icon icon="boat" />
+                        <h2 className="">{selectedBoat?.YatchName}</h2>
+                      </div>
+                      <p className="text-gray-400 text-sm overflow-hidden">
+                        {selectedBoat?.Description?.substring(0, 200) + "..."}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="border-2 rounded-2xl p-4">
+                    <div className="">
+                      <h2 className="text-2xl font-extralight text-primary font-Marcellus">
+                        Detalhes:
+                      </h2>
+                      <div className="w-8 h-0.5 ml-1 flex justify-start bg-primary"></div>
+                    </div>
+                    <div className="grid grid-cols-1 py-4 gap-4">
+                      <div className="flex justify-start gap-2">
+                        <div className="flex items-center">
+                          <Icon icon="people" />
+                        </div>
+                        <span className="font-light flex items-center">
+                          Capacidade: {selectedBoat?.Capacity} pessoas
+                        </span>
+                      </div>
+                      <div className="flex justify-start gap-2">
+                        <div className="flex items-center">
+                          <Icon icon="boatSize" />
+                        </div>
+                        <span className="font-light flex items-center">
+                          Tamanho: {selectedBoat?.SizeBoat} pés
+                        </span>
+                      </div>
+                      <div className="flex justify-start gap-2">
+                        <div className="flex items-center">
+                          <Icon icon="enter" />
+                        </div>
+                        <span className="font-light flex items-center">
+                          Entrada às {selectedBoat?.StartIn}
+                        </span>
+                      </div>
+                      <div className="flex justify-start gap-2">
+                        <div className="flex items-center">
+                          <Icon icon="exit" />
+                        </div>
+                        <span className="font-light flex items-center">
+                          Retorno às {selectedBoat?.EndIn}
+                        </span>
+                      </div>
+                      <div className="flex justify-start gap-2">
+                        <div className="flex items-center">
+                          <Icon icon="included" />
+                        </div>
+                        <span className="font-light flex items-center">
+                          Incluso: {selectedBoat?.Included}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div>
+                    <button
+                      className="bg-primary text-white font-bold py-2 px-6 rounded"
+                      onClick={() => setStep(1)}
+                    >
+                      Tenho Interesse
+                    </button>
+                  </div>
                 </div>
-                <span className="font-light flex items-center">
-                  Capacidade: {selectedBoat?.Capacity} pessoas
-                </span>
+              </>
+            ),
+            1: (
+              <div className="w-11/12 mx-auto h-full sm:h-3/4">
+                <WhatsMessage
+                  selectedBoat={selectedBoat}
+                  setStep={setStep}
+                  step={step}
+                />
               </div>
-              <div className="flex justify-start gap-2">
-                <div className="flex items-center">
-                  <Icon icon="boatSize" />
-                </div>
-                <span className="font-light flex items-center">
-                  Tamanho: {selectedBoat?.SizeBoat} pés
-                </span>
-              </div>
-              <div className="flex justify-start gap-2">
-                <div className="flex items-center">
-                  <Icon icon="enter" />
-                </div>
-                <span className="font-light flex items-center">
-                  Entrada às {selectedBoat?.StartIn}
-                </span>
-              </div>
-              <div className="flex justify-start gap-2">
-                <div className="flex items-center">
-                  <Icon icon="exit" />
-                </div>
-                <span className="font-light flex items-center">
-                  Retorno às {selectedBoat?.EndIn}
-                </span>
-              </div>
-              <div className="flex justify-start gap-2">
-                <div className="flex items-center">
-                  <Icon icon="included" />
-                </div>
-                <span className="font-light flex items-center">
-                  Incluso: {selectedBoat?.Included}
-                </span>
-              </div>
-            </div>
-          </div>
-          <div>
-            <button className="bg-primary text-white font-bold py-2 px-4 rounded">
-              Tenho Interesse
-            </button>
-          </div>
-        </div>
+            ),
+          }[step]
+        }
       </Modal>
 
       <div className="bg-off">
@@ -797,66 +767,70 @@ export default function HomePage() {
         className="h-[26rem] sm:h-[20rem] lg:h-[50rem] bg-off flex items-center"
         id="nosso-trabalho"
       >
-        <div className="lg:h-3/5 w-full px-4 md:w-4/5 mx-auto">
-          <div className="pb-4">
-            <h1 className="text-4xl font-bold text-primary text-left w-full font-Marcellus ">
-              Confira um pouco do nosso trabalho
-            </h1>
-            <div className="w-8 h-1 mt-2 ml-1 flex justify-start bg-primary"></div>
-          </div>
+        {boats && boats.length > 0 && (
+          <div className="lg:h-3/5 w-full px-4 md:w-4/5 mx-auto">
+            <div className="pb-4">
+              <h1 className="text-4xl font-bold text-primary text-left w-full font-Marcellus ">
+                Confira um pouco do nosso trabalho
+              </h1>
+              <div className="w-8 h-1 mt-2 ml-1 flex justify-start bg-primary"></div>
+            </div>
 
-          <div
-            className="grid grid-rows-5 grid-columns-6 gap-2 h-full relative cursor-pointer col-span-1"
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
-            onClick={() => openVideo("url do seu vídeo")}
-          >
-            <div className="col-start-1 col-end-3 row-start-1 row-end-3">
-              <Image
-                src={yt1}
-                className="w-full h-full object-cover rounded-2xl"
-                alt="Image 1"
-              />
-            </div>
-            <div className="col-start-3 col-end-5 row-start-1 row-end-3 ">
-              <Image
-                src={yt2}
-                className="w-full h-full object-cover rounded-2xl"
-                alt="Image 2"
-              />
-            </div>
-            <div className="col-start-5 col-end-9 row-start-1 row-end-6">
-              <Image
-                src={yt3}
-                className="w-full h-full object-cover rounded-2xl"
-                alt="Image 3"
-              />
-            </div>
-            <div className="col-start-1 col-end-5 row-start-3 row-end-6">
-              <Image
-                src={yt4}
-                className="w-full h-full object-cover rounded-2xl"
-                alt="Image 4"
-              />
-            </div>
-            {/* Insira os outros elementos de imagem aqui */}
-            {isHovered && (
-              <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-                <div className="">
-                  <span className="text-white text-3xl">
-                    Assista nosso vídeo
-                  </span>
-                  <div className="flex justify-center">
-                    <Icon
-                      icon="play"
-                      svgProps={{ fill: "#fff", width: "80px" }}
-                    />
+            <div
+              className="grid grid-rows-5 grid-columns-6 gap-2 h-full relative cursor-pointer col-span-1"
+              onMouseEnter={() => setIsHovered(true)}
+              onMouseLeave={() => setIsHovered(false)}
+            >
+              <div className="col-start-1 col-end-3 row-start-1 row-end-3">
+                <Image
+                  src={boats[randomIndexes[1]]?.Images[randomIndexes[0]]}
+                  fill
+                  className="w-full h-full object-cover rounded-2xl"
+                  alt="Image 1"
+                />
+              </div>
+              <div className="col-start-3 col-end-5 row-start-1 row-end-3 ">
+                <Image
+                  src={boats[randomIndexes[0]]?.Images[randomIndexes[1]]}
+                  fill
+                  className="w-full h-full object-cover rounded-2xl"
+                  alt="Image 2"
+                />
+              </div>
+              <div className="col-start-5 col-end-9 row-start-1 row-end-6">
+                <Image
+                  src={boats[randomIndexes[1]]?.Images[randomIndexes[2]]}
+                  fill
+                  className="w-full h-full object-cover rounded-2xl"
+                  alt="Image 3"
+                />
+              </div>
+              <div className="col-start-1 col-end-5 row-start-3 row-end-6">
+                <Image
+                  src={boats[randomIndexes[2]]?.Images[randomIndexes[1]]}
+                  fill
+                  className="w-full h-full object-cover rounded-2xl"
+                  alt="Image 4"
+                />
+              </div>
+              {isHovered && (
+                <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+                  <div className="">
+                    <span className="text-white text-3xl">
+                      Assista nosso vídeo
+                    </span>
+                    <div className="flex justify-center">
+                      <Icon
+                        icon="play"
+                        svgProps={{ fill: "#fff", width: "80px" }}
+                      />
+                    </div>
                   </div>
                 </div>
-              </div>
-            )}
+              )}
+            </div>
           </div>
-        </div>
+        )}
 
         {selectedVideo && (
           <div className="fixed z-50 top-0 left-0 w-screen h-screen flex items-center justify-center bg-black bg-opacity-50">
@@ -892,11 +866,17 @@ export default function HomePage() {
               </h1>
               <div className="w-8 h-1 mt-2 ml-1 flex justify-start bg-primary"></div>
               <p className="text-lg pt-4 font-extralight text-gray-600">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Quisquam voluptatum, quibusdam, quia, quod voluptates quos
-                voluptate voluptatibus quas doloribus quidem fugiat. Quisquam
-                voluptatum, quibusdam, quia, quod voluptates quos voluptate
-                voluptatibus quas doloribus quidem fugiat.
+                Encontrar a Force Yacht é fácil! Se você é um entusiasta das
+                redes sociais, visite nosso perfil no Instagram para obter
+                informações atualizadas, fotos deslumbrantes das nossas lanchas
+                e detalhes sobre os pacotes disponíveis.
+              </p>
+              <p className="text-lg pt-4 font-extralight text-gray-600">
+                Não perca a oportunidade de explorar a beleza natural de Porto
+                Belo enquanto desfruta do conforto e da emoção de uma lancha de
+                alta qualidade. Na Force Yacht, garantimos que você tenha uma
+                experiência única e memorável. Aguardamos ansiosamente o seu contato para começar a
+                planejar sua aventura marítima. Vamos navegar juntos!{" "}
               </p>
             </div>
             <div className="flex px-8">
@@ -924,11 +904,9 @@ export default function HomePage() {
               </div>
             </div>
 
-              <h1 className="text-2xl text-right font-bold text-primary font-Marcellus px-8 pb-2">
-                Regiões de encontro
-              </h1>
-
+            <div className="py-4 px-8 pb-2">
               <MyMap />
+            </div>
           </div>
         </div>
       </section>
