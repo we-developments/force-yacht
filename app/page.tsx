@@ -55,6 +55,7 @@ export default function HomePage() {
   const [selectedBoat, setSelectedBoat] = useState<Boat>([] as any);
   const [step, setStep] = useState(0);
   const [scrolled, setScrolled] = useState(false);
+  const [isWhatsOpen, setIsWhatsOpen] = useState(true);
 
   const { getBoatsDoc } = useBoatManagement();
 
@@ -99,9 +100,13 @@ export default function HomePage() {
   return (
     <div className="z-10" style={{ height: "200vh" }}>
       <Banner
+        setIsWhatsOpen={setIsWhatsOpen}
+        setStep={setStep}
         isMobile={isMobile}
         handleScroll={handleScroll}
         scrolled={scrolled}
+        handleModal={handleModal}
+        isWhatsOpen={isWhatsOpen}
       />
       <section className="lg:h-fit" id="sobre-nos">
         <div className="flex justify-center items-center bg-white h-full">
@@ -176,6 +181,8 @@ export default function HomePage() {
         handleModal={handleModal}
         stylesContent={"bg-white w-full xl:w-3/4 !h-[300vh]"}
       >
+        {
+          isWhatsOpen && (
         <Carousel
           responsive={{
             desktop: {
@@ -192,13 +199,13 @@ export default function HomePage() {
             },
           }}
           removeArrowOnDeviceType={["tablet", "mobile"]}
-          arrows={selectedBoat?.Images?.length > 1 ? true : false}
+          arrows={selectedBoat && selectedBoat?.Images?.length > 1 ? true : false}
           renderDotsOutside={true}
           showDots={false}
-          swipeable={selectedBoat?.Images?.length > 1 ? true : false}
-          draggable={selectedBoat?.Images?.length > 1 ? true : false}
+          swipeable={selectedBoat && selectedBoat?.Images?.length > 1 ? true : false}
+          draggable={selectedBoat && selectedBoat?.Images?.length > 1 ? true : false}
           infinite={true}
-          autoPlay={selectedBoat?.Images?.length < 1 ? true : false}
+          autoPlay={selectedBoat && selectedBoat?.Images?.length < 1 ? true : false}
           containerClass="carousel-container"
         >
           {selectedBoat &&
@@ -219,6 +226,7 @@ export default function HomePage() {
               </div>
             ))}
         </Carousel>
+        )}
         {
           {
             0: (
@@ -306,6 +314,7 @@ export default function HomePage() {
                   selectedBoat={selectedBoat}
                   setStep={setStep}
                   step={step}
+                  isWhatsOpen={isWhatsOpen}
                 />
               </div>
             ),

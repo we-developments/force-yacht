@@ -12,17 +12,7 @@ import jumpGirls from "../../images/pngs/jump-girls.png";
 
 const MyMap = () => {
   const [isClient, setIsClient] = useState(false);
-
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
-
-  if (!isClient) {
-    return null;
-  }
-
   const { Icon } = useIconGetter();
-
 
   return (
     <section

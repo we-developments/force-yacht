@@ -67,10 +67,10 @@ export default function Boats({ boats, handleModal }: any) {
                   <div className="mt-2 px-8 py-4 relative">
                     <div className="flex justify-between">
                       <h2 className="text-xl font-bold text-primary">
-                        <Icon icon="location" svgProps={{ fill: "#DBDFE4" }} />
                         {boat.YatchName}
                       </h2>
                       <span className="flex gap-2 text-base text-gray-400">
+                        <Icon icon="location" svgProps={{ fill: "#DBDFE4" }} />
                         {boat.ExitLocation}
                       </span>
                     </div>

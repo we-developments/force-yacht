@@ -14,11 +14,12 @@ type WhatsProps = {
 
 interface WhatsMessageProps {
   selectedBoat?: Boat;
-  step: number;
-  setStep: React.Dispatch<React.SetStateAction<number>>;
+  step?: number;
+  setStep?: React.Dispatch<React.SetStateAction<number>> | any;
+  isWhatsOpen: boolean;
 }
 
-const WhatsMessage = ({ selectedBoat, step, setStep }: WhatsMessageProps) => {
+const WhatsMessage = ({ selectedBoat, step, setStep, isWhatsOpen }: WhatsMessageProps) => {
   const [dataSend, setDataSend] = useState({} as WhatsProps);
 
   const handleDataSend = (key: string, value: string) => {
@@ -28,7 +29,6 @@ const WhatsMessage = ({ selectedBoat, step, setStep }: WhatsMessageProps) => {
   };
 
   const { Icon } = useIconGetter();
-
 
   const handleSubmit = () => {
     let number = "11 98356-8718".replace(/[^\w\s]/gi, "").replace(/ /g, "");
@@ -46,6 +46,10 @@ const WhatsMessage = ({ selectedBoat, step, setStep }: WhatsMessageProps) => {
       Olá, meu nome é ${dataSend.name}, tive interesse no aluguel da lancha ${selectedBoat?.YatchName}, gostaria de saber mais informações.
       Dúvidas extras: ${dataSend.extras}
       `;
+    } else {
+      dataWithMessage = `      
+      Olá, meu nome é ${dataSend.name}, tive interesse em alugar uma lancha, gostaria de saber mais informações.
+      Dúvidas extras: ${dataSend.extras}`
     }
     handleDataSend("message", dataWithMessage);
   }, [dataSend]);
@@ -53,9 +57,11 @@ const WhatsMessage = ({ selectedBoat, step, setStep }: WhatsMessageProps) => {
   return (
     <div>
       <div className="flex flex-col gap-2 p-4 w-full sm:w-2/3">
-        <button type="button" className="py-4 w-5" onClick={() => setStep(0)}>
-          <ArrowLeftIcon width={20} />
-        </button>
+        {isWhatsOpen && (
+          <button type="button" className="py-4 w-5" onClick={() => setStep(0)}>
+            <ArrowLeftIcon width={20} />
+          </button>
+        )}
         <h1 className="text-4xl font-bold text-primary text-left w-full font-Marcellus ">
           {selectedBoat
             ? "Teve interesse nesta embarcação?"
@@ -137,8 +143,7 @@ const WhatsMessage = ({ selectedBoat, step, setStep }: WhatsMessageProps) => {
           className="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
           onClick={handleSubmit}
         >
-
-          <Icon icon="whats" svgProps={{ fill: "white"}}/>
+          <Icon icon="whats" svgProps={{ fill: "white" }} />
           Enviar mensagem
         </button>
       </div>

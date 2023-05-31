@@ -1,4 +1,4 @@
-import banner5 from "../../images/pngs/banner5.jpg"
+import banner5 from "../../images/pngs/banner5.jpg";
 import Logo from "../../images/pngs/force.png";
 import { useInView } from "react-intersection-observer";
 import { motion, useAnimation } from "framer-motion";
@@ -8,11 +8,31 @@ import { useSpring, animated } from "react-spring";
 import Image from "next/image";
 import { Dialog, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
+import WhatsMessage from "../WhatsMessage/whatsMessage";
+import Modal from "../Modal/modal";
 
+interface IBannerProps {
+  isMobile: boolean;
+  handleScroll: () => void;
+  scrolled: boolean;
+  setStep: (step: number) => void;
+  handleModal: (e?: any) => void;
+  setIsWhatsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  isWhatsOpen: boolean;
+}
 
-export default function Banner({isMobile, handleScroll, scrolled}: any) {
+export default function Banner({
+  isMobile,
+  handleScroll,
+  scrolled,
+  handleModal,
+  setStep,
+  setIsWhatsOpen,
+  isWhatsOpen
+}: IBannerProps) {
   const [mostrarMensagem, setMostrarMensagem] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const { Icon } = useIconGetter();
 
@@ -23,6 +43,14 @@ export default function Banner({isMobile, handleScroll, scrolled}: any) {
   const handleLeave = () => {
     setMostrarMensagem(false);
   };
+
+  const handleModalWhats = () => {
+    return new Promise((resolve, reject) => {
+      setStep(1)
+      setIsWhatsOpen(false)
+      resolve("sucess")
+    }).catch(er => console.log(er))
+  }
 
   let navbarClasses = [
     "fixed",
@@ -38,7 +66,6 @@ export default function Banner({isMobile, handleScroll, scrolled}: any) {
   ];
 
   let logoHeight: number = 150;
-  
 
   if (scrolled) {
     navbarClasses.push(
@@ -69,7 +96,6 @@ export default function Banner({isMobile, handleScroll, scrolled}: any) {
     delay: 300,
   });
 
-
   return (
     <>
       <div className="relative">
@@ -78,6 +104,7 @@ export default function Banner({isMobile, handleScroll, scrolled}: any) {
           onMouseEnter={handleHover}
           onMouseLeave={handleLeave}
           whileHover={{ scale: 1.1 }}
+          onClick={() => handleModalWhats().then(handleModal)}
         >
           <Icon icon="whats" svgProps={{ fill: "white" }} />
         </motion.button>
@@ -94,6 +121,16 @@ export default function Banner({isMobile, handleScroll, scrolled}: any) {
           </motion.div>
         )}
       </div>
+
+      <Modal
+        isOpen={isModalOpen}
+        handleModal={handleModal}
+        stylesContent={"bg-white w-full xl:w-3/4 !h-[300vh]"}
+      >
+        <div className="w-11/12 mx-auto h-full sm:h-3/4">
+          <WhatsMessage isWhatsOpen={isWhatsOpen}/>
+        </div>
+      </Modal>
 
       <motion.header
         className={navbarClasses.join(" ")}
