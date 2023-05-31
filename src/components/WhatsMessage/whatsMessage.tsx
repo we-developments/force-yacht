@@ -3,10 +3,11 @@ import { useIconGetter } from "@/src/hooks/useIconGetter";
 import React, { useEffect, useState } from "react";
 import InputMask from "react-input-mask";
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
+import { useUserManagement } from "@/services/userManagement";
 
 type WhatsProps = {
   name: string;
-  mobileNumber: string;
+  phone: string;
   email: string;
   message: string;
   extras: string;
@@ -17,10 +18,13 @@ interface WhatsMessageProps {
   step?: number;
   setStep?: React.Dispatch<React.SetStateAction<number>> | any;
   isWhatsOpen: boolean;
+  handleModal: (boat?: any) => void
 }
 
-const WhatsMessage = ({ selectedBoat, step, setStep, isWhatsOpen }: WhatsMessageProps) => {
+const WhatsMessage = ({ selectedBoat, step, setStep, isWhatsOpen, handleModal }: WhatsMessageProps) => {
   const [dataSend, setDataSend] = useState({} as WhatsProps);
+
+  const { getUserDoc, createUserDoc } = useUserManagement()
 
   const handleDataSend = (key: string, value: string) => {
     if (key && value) {
@@ -31,28 +35,40 @@ const WhatsMessage = ({ selectedBoat, step, setStep, isWhatsOpen }: WhatsMessage
   const { Icon } = useIconGetter();
 
   const handleSubmit = () => {
+
+    let dataWithMessage = "";
+
+    if (selectedBoat) {
+      dataWithMessage = `Olá, meu nome é ${dataSend.name}, tive interesse no aluguel da lancha ${selectedBoat?.YatchName}, gostaria de saber mais informações.`;
+      if (dataSend?.extras?.length > 0) {
+        dataWithMessage += `Dúvidas extras: ${dataSend.extras}`
+      }
+      handleDataSend("message", dataWithMessage);
+    } else {
+      dataWithMessage = `Olá, meu nome é ${dataSend.name}, tive interesse em alugar uma lancha, gostaria de saber mais informações. `
+      if (dataSend?.extras?.length > 0) {
+        dataWithMessage += `Dúvidas extras: ${dataSend.extras}`
+      }
+      handleDataSend("message", dataWithMessage);
+    }
+
     let number = "11 98356-8718".replace(/[^\w\s]/gi, "").replace(/ /g, "");
 
     let url = `https://web.whatsapp.com/send?phone=${number}`;
 
-    window.open(`${url}&text=${encodeURI(dataSend.message)}&app_absent=0`);
+    getUserDoc(dataSend.email).then((user: any) => {
+      if (!user.length) {
+        createUserDoc(dataSend).then(res => {
+          window.open(`${url}&text=${encodeURI(dataWithMessage)}&app_absent=0`);
+          handleModal()
+        }).catch(err => console.log(err))
+      } else {
+        window.open(`${url}&text=${encodeURI(dataWithMessage)}&app_absent=0`);
+        handleModal()
+      }
+    }).catch(err => console.log(err))
+
   };
-
-  useEffect(() => {
-    let dataWithMessage = "";
-
-    if (selectedBoat) {
-      dataWithMessage = `      
-      Olá, meu nome é ${dataSend.name}, tive interesse no aluguel da lancha ${selectedBoat?.YatchName}, gostaria de saber mais informações.
-      Dúvidas extras: ${dataSend.extras}
-      `;
-    } else {
-      dataWithMessage = `      
-      Olá, meu nome é ${dataSend.name}, tive interesse em alugar uma lancha, gostaria de saber mais informações.
-      Dúvidas extras: ${dataSend.extras}`
-    }
-    handleDataSend("message", dataWithMessage);
-  }, [dataSend]);
 
   return (
     <div>
@@ -63,7 +79,7 @@ const WhatsMessage = ({ selectedBoat, step, setStep, isWhatsOpen }: WhatsMessage
           </button>
         )}
         <h1 className="text-4xl font-bold text-primary text-left w-full font-Marcellus ">
-          {selectedBoat
+          {isWhatsOpen
             ? "Teve interesse nesta embarcação?"
             : "Teve interesse em alguma embarcação?"}
         </h1>
@@ -89,7 +105,7 @@ const WhatsMessage = ({ selectedBoat, step, setStep, isWhatsOpen }: WhatsMessage
           <div className="pb-4">
             <label className="block text-sm pb-2">Telefone</label>
             <InputMask
-              mask="(99) 9999-9999"
+              mask="(99) 99999-9999"
               maskChar={null}
               className="block p-2 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 
           ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset 
@@ -97,9 +113,9 @@ const WhatsMessage = ({ selectedBoat, step, setStep, isWhatsOpen }: WhatsMessage
               type="tel"
               name="messageToUser"
               id="messageToUser"
-              placeholder="(99) 9999-9999"
+              placeholder="(99) 99999-9999"
               onChange={(e) => {
-                handleDataSend("mobileNumber", e.target.value);
+                handleDataSend("phone", e.target.value);
               }}
             />
           </div>
@@ -140,7 +156,7 @@ const WhatsMessage = ({ selectedBoat, step, setStep, isWhatsOpen }: WhatsMessage
       <div className="p-4">
         <button
           type="button"
-          className="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+          className="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded flex items-center gap-3"
           onClick={handleSubmit}
         >
           <Icon icon="whats" svgProps={{ fill: "white" }} />
