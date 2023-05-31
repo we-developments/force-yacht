@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 export default function Video({ boats }: any) {
     const [isHovered, setIsHovered] = useState(false);
     const [randomIndexes, setRandomIndexes] = useState<number[]>([]);
-    const [selectedVideo, setSelectedVideo] = useState(null);
+    const [selectedVideo, setSelectedVideo] = useState<boolean>(false);
 
     const { Icon } = useIconGetter();
 
@@ -73,7 +73,7 @@ export default function Video({ boats }: any) {
                 />
               </div>
               {isHovered && (
-                <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+                <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center" onClick={() => setSelectedVideo(true)}>
                   <div className="">
                     <span className="text-white text-3xl">
                       Assista nosso vídeo
@@ -101,7 +101,7 @@ export default function Video({ boats }: any) {
               allowFullScreen
             ></iframe>
             <button
-              onClick={() => setSelectedVideo(null)}
+              onClick={() => setSelectedVideo(false)}
               className="absolute top-4 right-4 text-white text-2xl"
             >
               X

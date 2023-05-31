@@ -55,8 +55,8 @@ const WhatsMessage = ({ selectedBoat, step, setStep, isWhatsOpen }: WhatsMessage
   }, [dataSend]);
 
   return (
-    <div>
-      <div className="flex flex-col gap-2 p-4 w-full sm:w-2/3">
+    <div className="flex justify-center">
+      <div className="flex flex-col gap-2 p-4 w-full">
         {isWhatsOpen && (
           <button type="button" className="py-4 w-5" onClick={() => setStep(0)}>
             <ArrowLeftIcon width={20} />
@@ -135,8 +135,6 @@ const WhatsMessage = ({ selectedBoat, step, setStep, isWhatsOpen }: WhatsMessage
             />
           </div>
         </div>
-      </div>
-
       <div className="p-4">
         <button
           type="button"
@@ -147,6 +145,8 @@ const WhatsMessage = ({ selectedBoat, step, setStep, isWhatsOpen }: WhatsMessage
           Enviar mensagem
         </button>
       </div>
+      </div>
+
     </div>
   );
 };

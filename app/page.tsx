@@ -20,6 +20,7 @@ import { useBoatManagement } from "@/services/boatManagement";
 import dynamic from "next/dynamic";
 import WhatsMessage from "@/src/components/WhatsMessage/whatsMessage";
 import Video from "@/src/components/Video/video";
+import { LockClosedIcon, XCircleIcon } from "@heroicons/react/24/outline";
 
 const MyMap = dynamic(() => import("@/src/components/Map/MyMap"), {
   ssr: false,
@@ -179,8 +180,11 @@ export default function HomePage() {
       <Modal
         isOpen={isModalOpen}
         handleModal={handleModal}
-        stylesContent={"bg-white w-full xl:w-3/4 !h-[300vh]"}
+        stylesContent={"bg-white w-full xl:w-3/4 !h-[300vh] relative"}
       >
+        <button type="button" className="z-30 w-5 right-4 top-2 absolute rounded-sm" onClick={() => setIsModalOpen(false)}>
+          <XCircleIcon width={30} color="#02100E"/>
+        </button>
         {
           isWhatsOpen && (
         <Carousel
@@ -216,7 +220,7 @@ export default function HomePage() {
                   width={1500}
                   src={image}
                   alt={selectedBoat?.YatchName}
-                  className="object-cover lg:h-[44rem] w-full"
+                  className="object-cover h-full lg:h-[44rem] w-full"
                 />
                 <div className="absolute inset-0 bg-black opacity-20 flex items-center justify-center">
                   <h1 className="text-white text-5xl font-bold">
@@ -297,7 +301,7 @@ export default function HomePage() {
                       </div>
                     </div>
                   </div>
-                  <div>
+                  <div className="py-4 md:py-0">
                     <button
                       className="bg-primary text-white font-bold py-2 px-6 rounded"
                       onClick={() => setStep(1)}

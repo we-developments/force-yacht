@@ -80,7 +80,7 @@ export default function Boats({ boats, handleModal }: any) {
                       </p>
                     </div>
                   </div>
-                  <div className="flex justify-between p-4">
+                  <div className="sm:flex block justify-between p-4">
                     <div className="flex gap-4">
                       <div className="flex gap-2">
                         <Icon icon="people" svgProps={{ fill: "#bdbdbd" }} />
@@ -93,11 +93,11 @@ export default function Boats({ boats, handleModal }: any) {
                         </span>
                       </div>
                     </div>
-                    <div>
+                    <div className="py-4 sm:py-0 flex justify-end">
                       <button
                         type="button"
                         onClick={() => handleModal(boat)}
-                        className="bg-transparent hover:bg-blue-500 text-blue-700 font-extralight hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+                        className="p-4 bg-transparent hover:bg-blue-500 text-blue-700 font-extralight hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
                       >
                         Ver detalhes
                       </button>
