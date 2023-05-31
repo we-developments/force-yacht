@@ -78,6 +78,11 @@ export default function HomePage() {
   const handleModal = (boat: Boat) => {
     setSelectedBoat(boat);
     setIsModalOpen(!isModalOpen);
+    if(isModalOpen){
+      setIsWhatsOpen(true)
+      setSelectedBoat({} as Boat)
+      setStep(0)
+    }
   };
 
   useEffect(() => {
@@ -236,6 +241,7 @@ export default function HomePage() {
             0: (
               <>
                 <div className="md:grid grid-cols-2 p-4 gap-5 h-full sm:h-3/4">
+                  
                   <div className="flex justify-left border-2 rounded-2xl mb-4 sm:mb-0">
                     <div className="border-b border-black/10 p-4">
                       <h2 className="text-2xl font-extralight text-primary font-Marcellus ">
@@ -247,7 +253,7 @@ export default function HomePage() {
                         <h2 className="">{selectedBoat?.YatchName}</h2>
                       </div>
                       <p className="text-gray-400 text-sm overflow-hidden">
-                        {selectedBoat?.Description?.substring(0, 200) + "..."}
+                        {selectedBoat?.Description?.length > 399 ? selectedBoat?.Description?.substring(0, 400) + "..." : selectedBoat?.Description}
                       </p>
                     </div>
                   </div>
@@ -319,6 +325,7 @@ export default function HomePage() {
                   setStep={setStep}
                   step={step}
                   isWhatsOpen={isWhatsOpen}
+                  handleModal={handleModal}
                 />
               </div>
             ),

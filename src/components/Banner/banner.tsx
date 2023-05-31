@@ -98,11 +98,13 @@ export default function Banner({
 
   return (
     <>
-      <div className="relative">
+      <div className="relative"
+        onMouseEnter={handleHover}
+        onMouseLeave={handleLeave}
+      >
         <motion.button
           className="fixed bottom-4 right-4 z-10 p-3 bg-green-500 rounded-full cursor-pointer shadow-lg"
-          onMouseEnter={handleHover}
-          onMouseLeave={handleLeave}
+
           whileHover={{ scale: 1.1 }}
           onClick={() => handleModalWhats().then(handleModal)}
         >
@@ -128,7 +130,7 @@ export default function Banner({
         stylesContent={"bg-white w-full xl:w-3/4 !h-[300vh]"}
       >
         <div className="w-11/12 mx-auto h-full sm:h-3/4">
-          <WhatsMessage isWhatsOpen={isWhatsOpen}/>
+          <WhatsMessage isWhatsOpen={isWhatsOpen} handleModal={handleModal} />
         </div>
       </Modal>
 

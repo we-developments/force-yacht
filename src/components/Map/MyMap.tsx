@@ -56,11 +56,13 @@ const MyMap = () => {
                 <Link
                   href="https://www.instagram.com/forceyachts/"
                   target="_blank"
+                  className="flex items-center gap-2"
                 >
                   <Icon
                     svgProps={{ fill: "#9c9c9c", width: "30px" }}
                     icon="insta"
                   />
+                    <p className="text-primary text-normal font-semibold text-lg">@forceyachts</p>
                 </Link>
               </div>
             </div>

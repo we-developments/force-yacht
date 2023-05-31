@@ -2,12 +2,13 @@ import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 
 export const firebaseConfig = {
-  apiKey: 'AIzaSyAxYihqOyosW24I5M5TuegNNjj5rKZlsEc',
-  authDomain: 'force-yatchs.firebaseapp.com',
-  projectId: 'force-yatchs',
-  storageBucket: 'force-yatchs.appspot.com',
-  messagingSenderId: '58383611747',
-  appId: '1:58383611747:web:d211d499a2232fa513c556'
+  apiKey: "AIzaSyD7zk1vJkpkxj2QiDPfcbarrk8erdEC6xA",
+  authDomain: "force-yachts.firebaseapp.com",
+  projectId: "force-yachts",
+  storageBucket: "force-yachts.appspot.com",
+  messagingSenderId: "98304126996",
+  appId: "1:98304126996:web:eae49ecbaa8dc117c4b701",
+  measurementId: "G-6MC7BK6E8N"
 };
 
 const app = initializeApp(firebaseConfig);
