@@ -34,25 +34,28 @@ import {
       });
     };
   
-    const getUserDoc = async (id: any) => {
-      try {
-        const q = query(collection(db, "usersRegistred"), where("id", "==", id));
-        const querySnap = await getDocs(q);
-        const dataRes = [] as any;
-        querySnap.forEach((doc) => {
-          const dataReturn = {
-            id: doc.id,
-            name: doc.data().name,
-            email: doc.data().email,
-            phone: doc.data().phone,
-            createdAt: doc.data().createdAt,
-          };
-          dataRes.push(dataReturn);
-        });
-        return dataRes;
-      } catch (error) {
-        return error;
-      }
+    const getUserDoc = async (email: string) => {
+        return new Promise(async (resolve, reject) => {
+          try {
+            const q = query(collection(db, "usersRegistred"), where("email", "==", email));
+            const querySnap = await getDocs(q);
+            const dataRes = [] as any;
+            querySnap.forEach((doc) => {
+              const dataReturn = {
+                id: doc.id,
+                name: doc.data().name,
+                email: doc.data().email,
+                phone: doc.data().phone,
+                createdAt: doc.data().createdAt,
+              };
+              dataRes.push(dataReturn);
+            });
+            resolve(dataRes)
+            return dataRes;
+          } catch (error) {
+            return error;
+          }
+        })
     };
 
     const getUsersDoc = async () => {
