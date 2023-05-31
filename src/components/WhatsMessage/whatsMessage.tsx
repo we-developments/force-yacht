@@ -1,9 +1,7 @@
 import { Boat } from "@/app/page";
-import { useIconGetter } from "@/src/hooks/useIconGetter";
-import React, { useEffect, useState } from "react";
-import InputMask from "react-input-mask";
-import { ArrowLeftIcon } from "@heroicons/react/24/outline";
+import React, { useState } from "react";
 import { useUserManagement } from "@/services/userManagement";
+import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 
 type WhatsProps = {
   name: string;
@@ -23,6 +21,14 @@ interface WhatsMessageProps {
 
 const WhatsMessage = ({ selectedBoat, step, setStep, isWhatsOpen, handleModal }: WhatsMessageProps) => {
   const [dataSend, setDataSend] = useState({} as WhatsProps);
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
+  const [extras, setExtras] = useState("");
+  const [nameError, setNameError] = useState("");
+  const [phoneError, setPhoneError] = useState("");
+  const [emailError, setEmailError] = useState("");
+
 
   const { getUserDoc, createUserDoc } = useUserManagement()
 
@@ -32,22 +38,53 @@ const WhatsMessage = ({ selectedBoat, step, setStep, isWhatsOpen, handleModal }:
     }
   };
 
-  const { Icon } = useIconGetter();
-
   const handleSubmit = () => {
+
+     setNameError("");
+     setPhoneError("");
+     setEmailError("");
+ 
+     if (name.trim() === "") {
+       setNameError("Por favor, preencha o campo Nome.");
+       return;
+     }
+ 
+     if (phone.trim() === "") {
+       setPhoneError("Por favor, preencha o campo Telefone.");
+       return;
+     }
+ 
+     if (email.trim() === "") {
+       setEmailError("Por favor, preencha o campo E-mail.");
+       return;
+     }
+ 
+     const formData = {
+       name,
+       phone,
+       email,
+       extras
+     };
+ 
+     console.log(formData);
+ 
+     setName("");
+     setPhone("");
+     setEmail("");
+     setExtras("");
 
     let dataWithMessage = "";
 
     if (selectedBoat) {
-      dataWithMessage = `Olá, meu nome é ${dataSend.name}, tive interesse no aluguel da lancha ${selectedBoat?.YatchName}, gostaria de saber mais informações.`;
-      if (dataSend?.extras?.length > 0) {
-        dataWithMessage += `Dúvidas extras: ${dataSend.extras}`
+      dataWithMessage = `Olá, meu nome é ${formData.name}, tive interesse no aluguel da lancha ${selectedBoat?.YatchName}, gostaria de saber mais informações.`;
+      if (formData?.extras?.length > 0) {
+        dataWithMessage += `Dúvidas extras: ${formData.extras}`
       }
       handleDataSend("message", dataWithMessage);
     } else {
-      dataWithMessage = `Olá, meu nome é ${dataSend.name}, tive interesse em alugar uma lancha, gostaria de saber mais informações. `
-      if (dataSend?.extras?.length > 0) {
-        dataWithMessage += `Dúvidas extras: ${dataSend.extras}`
+      dataWithMessage = `Olá, meu nome é ${formData.name}, tive interesse em alugar uma lancha, gostaria de saber mais informações. `
+      if (formData?.extras?.length > 0) {
+        dataWithMessage += `Dúvidas extras: ${formData.extras}`
       }
       handleDataSend("message", dataWithMessage);
     }
@@ -56,9 +93,9 @@ const WhatsMessage = ({ selectedBoat, step, setStep, isWhatsOpen, handleModal }:
 
     let url = `https://web.whatsapp.com/send?phone=${number}`;
 
-    getUserDoc(dataSend.email).then((user: any) => {
+    getUserDoc(formData.email).then((user: any) => {
       if (!user.length) {
-        createUserDoc(dataSend).then(res => {
+        createUserDoc(formData).then(res => {
           window.open(`${url}&text=${encodeURI(dataWithMessage)}&app_absent=0`);
           handleModal()
         }).catch(err => console.log(err))
@@ -73,7 +110,7 @@ const WhatsMessage = ({ selectedBoat, step, setStep, isWhatsOpen, handleModal }:
   return (
     <div className="flex justify-center">
       <div className="flex flex-col gap-2 p-4 w-full">
-        {isWhatsOpen && (
+      {isWhatsOpen && (
           <button type="button" className="py-4 w-5" onClick={() => setStep(0)}>
             <ArrowLeftIcon width={20} />
           </button>
@@ -96,75 +133,70 @@ const WhatsMessage = ({ selectedBoat, step, setStep, isWhatsOpen, handleModal }:
               type="text"
               name="numberUser"
               placeholder="John Doe"
-              id="numberUser"
-              onChange={(e) => {
-                handleDataSend("name", e.target.value);
-              }}
+              value={name}
+              onChange={(e) => setName(e.target.value)}
             />
+            {nameError && (
+              <span className="text-red-500 text-sm">{nameError}</span>
+            )}
           </div>
           <div className="pb-4">
             <label className="block text-sm pb-2">Telefone</label>
-            <InputMask
-              mask="(99) 99999-9999"
-              maskChar={null}
+            <input
               className="block p-2 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 
           ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset 
           focus:to-primary sm:text-sm sm:leading-6"
               type="tel"
               name="messageToUser"
-              id="messageToUser"
               placeholder="(99) 99999-9999"
-              onChange={(e) => {
-                handleDataSend("phone", e.target.value);
-              }}
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
             />
+            {phoneError && (
+              <span className="text-red-500 text-sm">{phoneError}</span>
+            )}
           </div>
           <div className="pb-4">
             <label className="block text-sm pb-2">E-mail</label>
-
             <input
               className="block p-2 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 
               ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset 
               focus:to-primary sm:text-sm sm:leading-6"
               type="email"
               name="userEmail"
-              id="userEmail"
               placeholder="exemplo@exemplo.com"
-              onChange={(e) => {
-                handleDataSend("email", e.target.value);
-              }}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
+            {emailError && (
+              <span className="text-red-500 text-sm">{emailError}</span>
+            )}
           </div>
           <div className="pb-4">
             <label className="block text-sm pb-2">
               Alguma informação extra que gostaria de adicionar?
             </label>
-
             <textarea
               className="block p-2 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:to-primary sm:text-sm sm:leading-6"
               name="extras"
-              id="extras"
               placeholder="Gostaria de alugar esta lancha no período X até Y, para Z pessoas..."
-              onChange={(e) => {
-                handleDataSend("extras", e.target.value);
-              }}
+              value={extras}
+              onChange={(e) => setExtras(e.target.value)}
             />
           </div>
         </div>
-      <div className="p-4">
-        <button
-          type="button"
-          className="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded flex items-center gap-3"
-          onClick={handleSubmit}
-        >
-          <Icon icon="whats" svgProps={{ fill: "white" }} />
-          Enviar mensagem
-        </button>
+        <div className="p-4">
+          <button
+            type="button"
+            className="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded flex items-center gap-3"
+            onClick={handleSubmit}
+          >
+            Enviar mensagem
+          </button>
+        </div>
       </div>
-      </div>
-
     </div>
   );
-};
+}  
 
 export default WhatsMessage;
