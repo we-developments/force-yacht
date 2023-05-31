@@ -2,6 +2,7 @@ import { Boat } from "@/app/page";
 import React, { useState } from "react";
 import { useUserManagement } from "@/services/userManagement";
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
+import { useIconGetter } from "@/src/hooks/useIconGetter";
 
 type WhatsProps = {
   name: string;
@@ -16,10 +17,16 @@ interface WhatsMessageProps {
   step?: number;
   setStep?: React.Dispatch<React.SetStateAction<number>> | any;
   isWhatsOpen: boolean;
-  handleModal: (boat?: any) => void
+  handleModal: (boat?: any) => void;
 }
 
-const WhatsMessage = ({ selectedBoat, step, setStep, isWhatsOpen, handleModal }: WhatsMessageProps) => {
+const WhatsMessage = ({
+  selectedBoat,
+  step,
+  setStep,
+  isWhatsOpen,
+  handleModal,
+}: WhatsMessageProps) => {
   const [dataSend, setDataSend] = useState({} as WhatsProps);
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
@@ -29,8 +36,9 @@ const WhatsMessage = ({ selectedBoat, step, setStep, isWhatsOpen, handleModal }:
   const [phoneError, setPhoneError] = useState("");
   const [emailError, setEmailError] = useState("");
 
+  const { getUserDoc, createUserDoc } = useUserManagement();
 
-  const { getUserDoc, createUserDoc } = useUserManagement()
+  const { Icon } = useIconGetter();
 
   const handleDataSend = (key: string, value: string) => {
     if (key && value) {
@@ -39,52 +47,51 @@ const WhatsMessage = ({ selectedBoat, step, setStep, isWhatsOpen, handleModal }:
   };
 
   const handleSubmit = () => {
+    setNameError("");
+    setPhoneError("");
+    setEmailError("");
 
-     setNameError("");
-     setPhoneError("");
-     setEmailError("");
- 
-     if (name.trim() === "") {
-       setNameError("Por favor, preencha o campo Nome.");
-       return;
-     }
- 
-     if (phone.trim() === "") {
-       setPhoneError("Por favor, preencha o campo Telefone.");
-       return;
-     }
- 
-     if (email.trim() === "") {
-       setEmailError("Por favor, preencha o campo E-mail.");
-       return;
-     }
- 
-     const formData = {
-       name,
-       phone,
-       email,
-       extras
-     };
- 
-     console.log(formData);
- 
-     setName("");
-     setPhone("");
-     setEmail("");
-     setExtras("");
+    if (name.trim() === "") {
+      setNameError("Por favor, preencha o campo Nome.");
+      return;
+    }
+
+    if (phone.trim() === "") {
+      setPhoneError("Por favor, preencha o campo Telefone.");
+      return;
+    }
+
+    if (email.trim() === "") {
+      setEmailError("Por favor, preencha o campo E-mail.");
+      return;
+    }
+
+    const formData = {
+      name,
+      phone,
+      email,
+      extras,
+    };
+
+    console.log(formData);
+
+    setName("");
+    setPhone("");
+    setEmail("");
+    setExtras("");
 
     let dataWithMessage = "";
 
     if (selectedBoat) {
       dataWithMessage = `Olá, meu nome é ${formData.name}, tive interesse no aluguel da lancha ${selectedBoat?.YatchName}, gostaria de saber mais informações.`;
       if (formData?.extras?.length > 0) {
-        dataWithMessage += `Dúvidas extras: ${formData.extras}`
+        dataWithMessage += `Dúvidas extras: ${formData.extras}`;
       }
       handleDataSend("message", dataWithMessage);
     } else {
-      dataWithMessage = `Olá, meu nome é ${formData.name}, tive interesse em alugar uma lancha, gostaria de saber mais informações. `
+      dataWithMessage = `Olá, meu nome é ${formData.name}, tive interesse em alugar uma lancha, gostaria de saber mais informações. `;
       if (formData?.extras?.length > 0) {
-        dataWithMessage += `Dúvidas extras: ${formData.extras}`
+        dataWithMessage += `Dúvidas extras: ${formData.extras}`;
       }
       handleDataSend("message", dataWithMessage);
     }
@@ -93,24 +100,29 @@ const WhatsMessage = ({ selectedBoat, step, setStep, isWhatsOpen, handleModal }:
 
     let url = `https://web.whatsapp.com/send?phone=${number}`;
 
-    getUserDoc(formData.email).then((user: any) => {
-      if (!user.length) {
-        createUserDoc(formData).then(res => {
+    getUserDoc(formData.email)
+      .then((user: any) => {
+        if (!user.length) {
+          createUserDoc(formData)
+            .then((res) => {
+              window.open(
+                `${url}&text=${encodeURI(dataWithMessage)}&app_absent=0`
+              );
+              handleModal();
+            })
+            .catch((err) => console.log(err));
+        } else {
           window.open(`${url}&text=${encodeURI(dataWithMessage)}&app_absent=0`);
-          handleModal()
-        }).catch(err => console.log(err))
-      } else {
-        window.open(`${url}&text=${encodeURI(dataWithMessage)}&app_absent=0`);
-        handleModal()
-      }
-    }).catch(err => console.log(err))
-
+          handleModal();
+        }
+      })
+      .catch((err) => console.log(err));
   };
 
   return (
     <div className="flex justify-center">
       <div className="flex flex-col gap-2 p-4 w-full">
-      {isWhatsOpen && (
+        {isWhatsOpen && (
           <button type="button" className="py-4 w-5" onClick={() => setStep(0)}>
             <ArrowLeftIcon width={20} />
           </button>
@@ -191,12 +203,13 @@ const WhatsMessage = ({ selectedBoat, step, setStep, isWhatsOpen, handleModal }:
             className="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded flex items-center gap-3"
             onClick={handleSubmit}
           >
+            <Icon icon="whats" svgProps={{ fill: "white" }} />
             Enviar mensagem
           </button>
         </div>
       </div>
     </div>
   );
-}  
+};
 
 export default WhatsMessage;

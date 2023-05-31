@@ -1,6 +1,7 @@
 import { useUserManagement } from '@/services/userManagement'
 import React, { useEffect, useState } from 'react'
 import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
+import { useIconGetter } from '@/src/hooks/useIconGetter';
 
 type UserProps = {
     name: string,
@@ -12,6 +13,8 @@ const Users = () => {
     const [users, setUsers] = useState([] as UserProps[])
 
     const { getUsersDoc } = useUserManagement()
+
+    const { Icon } = useIconGetter();
 
     useEffect(() => {
         getUsersDoc().then((usersResponse) => {
@@ -49,6 +52,8 @@ const Users = () => {
                                                                 <td className="whitespace-nowrap px-6 py-4 text-base font-normal">{user.email}</td>
                                                                 <td className='items-center w-1/4 justify-center'>
                                                                     <button type='button' className='bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded'>
+                                                                        <Icon icon="whats" svgProps={{ fill: "white" }} />
+
                                                                         Enviar mensagem
                                                                     </button>
                                                                 </td>
