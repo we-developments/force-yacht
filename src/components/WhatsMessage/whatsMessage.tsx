@@ -94,7 +94,7 @@ const WhatsMessage = ({
       handleDataSend("message", dataWithMessage);
     }
 
-    let number = "11 98356-8718".replace(/[^\w\s]/gi, "").replace(/ /g, "");
+    let number = "47 9191-5647".replace(/[^\w\s]/gi, "").replace(/ /g, "");
 
     let url = `https://web.whatsapp.com/send?phone=${number}`;
 

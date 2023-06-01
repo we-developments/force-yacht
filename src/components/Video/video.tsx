@@ -17,8 +17,6 @@ export default function Video({ boats }: any) {
         setRandomIndexes(newRandomIndexes);
       }, [boats]);
 
-      console.log(randomIndexes)
-
     return (
         <section
         className="h-[26rem] sm:h-[20rem] lg:h-[50rem] bg-off flex items-center"
