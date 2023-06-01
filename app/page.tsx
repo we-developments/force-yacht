@@ -78,10 +78,12 @@ export default function HomePage() {
   const handleModal = (boat: Boat) => {
     setSelectedBoat(boat);
     setIsModalOpen(!isModalOpen);
+    
     if(isModalOpen){
       setIsWhatsOpen(true)
       setSelectedBoat({} as Boat)
       setStep(0)
+
     }
   };
 

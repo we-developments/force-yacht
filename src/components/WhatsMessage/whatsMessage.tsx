@@ -73,8 +73,6 @@ const WhatsMessage = ({
       extras,
     };
 
-    console.log(formData);
-
     setName("");
     setPhone("");
     setEmail("");
