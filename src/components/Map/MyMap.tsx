@@ -20,7 +20,7 @@ const MyMap = () => {
       id="onde-estamos"
     >
       <div className="md:grid grid-cols-2 sm:w-4/5 mx-auto pt-20">
-        <div className="col-span-1 flex justify-center relative z-10 bg-white rounded-2xl">
+        <div className="col-span-1 flex justify-center relative bg-white rounded-2xl">
           <Image src={jumpGirls} alt="boat" className="w-full rounded-2xl" />
         </div>
         <div className="col-span-1 z-20 relative bg-white rounded-2xl">

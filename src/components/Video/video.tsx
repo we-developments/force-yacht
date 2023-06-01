@@ -17,6 +17,8 @@ export default function Video({ boats }: any) {
         setRandomIndexes(newRandomIndexes);
       }, [boats]);
 
+      console.log(randomIndexes)
+
     return (
         <section
         className="h-[26rem] sm:h-[20rem] lg:h-[50rem] bg-off flex items-center"
@@ -38,7 +40,7 @@ export default function Video({ boats }: any) {
             >
               <div className="col-start-1 col-end-3 row-start-1 row-end-3">
                 <Image
-                  src={boats[randomIndexes[1]]?.Images[0]}
+                  src={boats[randomIndexes[0]]?.Images[randomIndexes[0]] || boats[randomIndexes[1]]?.Images[0]}
                   width={1000}
                   height={1000}
                   className="w-full h-full object-cover rounded-2xl"
@@ -47,7 +49,7 @@ export default function Video({ boats }: any) {
               </div>
               <div className="col-start-3 col-end-5 row-start-1 row-end-3 ">
                 <Image
-                  src={boats[randomIndexes[0]]?.Images[0]}
+                  src={boats[randomIndexes[1]]?.Images[randomIndexes[1]] || boats[randomIndexes[1]]?.Images[0]}
                   width={1000}
                   height={1000}
                   className="w-full h-full object-cover rounded-2xl"
@@ -56,7 +58,7 @@ export default function Video({ boats }: any) {
               </div>
               <div className="col-start-5 col-end-9 row-start-1 row-end-6">
                 <Image
-                  src={boats[randomIndexes[1]]?.Images[0]}
+                  src={boats[randomIndexes[2]]?.Images[randomIndexes[2]] || boats[randomIndexes[2]]?.Images[0]}
                   width={1000}
                   height={1000}
                   className="w-full h-full object-cover rounded-2xl"
@@ -65,7 +67,7 @@ export default function Video({ boats }: any) {
               </div>
               <div className="col-start-1 col-end-5 row-start-3 row-end-6">
                 <Image
-                  src={boats[randomIndexes[2]]?.Images[0]}
+                  src={boats[randomIndexes[3]]?.Images[randomIndexes[3]] || boats[randomIndexes[3]]?.Images[0]}
                   width={1000}
                   height={1000}
                   className="w-full h-full object-cover rounded-2xl"

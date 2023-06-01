@@ -40,7 +40,6 @@ const teams = [
   { id: 3, name: "Workcation", href: "#", initial: "W", current: false },
 ];
 const userNavigation = [
-  { name: "Your profile", href: "#" },
   { name: "Sign out", href: "#" },
 ];
 
@@ -169,18 +168,6 @@ export default function Dashboard(children: any) {
                             ))}
                           </ul>
                         </li>
-                        <li className="mt-auto">
-                          <a
-                            href="#"
-                            className="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-700 hover:bg-gray-50 hover:text-tertiary"
-                          >
-                            <Cog6ToothIcon
-                              className="h-6 w-6 shrink-0 text-gray-400 group-hover:bg-tertiary"
-                              aria-hidden="true"
-                            />
-                            Settings
-                          </a>
-                        </li>
                       </ul>
                     </nav>
                   </div>
@@ -226,18 +213,6 @@ export default function Dashboard(children: any) {
                       </li>
                     ))}
                   </ul>
-                </li>
-                <li className="mt-auto">
-                  <a
-                    href="#"
-                    className="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-700 hover:bg-gray-50 hover:text-primary"
-                  >
-                    <Cog6ToothIcon
-                      className="h-6 w-6 shrink-0 text-gray-400 group-hover:text-primary"
-                      aria-hidden="true"
-                    />
-                    Settings
-                  </a>
                 </li>
               </ul>
             </nav>
@@ -303,7 +278,7 @@ export default function Dashboard(children: any) {
                     leaveFrom="transform opacity-100 scale-100"
                     leaveTo="transform opacity-0 scale-95"
                   >
-                    <Menu.Items className="absolute right-0 z-10 mt-2.5 w-32 origin-top-right rounded-md bg-white py-2 shadow-lg ring-1 ring-gray-900/5 focus:outline-none">
+                    <Menu.Items className="absolute left-0 z-10 mt-2.5 w-32 origin-top-right rounded-md bg-white py-2 shadow-lg ring-1 ring-gray-900/5 focus:outline-none">
                       {userNavigation.map((item) => (
                         <Menu.Item key={item.name}>
                           {({ active }) => (

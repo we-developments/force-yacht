@@ -119,7 +119,7 @@ export default function Banner({
             exit={{ opacity: 0, x: "100%" }}
             transition={{ duration: 0.3 }}
           >
-            <p className="text-white font-bold z-50">Fale conosco</p>
+            <p className="text-white font-bold z-50 relative">Fale conosco</p>
           </motion.div>
         )}
       </div>

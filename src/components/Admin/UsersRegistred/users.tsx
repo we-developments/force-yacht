@@ -6,21 +6,33 @@ import { useIconGetter } from '@/src/hooks/useIconGetter';
 type UserProps = {
     name: string,
     email: string,
-    phone: string
+    phone: string,
+    id: number,
 }
 
 const Users = () => {
     const [users, setUsers] = useState([] as UserProps[])
 
-    const { getUsersDoc } = useUserManagement()
+    const { getUsersDoc, deleteUserDoc } = useUserManagement()
 
     const { Icon } = useIconGetter();
+
+    function handleDelet(currentId: number) {
+        deleteUserDoc(currentId).then(() => {
+            getUsersDoc().then((usersResponse) => {
+                if (usersResponse) setUsers(usersResponse)
+            }).catch(err => console.log('err: ', err))
+
+        }).catch(err => console.log('err: ', err))
+    }
 
     useEffect(() => {
         getUsersDoc().then((usersResponse) => {
             if (usersResponse) setUsers(usersResponse)
         }).catch(err => console.log('err: ', err))
     }, [])
+
+  
 
     return (
         <div>
@@ -51,17 +63,24 @@ const Users = () => {
                                                                 <td className="whitespace-nowrap px-6 py-4 text-base font-normal">{user.phone}</td>
                                                                 <td className="whitespace-nowrap px-6 py-4 text-base font-normal">{user.email}</td>
                                                                 <td className='items-center w-1/4 justify-center'>
-                                                                    <button type='button' className='bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded'>
+                                                                    <button type='button' className='bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded flex gap-2 items-center'>
                                                                         <Icon icon="whats" svgProps={{ fill: "white" }} />
 
                                                                         Enviar mensagem
                                                                     </button>
                                                                 </td>
+                                                                <td className='items-center w-1/4 justify-center'>
+                                                                    <button type='button' className='bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded flex gap-2 items-center'
+                                                                    onClick={() => handleDelet(user.id)}
+                                                                    >
+                                                                        Deletar
+                                                                    </button>
+                                                                </td> 
                                                             </tr>
                                                         )
                                                     })
                                                 }
-                                            </tbody>
+                                            </tbody>                                            
                                         </table>
                                     ) : (
                                         <div className="flex bg-blue-200 rounded-lg items-center text-center justify-center w-full mt-4 px-16 h-16">

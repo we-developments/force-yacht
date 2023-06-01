@@ -241,7 +241,7 @@ export default function Boats() {
                     </button>
                     <button
                       type="button"
-                      className="inline-flex items-center rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset bg-red-400 text-white hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:bg-white"
+                      className="inline-flex items-center rounded-md px-2.5 py-1.5 text-sm font-semibold shadow-sm ring-1 ring-inset bg-red-400 text-white hover:text-red-600 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:bg-white"
                       onClick={() => {
                         handleDeleteBoat(boat.Id)
                       }}
