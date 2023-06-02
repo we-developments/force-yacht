@@ -22,7 +22,8 @@ export default function Card() {
               src="https://force-yachts.s3.sa-east-1.amazonaws.com/banner3.jpg"
               alt="Banner"
               className="h-full w-full object-cover object-center"
-              fill
+              width={1000}
+              height={1000}
             />
           </div>
           <div className="absolute inset-0 bg-gray-900 opacity-50" />
@@ -42,7 +43,8 @@ export default function Card() {
                 src="https://force-yachts.s3.sa-east-1.amazonaws.com/banner3.jpg"
                 alt="Banner"
                 className="h-full w-full object-cover object-center"
-                fill
+                width={1000}
+                height={1000}
               />
             </div>
             <div className="absolute inset-0 bg-gray-900 opacity-50" />

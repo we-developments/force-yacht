@@ -177,7 +177,7 @@ export default function HomePage() {
             </div>
           </div>
           <div className="col-span-1 z-20 relative bg-white rounded-2xl">
-            <Image src="https://force-yachts.s3.sa-east-1.amazonaws.com/man-boat.png" alt="boat" className="w-full rounded-2xl" width={1500} height={1500}/>
+            <Image src="https://force-yachts.s3.sa-east-1.amazonaws.com/man-boat.png" alt="boat" className="w-full rounded-2xl" width={600} height={300}/>
           </div>
         </div>
       </section>

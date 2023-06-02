@@ -354,8 +354,9 @@ export default function Banner({
         src="https://force-yachts.s3.sa-east-1.amazonaws.com/banner5.jpg"
         alt="banner"
         className="h-2/6 sm:h-screen sm:w-screen object-cover"
-        width={1500}
-        height={1500}
+        width={1000}
+        height={1000}
+        loading="lazy"
       />
       <div
         className="absolute left-4 sm:left-8 text-left z-0 "
