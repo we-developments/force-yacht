@@ -20,7 +20,7 @@ import { useBoatManagement } from "@/services/boatManagement";
 import dynamic from "next/dynamic";
 import WhatsMessage from "@/src/components/WhatsMessage/whatsMessage";
 import Video from "@/src/components/Video/video";
-import { LockClosedIcon, XCircleIcon } from "@heroicons/react/24/outline";
+import { XCircleIcon } from "@heroicons/react/24/outline";
 
 const MyMap = dynamic(() => import("@/src/components/Map/MyMap"), {
   ssr: false,

@@ -1,4 +1,3 @@
-import banner5 from "../../images/pngs/banner5.jpg";
 import Logo from "../../images/pngs/force.png";
 import { useInView } from "react-intersection-observer";
 import { motion, useAnimation } from "framer-motion";
@@ -352,9 +351,11 @@ export default function Banner({
         </Dialog>
       </Transition.Root>
       <Image
-        src={banner5}
+        src="https://force-yachts.s3.sa-east-1.amazonaws.com/banner5.jpg"
         alt="banner"
         className="h-2/6 sm:h-screen sm:w-screen object-cover"
+        width={1500}
+        height={1500}
       />
       <div
         className="absolute left-4 sm:left-8 text-left z-0 "

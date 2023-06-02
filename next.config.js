@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     images: {
-      domains:['firebasestorage.googleapis.com', 'tailwindui.com'],
+      domains:['firebasestorage.googleapis.com', 'tailwindui.com', 'force-yachts.s3.sa-east-1.amazonaws.com'],
         remotePatterns: [
           {
             protocol: 'https',

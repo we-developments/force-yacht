@@ -1,10 +1,9 @@
-import Image from "next/image";
-import banner from "../../images/pngs/banner3.jpg";
 import family from "../../images/pngs/family.jpg";
 import party from "../../images/pngs/party.jpg";
 import jumpMan from "../../images/pngs/jumpMan.jpg";
 
 import { useIconGetter } from "@/src/hooks/useIconGetter";
+import Image from "next/image";
 
 
 export default function Card() {
@@ -20,9 +19,10 @@ export default function Card() {
         <div className="relative w-full flex-1 bg-gray-800">
           <div className="absolute inset-0 overflow-hidden">
             <Image
-              src={banner}
-              alt=""
+              src="https://force-yachts.s3.sa-east-1.amazonaws.com/banner3.jpg"
+              alt="Banner"
               className="h-full w-full object-cover object-center"
+              fill
             />
           </div>
           <div className="absolute inset-0 bg-gray-900 opacity-50" />
@@ -39,9 +39,10 @@ export default function Card() {
           <div className="relative w-full flex-1 bg-gray-800">
             <div className="absolute inset-0 overflow-hidden">
               <Image
-                src={banner}
-                alt=""
+                src="https://force-yachts.s3.sa-east-1.amazonaws.com/banner3.jpg"
+                alt="Banner"
                 className="h-full w-full object-cover object-center"
+                fill
               />
             </div>
             <div className="absolute inset-0 bg-gray-900 opacity-50" />
