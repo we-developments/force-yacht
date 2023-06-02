@@ -155,7 +155,7 @@ export default function HomePage() {
 
       <section className="w-full bg-off py-10" id="servicos">
         <div className="block sm:grid grid-cols-2 md:w-4/5 mx-auto md:pt-20">
-          <div className="col-span-1 flex justify-center relative z-10 bg-white rounded-2xl">
+          <div className="col-span-1 flex justify-center relative bg-white rounded-2xl">
             <div className="p-8">
               <h1 className="text-4xl font-bold text-primary font-Marcellus ">
                 Serviços
@@ -176,7 +176,7 @@ export default function HomePage() {
               </p>
             </div>
           </div>
-          <div className="col-span-1 z-20 relative bg-white rounded-2xl">
+          <div className="col-span-1 relative bg-white rounded-2xl">
             <Image src="https://force-yachts.s3.sa-east-1.amazonaws.com/manboat.png" alt="boat" className="w-full rounded-2xl" width={600} height={300}/>
           </div>
         </div>

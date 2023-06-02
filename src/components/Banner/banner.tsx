@@ -102,7 +102,7 @@ export default function Banner({
         onMouseLeave={handleLeave}
       >
         <motion.button
-          className="fixed bottom-4 right-4 z-10 p-3 bg-green-500 rounded-full cursor-pointer shadow-lg"
+          className="fixed bottom-4 right-4 z-20 p-3 bg-green-500 rounded-full cursor-pointer shadow-lg"
 
           whileHover={{ scale: 1.1 }}
           onClick={() => handleModalWhats().then(handleModal)}
@@ -118,7 +118,7 @@ export default function Banner({
             exit={{ opacity: 0, x: "100%" }}
             transition={{ duration: 0.3 }}
           >
-            <p className="text-white font-bold z-50 relative">Fale conosco</p>
+            <p className="text-white font-bold z-20 relative">Fale conosco</p>
           </motion.div>
         )}
       </div>
@@ -227,7 +227,7 @@ export default function Banner({
       <Transition.Root show={sidebarOpen} as={Fragment}>
         <Dialog
           as="div"
-          className="relative z-50 lg:hidden"
+          className="relative z-10 lg:hidden"
           onClose={setSidebarOpen}
         >
           <Transition.Child

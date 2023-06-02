@@ -23,7 +23,7 @@ const MyMap = () => {
         <div className="col-span-1 flex justify-center relative bg-white rounded-2xl">
           <Image src={jumpGirls} alt="boat" className="w-full rounded-2xl" />
         </div>
-        <div className="col-span-1 z-20 relative bg-white rounded-2xl">
+        <div className="col-span-1 relative bg-white rounded-2xl">
           <div className="p-8">
             <h1 className="text-4xl font-bold text-primary font-Marcellus">
               Por onde nos encontrar?

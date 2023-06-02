@@ -92,7 +92,7 @@ export default function Video({ boats }: any) {
         )}
 
         {selectedVideo && (
-          <div className="fixed z-50 top-0 left-0 w-screen h-screen flex items-center justify-center bg-black bg-opacity-50">
+          <div className="fixed z-10 top-0 left-0 w-screen h-screen flex items-center justify-center bg-black bg-opacity-50">
             <iframe
               title="vimeo-player"
               src="https://player.vimeo.com/video/828589406?h=22114885e6&byline=0&portrait=0&title=0"
