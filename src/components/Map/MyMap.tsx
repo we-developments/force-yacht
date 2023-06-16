@@ -30,7 +30,7 @@ const MyMap = () => {
             </h1>
             <div className="w-8 h-1 mt-2 ml-1 flex justify-start bg-primary"></div>
             <p className="text-lg pt-4 font-extralight text-gray-600">
-              Encontrar a Force Yacht é fácil! Se você é um entusiasta das redes
+              Encontrar a Force Yachts é fácil! Se você é um entusiasta das redes
               sociais, visite nosso perfil no Instagram para obter informações
               atualizadas, fotos deslumbrantes das nossas lanchas e detalhes
               sobre os pacotes disponíveis.
@@ -38,7 +38,7 @@ const MyMap = () => {
             <p className="text-lg pt-4 font-extralight text-gray-600">
               Não perca a oportunidade de explorar a beleza natural de Porto
               Belo enquanto desfruta do conforto e da emoção de uma lancha de
-              alta qualidade. Na Force Yacht, garantimos que você tenha uma
+              alta qualidade. Na Force Yachts, garantimos que você tenha uma
               experiência única e memorável. Aguardamos ansiosamente o seu
               contato para começar a planejar sua aventura marítima. Vamos
               navegar juntos!{" "}

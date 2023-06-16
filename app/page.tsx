@@ -129,7 +129,7 @@ export default function HomePage() {
                 <div className="w-8 h-1 mt-2 ml-1 flex justify-start bg-primary"></div>
 
                 <p className="font-extralight text-base lg:text-lg text-left pt-4 text-gray-600">
-                  Desde 2015, a Force Yacht tem sido sinônimo de aventura, luxo
+                  Desde 2015, a Force Yachts tem sido sinônimo de aventura, luxo
                   e momentos memoráveis em alto-mar em Porto Belo e região.
                   Oferecemos aluguel de iates e lanchas de alta qualidade,
                   proporcionando uma experiência única, seja para celebrações
@@ -142,7 +142,7 @@ export default function HomePage() {
                   mantida, assegurando um alto padrão de conforto e segurança.
                   Nossa dedicada equipe de profissionais está sempre pronta para
                   ajudar no planejamento da sua viagem, garantindo que cada
-                  detalhe esteja à altura das suas expectativas. Na Force Yacht,
+                  detalhe esteja à altura das suas expectativas. Na Force Yachts,
                   proporcionamos a verdadeira liberdade do mar, aliada ao luxo e
                   conforto, para fazer de cada viagem uma experiência
                   inesquecível. Embarque conosco nessa aventura!
@@ -162,7 +162,7 @@ export default function HomePage() {
               </h1>
               <div className="w-8 h-1 mt-2 ml-1 flex justify-start bg-primary"></div>
               <p className="text-lg pt-4 font-extralight text-gray-600">
-                Na Force Yacht, oferecemos aluguel de iates e lanchas luxuosas e
+                Na Force Yachts, oferecemos aluguel de iates e lanchas luxuosas e
                 bem mantidas, adequadas para todas as suas necessidades. Nossos
                 serviços incluem um marinheiro experiente para garantir uma
                 navegação tranquila e segura.
@@ -170,7 +170,7 @@ export default function HomePage() {
                 Além disso, para enriquecer sua experiência, oferecemos uma
                 variedade de itens de consumo adicionais, como seleções gourmet
                 de alimentos e bebidas, equipamentos para esportes aquáticos,
-                entre outros. Na Force Yacht, acreditamos que cada viagem deve
+                entre outros. Na Force Yachts, acreditamos que cada viagem deve
                 ser única e memorável. Entre em contato conosco e comece a
                 planejar sua próxima aventura!
               </p>
