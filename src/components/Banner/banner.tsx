@@ -44,11 +44,10 @@ export default function Banner({
   };
 
   const handleModalWhats = () => {
-    return new Promise((resolve, reject) => {
       setStep(1)
       setIsWhatsOpen(false)
-      resolve("sucess")
-    }).catch(er => console.log(er))
+
+      handleModal()
   }
 
   let navbarClasses = [
@@ -105,7 +104,7 @@ export default function Banner({
           className="fixed bottom-4 right-4 z-20 p-3 bg-green-500 rounded-full cursor-pointer shadow-lg"
 
           whileHover={{ scale: 1.1 }}
-          onClick={() => handleModalWhats().then(handleModal)}
+          onClick={() => handleModalWhats()}
         >
           <Icon icon="whats" svgProps={{ fill: "white" }} />
         </motion.button>
@@ -227,7 +226,7 @@ export default function Banner({
       <Transition.Root show={sidebarOpen} as={Fragment}>
         <Dialog
           as="div"
-          className="relative z-10 lg:hidden"
+          className="relative z-30 lg:hidden"
           onClose={setSidebarOpen}
         >
           <Transition.Child

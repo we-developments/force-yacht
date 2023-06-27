@@ -8,9 +8,6 @@ import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import "../styles/font.css";
 
-// Assets
-import manBoat from "../src/images/pngs/manboat.png";
-
 // Hooks & Utils
 import { useIconGetter } from "../src/hooks/useIconGetter/useIconGetter";
 import Footer from "@/src/components/Footer/footer";
@@ -19,19 +16,19 @@ import Faq from "@/src/components/Faq/faq";
 import { useBoatManagement } from "@/services/boatManagement";
 import dynamic from "next/dynamic";
 import WhatsMessage from "@/src/components/WhatsMessage/whatsMessage";
-import Video from "@/src/components/Video/video";
 import { XCircleIcon } from "@heroicons/react/24/outline";
+import Banner from "@/src/components/Banner/banner";
 
 const MyMap = dynamic(() => import("@/src/components/Map/MyMap"), {
-  ssr: false,
-});
-const Banner = dynamic(() => import("@/src/components/Banner/banner"), {
   ssr: false,
 });
 const Boats = dynamic(() => import("@/src/components/Boats/boats"), {
   ssr: false,
 });
 const CardList = dynamic(() => import("@/src/components/Cards/cards"), {
+  ssr: false,
+});
+const Video = dynamic(() => import("@/src/components/Video/video"), {
   ssr: false,
 });
 
@@ -74,18 +71,27 @@ export default function HomePage() {
     }
   };
 
-
   const handleModal = (boat: Boat) => {
-    setSelectedBoat(boat);
     setIsModalOpen(!isModalOpen);
+    setSelectedBoat(boat);
+
+    if (boat && Object.keys(boat).length > 0 ) {
+      setStep(0)
+      setSelectedBoat(boat);
+      setIsWhatsOpen(true)
+    }
     
     if(isModalOpen){
-      setIsWhatsOpen(true)
       setSelectedBoat({} as Boat)
       setStep(0)
-
     }
+
   };
+
+  useEffect(() => {
+    
+
+  }, [selectedBoat]);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -218,7 +224,7 @@ export default function HomePage() {
           infinite={true}
           autoPlay={selectedBoat && selectedBoat?.Images?.length < 1 ? true : false}
           containerClass="carousel-container"
-        >
+        > 
           {selectedBoat &&
             selectedBoat?.Images?.map((image, index) => (
               <div className="relative w-full h-72 md:h-[44rem]" key={index}>
@@ -227,13 +233,8 @@ export default function HomePage() {
                   width={1500}
                   src={image}
                   alt={selectedBoat?.YatchName}
-                  className="object-cover h-full lg:h-[44rem] w-full"
+                  className="object-fill h-full lg:h-[44rem] w-full"
                 />
-                <div className="absolute inset-0 bg-black opacity-20 flex items-center justify-center">
-                  <h1 className="text-white text-5xl font-bold">
-                    {selectedBoat?.YatchName}
-                  </h1>
-                </div>
               </div>
             ))}
         </Carousel>

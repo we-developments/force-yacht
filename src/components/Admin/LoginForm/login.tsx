@@ -118,14 +118,14 @@ const LoginForm: React.FC = () => {
               >
                 Senha
               </label>
-              <div className="text-sm">
+              {/* <div className="text-sm">
                 <Link
                   href="/forgot-password"
                   className="font-semibold text-indigo-400 hover:text-indigo-300"
                 >
                   Esqueceu sua senha?
                 </Link>
-              </div>
+              </div> */}
             </div>
             <div className="mt-2">
               <Controller

@@ -1,8 +1,9 @@
 import { Boat } from "@/app/page";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useUserManagement } from "@/services/userManagement";
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 import { useIconGetter } from "@/src/hooks/useIconGetter";
+import InputMask from "react-input-mask";
 
 type WhatsProps = {
   name: string;
@@ -13,7 +14,7 @@ type WhatsProps = {
 };
 
 interface WhatsMessageProps {
-  selectedBoat?: Boat;
+  selectedBoat?: any;
   step?: number;
   setStep?: React.Dispatch<React.SetStateAction<number>> | any;
   isWhatsOpen: boolean;
@@ -45,7 +46,7 @@ const WhatsMessage = ({
       setDataSend({ ...dataSend, [key]: value });
     }
   };
-
+  
   const handleSubmit = () => {
     setNameError("");
     setPhoneError("");
@@ -80,23 +81,24 @@ const WhatsMessage = ({
 
     let dataWithMessage = "";
 
-    if (selectedBoat) {
+
+    if (selectedBoat && Object.keys(selectedBoat).length > 0) {
       dataWithMessage = `Olá, meu nome é ${formData.name}, tive interesse no aluguel da lancha ${selectedBoat?.YatchName}, gostaria de saber mais informações.`;
       if (formData?.extras?.length > 0) {
-        dataWithMessage += `Dúvidas extras: ${formData.extras}`;
+        dataWithMessage += ` Dúvidas extras: ${formData.extras}`;
       }
       handleDataSend("message", dataWithMessage);
     } else {
       dataWithMessage = `Olá, meu nome é ${formData.name}, tive interesse em alugar uma lancha, gostaria de saber mais informações. `;
       if (formData?.extras?.length > 0) {
-        dataWithMessage += `Dúvidas extras: ${formData.extras}`;
+        dataWithMessage += ` Algumas das minhas dúvidas: ${formData.extras}`;
       }
       handleDataSend("message", dataWithMessage);
     }
 
-    let number = "47 9191-5647".replace(/[^\w\s]/gi, "").replace(/ /g, "");
+    let number = "55" + "47 99191-5647".replace(/[^\d]/g, "");
 
-    let url = `https://web.whatsapp.com/send?phone=${number}`;
+    let url = `https://api.whatsapp.com/send?phone=${number}`;
 
     getUserDoc(formData.email)
       .then((user: any) => {
@@ -104,13 +106,13 @@ const WhatsMessage = ({
           createUserDoc(formData)
             .then((res) => {
               window.open(
-                `${url}&text=${encodeURI(dataWithMessage)}&app_absent=0`
+                `${url}&text=${encodeURIComponent(dataWithMessage)}`
               );
               handleModal();
             })
             .catch((err) => console.log(err));
         } else {
-          window.open(`${url}&text=${encodeURI(dataWithMessage)}&app_absent=0`);
+          window.open(`${url}&text=${encodeURIComponent(dataWithMessage)}`);
           handleModal();
         }
       })
@@ -152,10 +154,11 @@ const WhatsMessage = ({
           </div>
           <div className="pb-4">
             <label className="block text-sm pb-2">Telefone</label>
-            <input
+            <InputMask
               className="block p-2 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 
-          ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset 
-          focus:to-primary sm:text-sm sm:leading-6"
+    ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset 
+    focus:to-primary sm:text-sm sm:leading-6"
+              mask="(99) 99999-9999"
               type="tel"
               name="messageToUser"
               placeholder="(99) 99999-9999"

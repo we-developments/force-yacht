@@ -26,12 +26,23 @@ const Users = () => {
         }).catch(err => console.log('err: ', err))
     }
 
+    
+    function sendMessage(userNumber: string) {
+        
+        let number = userNumber.replace(/[^\w\s]/gi, "").replace(/ /g, "");
+        let message = encodeURIComponent("Digite aqui a mensagem para o usuário..");
+        let url = `https://web.whatsapp.com/send?phone=${number}&text=${message}`;
+
+        // Abre uma nova janela do navegador com o URL
+        window.open(url, '_blank');
+           
+    }
+
     useEffect(() => {
         getUsersDoc().then((usersResponse) => {
             if (usersResponse) setUsers(usersResponse)
         }).catch(err => console.log('err: ', err))
     }, [])
-
   
 
     return (
@@ -62,8 +73,10 @@ const Users = () => {
                                                                 <td className="whitespace-nowrap px-6 py-4 text-base font-normal">{user.name}</td>
                                                                 <td className="whitespace-nowrap px-6 py-4 text-base font-normal">{user.phone}</td>
                                                                 <td className="whitespace-nowrap px-6 py-4 text-base font-normal">{user.email}</td>
-                                                                <td className='items-center w-1/4 justify-center'>
-                                                                    <button type='button' className='bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded flex gap-2 items-center'>
+                                                                <td className='whitespace-nowrap items-center w-1/4 justify-center'>
+                                                                    <button type='button' className='bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded flex gap-2 items-center'
+                                                                    onClick={() => sendMessage(user.phone)}
+                                                                    >
                                                                         <Icon icon="whats" svgProps={{ fill: "white" }} />
 
                                                                         Enviar mensagem
