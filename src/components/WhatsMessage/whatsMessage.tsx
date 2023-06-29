@@ -81,6 +81,8 @@ const WhatsMessage = ({
 
     let dataWithMessage = "";
 
+    
+
 
     if (selectedBoat && Object.keys(selectedBoat).length > 0) {
       dataWithMessage = `Olá, meu nome é ${formData.name}, tive interesse no aluguel da lancha ${selectedBoat?.YatchName}, gostaria de saber mais informações.`;
@@ -98,7 +100,17 @@ const WhatsMessage = ({
 
     let number = "55" + "47 99191-5647".replace(/[^\d]/g, "");
 
-    let url = `https://api.whatsapp.com/send?phone=${number}`;
+    let url = '';
+
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+    if (isMobile) {
+      // Este URL é usado para dispositivos móveis
+      url = `whatsapp://send?text=${encodeURIComponent(dataWithMessage)}&phone=${number}`;
+    } else {
+      // Este URL é usado para desktop
+      url = `https://api.whatsapp.com/send?phone=${number}&text=${encodeURIComponent(dataWithMessage)}`;
+    }
 
     getUserDoc(formData.email)
       .then((user: any) => {
@@ -108,12 +120,18 @@ const WhatsMessage = ({
               window.open(
                 `${url}&text=${encodeURIComponent(dataWithMessage)}`
               );
-              handleModal();
+              setTimeout(() => {
+
+                handleModal();
+              }, 2000)
             })
             .catch((err) => console.log(err));
         } else {
           window.open(`${url}&text=${encodeURIComponent(dataWithMessage)}`);
-          handleModal();
+          setTimeout(() => {
+
+            handleModal();
+          }, 2000)
         }
       })
       .catch((err) => console.log(err));
