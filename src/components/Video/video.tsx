@@ -6,6 +6,7 @@ import lancha1 from "../../images/pngs/lancha1.jpg";
 import lancha2 from "../../images/pngs/lancha2.jpg";
 import lancha3 from "../../images/pngs/lancha3.jpg";
 import lancha4 from "../../images/pngs/lancha4.jpg";
+import { LockClosedIcon } from "@heroicons/react/24/outline";
 
 export default function Video({ boats }: any) {
   const [isHovered, setIsHovered] = useState(false);
@@ -20,7 +21,6 @@ export default function Video({ boats }: any) {
       const isMobile = window.matchMedia("(max-width: 767px)").matches;
       setIsMobile(isMobile);
       isMobile ? setIsHovered(true) : "";
-
     };
 
     // Verifica imediatamente ao carregar a página
@@ -142,17 +142,26 @@ export default function Video({ boats }: any) {
       )}
 
       {selectedVideo && (
-        <div className="fixed z-10 top-0 left-0 w-screen h-screen flex items-center justify-center bg-black bg-opacity-50">
+        <div
+          className="fixed z-[9999999999999] top-0 left-0 w-screen h-screen flex items-center justify-center bg-black bg-opacity-50"
+          onClick={(event) => {
+            // Confira se o clique foi no fundo e não no vídeo ou no botão de fechamento.
+            if (event.target === event.currentTarget) {
+              setSelectedVideo(false);
+            }
+          }}
+        >
           <iframe
             title="vimeo-player"
             src="https://player.vimeo.com/video/828589406?h=22114885e6&byline=0&portrait=0&title=0"
             width="840"
             height="360"
             allowFullScreen
+            className="z-40"
           ></iframe>
           <button
             onClick={() => setSelectedVideo(false)}
-            className="absolute top-4 right-4 text-white text-2xl"
+            className="absolute top-4 right-10 bg-black bg-opacity-50 rounded-full p-2 text-white text-2xl z-[999999999999]"
           >
             X
           </button>

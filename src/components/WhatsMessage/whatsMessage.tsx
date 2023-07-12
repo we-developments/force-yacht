@@ -98,6 +98,8 @@ const WhatsMessage = ({
       handleDataSend("message", dataWithMessage);
     }
 
+    debugger;
+    
     let number = "55" + "47 99191-5647".replace(/[^\d]/g, "");
 
     let url = '';
