@@ -6,7 +6,6 @@ import lancha1 from "../../images/pngs/lancha1.jpg";
 import lancha2 from "../../images/pngs/lancha2.jpg";
 import lancha3 from "../../images/pngs/lancha3.jpg";
 import lancha4 from "../../images/pngs/lancha4.jpg";
-import { LockClosedIcon } from "@heroicons/react/24/outline";
 
 export default function Video({ boats }: any) {
   const [isHovered, setIsHovered] = useState(false);
