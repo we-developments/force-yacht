@@ -1,6 +1,7 @@
 import { useBoatManagement } from "@/services/boatManagement"
 import { useEffect, useState } from "react"
 import { PhotoIcon, XCircleIcon } from "@heroicons/react/24/outline";
+import { StarIcon } from "@heroicons/react/24/solid";
 import Modal from "../../Modal/modal";
 import Formulario from "../Form/form";
 
@@ -21,7 +22,8 @@ type BoatProps = {
   ExitLocation: string,
   DestinyLocation: string,
   Description: string,
-  length: number
+  length: number,
+  ImageCover: string,
 }
 
 export default function Boats() {
@@ -36,6 +38,16 @@ export default function Boats() {
 
   const handleModalImages = () => {
     setIsOpenModalImages(!isOpenModalImages)
+    if(isOpenModalImages){
+      setIsLoading(true)
+      getBoatsDoc().then((boats) => {
+        if (boats.length) setBoats(boats)
+        setIsLoading(false)
+      }).catch(err => {
+        console.log('erro: ', err)
+        setIsLoading(false)
+      })
+    }
   }
 
   const handleSaveNewBoat = (values: any) => {
@@ -91,6 +103,17 @@ export default function Boats() {
         }).catch(err => console.log(err))
       }
     })
+  }
+
+  const handleImageCover = (imgSelected: any, boatSelected: BoatProps ) => {
+      // Atualize a imagem de capa no banco de dados
+      updateBoatDoc('', {...boatSelected, ImageCover: imgSelected}, '');
+
+      // Atualize o estado selectedBoat com a nova imagem de capa
+      setSelectedBoat((prevSelectedBoat) => ({
+        ...prevSelectedBoat,
+        ImageCover: imgSelected,
+      }));
   }
 
   useEffect(() => {
@@ -269,10 +292,29 @@ export default function Boats() {
         <div className="w-full flex justify-end"><XCircleIcon width={32} className="mx-8 my-4 cursor-pointer" onClick={handleModalImages} /></div>
         {
           selectedBoat?.Images?.length > 0 ? (
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 " >
-              {selectedBoat.Images.map(img => {
-                return <img className="w-72 max-h-64 cursor-pointer rounded-xl " key={img} src={img} />
-              })}
+            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+              
+              {selectedBoat.Images.map((img) => {
+                // Verifique se a imagem atual é a imagem de capa
+                const isImageCover = img === selectedBoat.ImageCover;
+
+                return (
+                  <div key={img} className="relative">
+                    <img
+                      className={`w-72 max-h-64 cursor-pointer rounded-xl relative ${
+                        isImageCover ? 'border-4 border-blue-500' : ''
+                      }`}
+                      src={img}
+                      onClick={() => handleImageCover(img, selectedBoat)}
+                    />
+                    {isImageCover && (
+                      <StarIcon
+                        width={32}
+                        className="absolute top-2 left-2 text-yellow-400"
+                      />
+                    )}
+                  </div>
+                )})}
             </div>
           ) : (
             <></>

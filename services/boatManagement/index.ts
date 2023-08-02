@@ -98,7 +98,8 @@ export const useBoatManagement = () => {
                     DestinyLocation: doc.data().DestinyLocation,
                     Description: doc.data().Description,
                     CreatedAt: doc.data().CreatedAt,
-                    Images: doc.data().Images || []
+                    Images: doc.data().Images || [],
+                    ImageCover: doc.data().ImageCover || null,
                 };
                 dataRes.push(dataReturn);
             });
@@ -126,7 +127,8 @@ export const useBoatManagement = () => {
                     DestinyLocation: doc.data().DestinyLocation,
                     Description: doc.data().Description,
                     CreatedAt: doc.data().CreatedAt,
-                    Images: doc.data().Images || []
+                    Images: doc.data().Images || [],
+                    ImageCover: doc.data().ImageCover || null,
                 };
                 dataRes.push(dataReturn);
             });
@@ -156,7 +158,7 @@ export const useBoatManagement = () => {
 
 
                 } else {
-                    const refDoc = doc(db, "boatsRegistred", data.id);
+                    const refDoc = doc(db, "boatsRegistred", data.Id);
                     await updateDoc(refDoc, data);
                 }
             } catch (error) {
