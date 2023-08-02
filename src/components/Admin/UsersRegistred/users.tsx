@@ -2,8 +2,11 @@ import { useUserManagement } from "@/services/userManagement";
 import React, { useEffect, useState } from "react";
 import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
 import { useIconGetter } from "@/src/hooks/useIconGetter";
+import moment from 'moment'
+import { Timestamp } from "firebase/firestore";
 
 type UserProps = {
+  createdAt: Timestamp;
   name: string;
   email: string;
   phone: string;
@@ -84,6 +87,12 @@ const Users = () => {
                               scope="col"
                               className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
                             >
+                              Data
+                            </th>
+                            <th
+                              scope="col"
+                              className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                            >
                             </th>
       
                           </tr>
@@ -99,6 +108,9 @@ const Users = () => {
                               </td>
                               <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                                 {person.email}
+                              </td>
+                              <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                                {moment(person.createdAt).format("DD/MM/YYYY HH:mm")}
                               </td>
                               <td className="relative py-3.5 pl-3 pr-4 text-right text-sm font-medium sm:pr-6 gap-2 flex">
                                 <button

@@ -8,6 +8,7 @@ import {
     doc,
     updateDoc,
     deleteDoc,
+    orderBy,
   } from "firebase/firestore";
   import { getStorage, ref, uploadBytes } from "firebase/storage";
   
@@ -33,7 +34,7 @@ import {
           });
       });
     };
-  
+    
     const getUserDoc = async (email: string) => {
         return new Promise(async (resolve, reject) => {
           try {
@@ -60,7 +61,7 @@ import {
 
     const getUsersDoc = async () => {
       try {
-        const q = query(collection(db, "usersRegistred"));
+        const q = query(collection(db, "usersRegistred"), orderBy('createdAt', 'desc'));
         const querySnap = await getDocs(q);
         const dataRes = [] as any;
         querySnap.forEach((doc) => {
