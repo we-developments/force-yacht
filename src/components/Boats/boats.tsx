@@ -58,7 +58,7 @@ export default function Boats({ boats, handleModal }: any) {
                 className="bg-transparent shadow my-10 rounded-2xl hover:bg-white transition-all ease-out delay-200"
               >
                 <Image
-                  src={boat?.Images[0]}
+                  src={boat.ImageCover || boat?.Images[0]}
                   alt={boat.YatchName}
                   height={1500}
                   width={1500}
