@@ -226,7 +226,7 @@ export default function Banner({
       <Transition.Root show={sidebarOpen} as={Fragment}>
         <Dialog
           as="div"
-          className="relative z-30 lg:hidden"
+          className="relative z-[9999999] lg:hidden"
           onClose={setSidebarOpen}
         >
           <Transition.Child
