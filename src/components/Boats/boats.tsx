@@ -36,7 +36,6 @@ export default function Boats({ boats, handleModal }: any) {
 
         <div>
           <Carousel
-            removeArrowOnDeviceType={["tablet", "mobile"]}
             swipeable={true}
             draggable={true}
             showDots={true}
